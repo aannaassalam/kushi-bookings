@@ -13,3 +13,11 @@
     --foreground: #ededed;
   }
 }
+.primaryButton {
+  /* all: unset; */
+  background-color: #7bb933;
+  border: 2px solid #65a022;
+  border-radius: 5px;
+  padding: 7px 20px;
+  color: #fff;
+}
