@@ -10,7 +10,7 @@ export default function Logo(
   return (
     <>
       <Image
-        src={assets.logo_mobile}
+        src={assets.logo}
         alt="StackWalls"
         {...others}
         className={cx(className, {

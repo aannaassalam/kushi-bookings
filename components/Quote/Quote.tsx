@@ -14,10 +14,11 @@ export default function Quote() {
       />
       <div className="absolute w-full h-full bg-gradient-to-r from-[#274D44] to-[#274D44]/10 top-0 left-0 z-10"></div>
       <p className="italic text-white text-lg max-w-[900px] relative z-20 text-center font-semibold">
-        Whether you're a cricket/badminton enthusiast looking for premium gear
-        or want a place to practice your skills, we've got you covered. Our
-        dedicated team is here to assist you and ensure you have a fantastic
-        sporting experience. Elevate your game with us at Kushi Cricket Store!
+        Whether you&apos;re a cricket/badminton enthusiast looking for premium
+        gear or want a place to practice your skills, we&apos;ve got you
+        covered. Our dedicated team is here to assist you and ensure you have a
+        fantastic sporting experience. Elevate your game with us at Kushi
+        Cricket Store!
       </p>
     </div>
   );

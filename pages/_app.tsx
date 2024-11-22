@@ -1,13 +1,12 @@
 import EventListeners from "@/components/EventListener/EventListener";
 import { checkWindow } from "@/lib/functions/_helpers.lib";
 import "@/styles/globals.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
+import { Montserrat } from "next/font/google";
 import React from "react";
 import { Toaster } from "sonner";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SessionProvider } from "next-auth/react";
-import { Montserrat } from "next/font/google";
 /**
  * It suppresses the useLayoutEffect warning when running in SSR mode
  */

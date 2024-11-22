@@ -66,8 +66,8 @@ export default function Facility() {
                 Showing Result For November 24, 2024
               </p>
               <p className="text-primaryText text-sm">
-                We don't stop playing because we grow old, We grow old because
-                we stop playing!! - George Bernard Shaw
+                We don&apos;t stop playing because we grow old, We grow old
+                because we stop playing!! - George Bernard Shaw
               </p>
             </div>
           </div>

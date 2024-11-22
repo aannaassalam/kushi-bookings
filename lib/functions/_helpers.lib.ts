@@ -1,7 +1,6 @@
-import { BaseApiResponse } from "@/typescript/interface/common.interface";
 import events from "@/json/events/events";
+import { BaseApiResponse } from "@/typescript/interface/common.interface";
 import { AxiosError, AxiosResponse } from "axios";
-import { parseCookies, setCookie } from "nookies";
 import eventEmitter from "services/event.emitter";
 /**
  * Check if the window object exists.
@@ -9,18 +8,6 @@ import eventEmitter from "services/event.emitter";
  */
 export function checkWindow() {
   return typeof window !== "undefined";
-}
-
-export function getRole() {
-  const cookies = parseCookies();
-  return JSON.parse(cookies.user || "{}").role?.[0]?.name;
-}
-
-export function setCurrentRole(ctx: any = null, role: string) {
-  setCookie(ctx, "current_role", role, {
-    path: "/",
-    maxAge: 24 * 60 * 60
-  });
 }
 
 export function isInServer() {

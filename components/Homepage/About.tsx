@@ -26,8 +26,8 @@ export default function About() {
             We are your one-stop-shop for top-quality cricket and badminton
             equipment, batting cages, and badminton courts for rent, creating
             the perfect space for practice and play. Additionally, we provide
-            expert repair services for damaged bats, ensuring you're always at
-            the top of your game.
+            expert repair services for damaged bats, ensuring you&apos;re always
+            at the top of your game.
           </p>
         </div>
       </div>
