@@ -1,4 +1,4 @@
-import AppLayout from "@/layout/AppLayout";
+import AppLayout from "@/layouts/AppLayout";
 import { Box } from "@chakra-ui/react";
 import React from "react";
 
