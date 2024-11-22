@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
 export default {
-  logo: "/assets/images/logo.svg",
+  logo: "/images/logo.png",
   logo2: "/assets/images/logo2.png"
 };
