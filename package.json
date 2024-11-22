@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^3.2.0",
+    "@emotion/react": "^11.13.5",
     "@hookform/resolvers": "^3.9.1",
     "@iconify/react": "^5.0.2",
     "@tanstack/react-query": "^5.61.0",
