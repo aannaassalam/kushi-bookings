@@ -11,6 +11,15 @@ export default function Header() {
         <Link href="" className="text-primary ml-2">
           Home
         </Link>
+        <Link href="" className="text-primary ml-2">
+          Facilities
+        </Link>
+        <Link href="" className="text-primary ml-2">
+          Membership
+        </Link>
+        <Link href="" className="text-primary ml-2">
+          Pass
+        </Link>
       </div>
     </div>
   );

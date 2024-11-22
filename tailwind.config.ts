@@ -6,7 +6,7 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./ui/**/*.{js,ts,jsx,tsx,mdx}",
-    "./layouts/**/*.{js,ts,tsx,mdx}"
+    "./layout/**/*.{js,ts,tsx,mdx}"
   ],
   theme: {
     screens: {
