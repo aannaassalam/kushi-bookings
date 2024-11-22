@@ -7,7 +7,7 @@ import React from "react";
 import { Toaster } from "sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
-
+import { Montserrat } from "next/font/google";
 /**
  * It suppresses the useLayoutEffect warning when running in SSR mode
  */
@@ -20,7 +20,7 @@ function fixSSRLayout() {
     };
   }
 }
-
+const montserrat = Montserrat({ subsets: ["latin"] });
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -35,7 +35,7 @@ export default function CustomApp({ Component, pageProps }: AppProps) {
   fixSSRLayout();
 
   return (
-    <main>
+    <main className={montserrat.className}>
       {/* <SessionProvider session={pageProps.session}> */}
       <QueryClientProvider client={queryClient}>
         <EventListeners />
