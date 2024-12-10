@@ -19,10 +19,11 @@ export default {
       "3xl": "1792px"
     },
     colors: {
-      primary: "#7BB933",
+      primary: "#2C8EE3",
       white: "#ffffff",
       black: "#0E1012",
-      primaryText: "#274D44",
+      primaryText: "#1C1744",
+      lightPrimary: "#2C8EE324",
       gray: {
         50: "#F9FAFA",
         100: "#F1F1F2",

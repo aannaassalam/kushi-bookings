@@ -45,7 +45,7 @@ export default function SeasonPass() {
             for 90 Days
           </span>
         </div>
-        <button className="text-primary py-3 w-full font-semibold bg-[#7BB93324] rounded-md">
+        <button className="text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md">
           Choose
         </button>
       </div>
