@@ -3,6 +3,7 @@ import Benefits from "@/components/Homepage/Benefits";
 import HeroSection from "@/components/Homepage/HeroSection";
 import PackageDetails from "@/components/Homepage/Package";
 import SeasonPass from "@/components/Homepage/SeasonPass";
+import WhyUs from "@/components/Homepage/WhyUs";
 import AppLayout from "@/layouts/AppLayout";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
       <Benefits />
       <PackageDetails />
       <About />
+      <WhyUs />
       <SeasonPass />
     </AppLayout>
   );

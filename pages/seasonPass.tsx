@@ -46,7 +46,7 @@ export default function SeasonPass() {
             for 90 Days
           </span>
         </div>
-        <button className="text-primary py-3 w-full font-semibold bg-[#7BB93324] rounded-md">
+        <button className="text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md">
           Choose
         </button>
       </div>
@@ -56,7 +56,7 @@ export default function SeasonPass() {
   return (
     <AppLayout>
       <div>
-        <div className=" relative w-full h-[150px] bg-gradient-to-r from-[#274D44] to-[#274D44]/70 flex justify-center mb-20">
+        <div className=" relative w-full h-[150px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center mb-20">
           <h1 className="text-white font-bold text-[36px] my-auto uppercase">
             Season Pass
           </h1>

@@ -33,7 +33,7 @@ export default function Facility() {
             </span>{" "}
             05:00 PM - 06:00 PM
           </p>
-          <button className="bg-[#F5F7F2] py-2 px-4 rounded-full text-primary font-medium text-xs">
+          <button className="bg-lightPrimary py-2 px-4 rounded-full text-primary font-medium text-xs">
             Available
           </button>
         </div>
@@ -48,7 +48,7 @@ export default function Facility() {
   return (
     <AppLayout>
       <div>
-        <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#274D44] to-[#274D44]/70 flex justify-center">
+        <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center">
           <h1 className="text-white font-bold text-[36px] mt-10"> FACILITY</h1>
           <FloatingMenu />
         </div>

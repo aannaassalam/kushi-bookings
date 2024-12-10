@@ -13,7 +13,7 @@ function HeroSection() {
         alt="heroImage"
         className="absolute top-0 left-0 z-[-1] h-full object-cover"
       />
-      <div className="absolute w-full h-full bg-gradient-to-r from-[#274D44] to-[#274D44]/70 top-0 left-0 z-0"></div>
+      <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 top-0 left-0 z-0"></div>
       <div className="relative z-10">
         <h1 className="text-[50px] font-bold text-white uppercase leading-[55px] tracking-tight">
           Sports{" "}

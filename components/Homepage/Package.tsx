@@ -51,7 +51,7 @@ export default function PackageDetails() {
           </span>
           <span className="text-base text-gray-600 self-start">Quaterly</span>
         </div>
-        <button className="text-primary py-3 w-full font-semibold bg-[#7BB93324] rounded-md">
+        <button className="text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md">
           Choose
         </button>
       </div>
@@ -128,7 +128,7 @@ export default function PackageDetails() {
               $5 per extra person.
             </p>
           </div>
-          <p className="text-white py-2 px-4 text-xs rounded-3xl bg-[#20433B] w-max mt-8">
+          <p className="text-white py-2 px-4 text-xs rounded-3xl bg-lightPrimary w-max mt-8">
             Price For Members <span className="font-semibold">$15</span>
           </p>
           <div className="flex flex-row items-end my-4">
