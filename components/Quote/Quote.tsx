@@ -10,7 +10,7 @@ export default function Quote() {
         width={1600}
         height={169}
         alt="background"
-        className="absolute top-0 left-0 z-0 h-full object-cover"
+        className="absolute top-0 left-0 z-0 h-full w-full object-cover"
       />
       <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/10 top-0 left-0 z-10"></div>
       <p className="text-white text-2xl max-w-[900px] relative z-20 text-center font-bold mb-2">

@@ -19,12 +19,20 @@ export default function Header() {
           Home
         </Link>
         <Link
+          href="/"
+          className={`ml-6  ${
+            router.pathname === "/" ? "text-primary" : "text-black"
+          }`}
+        >
+          My Bookings
+        </Link>
+        {/* <Link
           href="/facility"
           className={` ml-6 ${
             router.pathname.includes("facility") ? "text-primary" : "text-black"
           }`}
         >
-          Facilities
+          Facility
         </Link>
         <Link
           href="/membership"
@@ -45,7 +53,7 @@ export default function Header() {
           }`}
         >
           Season Pass
-        </Link>
+        </Link> */}
         <Link href="" className="text-primary ml-6 mr-[20px]">
           <IoBagOutline size={20} />
         </Link>

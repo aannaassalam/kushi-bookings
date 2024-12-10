@@ -7,7 +7,7 @@ export default function WhyUs() {
         <h1 className="text-primaryText text-[32px] font-semibold uppercase">
           Why Choose Us
         </h1>
-        <div className="flex flex-row w-full justify-between mt-6 my-10">
+        <div className="flex flex-row w-full justify-evenly mt-6 my-10">
           <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg">
             Spacious And Well Maintained Facilities
           </p>
