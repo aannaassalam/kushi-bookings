@@ -27,10 +27,10 @@ export default function Benefits() {
           </svg>
         </div>
         <h2 className="text-primaryText capitalize text-[20px] font-semibold mt-6">
-          Low Cost Membership
+          Box Cricket
         </h2>
         <p className="mt-2 text-sm text-black">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
+          You can now book our facility for box cricket
         </p>
       </div>
       <div className="py-12 px-4 bg-gradient-to-r from-[rgba(255,255,255,0.4)] to-[rgba(225,225,225,0.22)] rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
@@ -49,10 +49,11 @@ export default function Benefits() {
           </svg>
         </div>
         <h2 className="text-primaryText capitalize text-[20px] font-semibold mt-6">
-          Various Season Pass
+          Become a Member at Kushi
         </h2>
         <p className="mt-2 text-sm text-black">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
+          Become a member and book lanes at a discounted price and take 10% off
+          on any product bought at our store.
         </p>
       </div>
       <div className="py-12 px-4 bg-gradient-to-r from-[rgba(255,255,255,0.4)] to-[rgba(225,225,225,0.22)] rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
@@ -78,10 +79,10 @@ export default function Benefits() {
           </svg>
         </div>
         <h2 className="text-primaryText capitalize text-[20px] font-semibold mt-6">
-          Trusted System
+          Reschedule your booking.
         </h2>
         <p className="mt-2 text-sm text-black">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
+          Reschedule your booking for a fee
         </p>
       </div>
       <div className="py-12 px-4 bg-gradient-to-r from-[rgba(255,255,255,0.4)] to-[rgba(225,225,225,0.22)] rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
@@ -100,10 +101,11 @@ export default function Benefits() {
           </svg>
         </div>
         <h2 className="text-primaryText capitalize text-[20px] font-semibold mt-6">
-          Online Booking
+          Product Website
         </h2>
         <p className="mt-2 text-sm text-black">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
+          Cricket A-Z. We got you covered from Head to Toe. Check out our
+          products on our website
         </p>
       </div>
     </div>

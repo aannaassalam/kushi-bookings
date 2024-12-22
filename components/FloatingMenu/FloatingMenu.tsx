@@ -8,18 +8,14 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
         className={cx(
           "w-full bg-white grid rounded-lg shadow-[0px_50px_41px_-50px_#7BB933]",
           {
-            "grid-cols-5": !noButton,
-            "grid-cols-4": noButton
+            "grid-cols-4": !noButton,
+            "grid-cols-3": noButton
           }
         )}
       >
         <div className="w-full p-6 border-r border-r-gray-300">
           <p className="font-semibold text-lg">Sports</p>
           <p className="text-base">Cricket</p>
-        </div>
-        <div className="w-full p-6 border-r border-r-gray-300">
-          <p className="font-semibold text-lg">Facility</p>
-          <p className="text-base">Kushi Sports</p>
         </div>
         <div className="w-full p-6 border-r border-r-gray-300">
           <p className="font-semibold text-lg">Date</p>

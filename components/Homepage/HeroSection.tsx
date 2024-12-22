@@ -16,17 +16,14 @@ function HeroSection() {
       />
       <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 top-0 left-0 z-0"></div>
       <div className="relative z-10">
-        <h1 className="text-[50px] font-bold text-white uppercase leading-[55px] tracking-tight">
-          Sports{" "}
-          <span className="text-primary">
-            Venue <br />
-            booking{" "}
-          </span>
-          made easy
+        <h1 className="text-[50px] font-bold text-white uppercase leading-[55px] tracking-tight w-11/12">
+          Become a member and book our facility for a discounted price and enjoy
+          a <span className="text-primary">10% off</span> on any product bought
+          at our store.
         </h1>
-        <p className="text-lg my-6 text-white max-w-[400px]">
-          To enjoy the best cricket experience book our pitch for a game and
-          play today.
+        <p className="text-lg my-6 text-white max-w-[500px]">
+          Looking to book lanes in bulk ?? choose our season passes which give
+          you discounted prices on bulk bookings .
         </p>
         <div className="mt-10">
           <Link
