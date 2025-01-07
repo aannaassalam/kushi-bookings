@@ -59,7 +59,7 @@ export default function Facility() {
   const sport = searchParams.get("sport");
   const time_slots = searchParams.getAll("time_slots");
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["lanes", date, sport, time_slots],
     queryFn: () => getLanes({ date, sport, time_slots })
   });

@@ -4,15 +4,11 @@ import {
   Button,
   Modal,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-  Stack,
-  VStack
+  ModalOverlay
 } from "@chakra-ui/react";
-import { isArray } from "lodash";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
