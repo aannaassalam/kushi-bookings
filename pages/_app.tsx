@@ -1,6 +1,7 @@
 import EventListeners from "@/components/EventListener/EventListener";
 import { checkWindow } from "@/lib/functions/_helpers.lib";
 import "@/styles/globals.css";
+import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
@@ -39,7 +40,9 @@ export default function CustomApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <EventListeners />
         <Toaster richColors position="bottom-left" />
-        <Component {...pageProps} />
+        <ChakraProvider>
+          <Component {...pageProps} />
+        </ChakraProvider>
       </QueryClientProvider>
       {/* </SessionProvider> */}
     </main>
