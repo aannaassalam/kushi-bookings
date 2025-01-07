@@ -1,8 +1,7 @@
 import assets from "@/json/assets";
 import Image from "next/image";
-import React from "react";
-import FloatingMenu from "../FloatingMenu/FloatingMenu";
 import Link from "next/link";
+import FloatingMenu from "../FloatingMenu/FloatingMenu";
 
 function HeroSection() {
   return (

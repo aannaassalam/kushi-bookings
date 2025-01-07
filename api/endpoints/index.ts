@@ -8,6 +8,10 @@ export const mediaUrl = (url: string) => {
   return `${baseUrlMedia}/${url}`;
 };
 
-export const endpoints = {};
+export const endpoints = {
+  facility: {
+    get_facility: "/facility"
+  }
+};
 
 export const sucessNotificationEndPoints: string[] = [];
