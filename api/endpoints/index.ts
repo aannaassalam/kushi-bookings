@@ -11,6 +11,9 @@ export const mediaUrl = (url: string) => {
 export const endpoints = {
   facility: {
     get_facility: "/facility"
+  },
+  lanes: {
+    get_lanes: "/lane/get-lanes"
   }
 };
 

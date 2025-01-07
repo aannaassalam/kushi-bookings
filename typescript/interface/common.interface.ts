@@ -76,7 +76,8 @@ export interface BaseApiResponse {
   type: string;
   token: string;
 }
-
+type ValuePiece = Date | null;
+export type Value = ValuePiece | [ValuePiece, ValuePiece];
 export type ActiveInactiveStatus = "Inactive" | "Active";
 
 export {};

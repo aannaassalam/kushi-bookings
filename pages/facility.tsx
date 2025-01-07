@@ -1,11 +1,21 @@
+import { getFacility } from "@/api/functions/facility.api";
+import { getLanes } from "@/api/functions/lane.api";
 import FloatingMenu from "@/components/FloatingMenu/FloatingMenu";
 import assets from "@/json/assets";
 import AppLayout from "@/layouts/AppLayout";
+import { DaysInterface } from "@/typescript/interface/facility.interfaces";
+import { Lane } from "@/typescript/interface/lane.interfaces";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 import { IoBagOutline } from "react-icons/io5";
 
-const LaneCard = () => {
+const LaneCard = ({ lane, price }: { lane: Lane; price: number }) => {
+  const searchParams = useSearchParams();
+  const date = searchParams.get("date");
+
   return (
     <div className="rounded-xl border border-gray-200">
       <div className="flex p-2 items-center border-b border-b-gray-200">
@@ -17,10 +27,8 @@ const LaneCard = () => {
           className="w-[50px] h-[50px]"
         />
         <div className="ml-4">
-          <p className="text-black font-semibold">Lane 1</p>
-          <p className="text-gray-600 text-xs">
-            with Bowling Machine & with feeder option{" "}
-          </p>
+          <p className="text-black font-semibold">{lane.name}</p>
+          <p className="text-gray-600 text-xs">{lane.about}</p>
         </div>
         <p className="text-primary ml-auto mb-auto">
           <IoBagOutline size={20} />
@@ -29,7 +37,7 @@ const LaneCard = () => {
       <div className="p-4 py-2 flex justify-between items-center">
         <p className="text-xs">
           <span className="text-gray-600 font-semibold">
-            November 24, 2024 |
+            {moment(date).format("MMMM D, YYYY")} |
           </span>{" "}
           05:00 PM - 06:00 PM
         </p>
@@ -38,7 +46,7 @@ const LaneCard = () => {
         </button>
       </div>
       <div className="p-4 py-2 flex justify-between items-center">
-        <p className="text-base text-primary font-bold">$35 USD</p>
+        <p className="text-base text-primary font-bold">${price} USD</p>
         <p className="text-xs">Get this as low as $0 with Membership</p>
       </div>
     </div>
@@ -46,6 +54,21 @@ const LaneCard = () => {
 };
 
 export default function Facility() {
+  const searchParams = useSearchParams();
+  const date = searchParams.get("date");
+  const sport = searchParams.get("sport");
+  const time_slots = searchParams.getAll("time_slots");
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["lanes", date, sport, time_slots],
+    queryFn: () => getLanes({ date, sport, time_slots })
+  });
+
+  const { data: facility } = useQuery({
+    queryKey: ["facility"],
+    queryFn: getFacility
+  });
+
   return (
     <AppLayout>
       <div>
@@ -73,10 +96,15 @@ export default function Facility() {
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 my-10">
-            <LaneCard />
-            <LaneCard />
-            <LaneCard />
-            <LaneCard />
+            {data?.map((_data) => (
+              <LaneCard
+                lane={_data}
+                key={_data._id}
+                price={
+                  facility!.price[moment(date).format("dddd") as DaysInterface]
+                }
+              />
+            ))}
           </div>
         </div>
       </div>
