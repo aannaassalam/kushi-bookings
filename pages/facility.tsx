@@ -87,7 +87,7 @@ export default function Facility() {
             />
             <div>
               <p className="text-primaryText text-[30px] font-bold">
-                Showing Result For November 24, 2024
+                Showing Result For {moment(date).format("MMMM D, YYYY")}
               </p>
               <p className="text-primaryText text-sm">
                 We don&apos;t stop playing because we grow old, We grow old

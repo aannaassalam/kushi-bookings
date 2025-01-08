@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SelectDate } from "../Modals/SelectDate";
 import { SelectSport } from "../Modals/SelectSport";
 import { SelectTimeSlots } from "../Modals/SelectTimeSlots";
@@ -46,7 +46,7 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
         { shallow: true }
       );
     }
-  }, [date, time_slots, sport, router, noButton]);
+  }, [date, time_slots, sport, router, noButton, pathname]);
 
   const { start_time, end_time } = useMemo(() => {
     const day_of_week = moment().format("dddd");
@@ -54,9 +54,12 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
     return isLoading ? { start_time: "", end_time: "" } : day!.timings;
   }, [data, isLoading]);
 
-  const getSlots = () => {
+  const slots = useMemo(() => {
     const _start_time = moment(start_time, "HH:mm");
     const _end_time = moment(end_time, "HH:mm");
+    if (_end_time.isBefore(_start_time)) {
+      _end_time.add(1, "day");
+    }
     const number_of_slots = _end_time.diff(_start_time, "hours").toFixed();
 
     const slots = Array.from({ length: parseInt(number_of_slots) }, (_, id) => {
@@ -79,7 +82,7 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
       };
     });
     return slots;
-  };
+  }, [start_time, end_time]);
 
   return (
     <div className="absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10">
@@ -156,7 +159,7 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
       )}
       {timeModal && (
         <SelectTimeSlots
-          slots={getSlots()}
+          slots={slots}
           open={timeModal}
           onClose={() => setTimeModal(false)}
         />
