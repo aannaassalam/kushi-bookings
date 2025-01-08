@@ -9,7 +9,6 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import React from "react";
 import { IoBagOutline } from "react-icons/io5";
 
 const LaneCard = ({ lane, price }: { lane: Lane; price: number }) => {

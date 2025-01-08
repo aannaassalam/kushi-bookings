@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SelectDate } from "../Modals/SelectDate";
 import { SelectSport } from "../Modals/SelectSport";
 import { SelectTimeSlots } from "../Modals/SelectTimeSlots";
