@@ -6,6 +6,7 @@ export default {
   greenBackground: "/images/greenBackground.png",
   lane: "/images/lane.png",
   packageGraphic: "/graphics/packageGraphic.png",
+  loginImage: "/images/loginImage.png",
 
   logo2: "/assets/images/logo2.png"
 };
