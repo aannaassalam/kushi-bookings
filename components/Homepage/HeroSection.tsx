@@ -32,7 +32,7 @@ function HeroSection() {
             Membership
           </Link>
           <Link
-            href="/seasonPass"
+            href="/season-pass"
             className=" text-white font-semibold !py-4 px-5 border-2 border-[#ffffff50] rounded-md"
           >
             Season Pass

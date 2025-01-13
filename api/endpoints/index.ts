@@ -9,11 +9,25 @@ export const mediaUrl = (url: string) => {
 };
 
 export const endpoints = {
+  user: {
+    login: "/user/login",
+    register: "/user/register",
+    profile: "/user/profile"
+  },
   facility: {
     get_facility: "/facility"
   },
   lanes: {
     get_lanes: "/lane/get-lanes"
+  },
+  membership: {
+    get_all: "/membership"
+  },
+  season_pass: {
+    get_all: "/season-pass"
+  },
+  payments: {
+    create_subscription: "/payments/create-subscription"
   }
 };
 

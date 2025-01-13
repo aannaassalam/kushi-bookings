@@ -15,6 +15,8 @@
     "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^3.9.1",
     "@iconify/react": "^5.0.2",
+    "@stripe/react-stripe-js": "^3.1.1",
+    "@stripe/stripe-js": "^5.5.0",
     "@tanstack/react-query": "^5.61.0",
     "axios": "^1.7.7",
     "clsx": "^2.1.1",

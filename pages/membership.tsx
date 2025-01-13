@@ -1,8 +1,23 @@
+import { getMemberships } from "@/api/functions/membership.api";
 import PackageDetails from "@/components/Homepage/Package";
 import AppLayout from "@/layouts/AppLayout";
+import { Membership } from "@/typescript/interface/membership.interfaces";
+import { GetServerSideProps } from "next";
 import React from "react";
 
-export default function Membership() {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const memberships = await getMemberships("cricket");
+
+  return {
+    props: { memberships }
+  };
+};
+
+export default function Memberships({
+  memberships
+}: {
+  memberships: Membership[];
+}) {
   return (
     <AppLayout>
       <div>
@@ -11,7 +26,7 @@ export default function Membership() {
             Membership
           </h1>
         </div>
-        <PackageDetails />
+        <PackageDetails memberships={memberships} />
       </div>
     </AppLayout>
   );
