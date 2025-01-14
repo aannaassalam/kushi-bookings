@@ -1,9 +1,43 @@
+import { signup } from "@/api/functions/user.api";
 import assets from "@/json/assets";
+import { setCookieClient } from "@/lib/functions/storage.lib";
 import { Button, HStack } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  full_name: yup.string().required(),
+  phone: yup.number().required(),
+  email: yup.string().required(),
+  password: yup.string().required(),
+  confirm_password: yup.string().required()
+});
 
 export default function SignUp() {
+  const router = useRouter();
+
+  const { register, handleSubmit } = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: signup,
+    onSuccess: (data) => {
+      setCookieClient("token", data.token);
+      setCookieClient("user", JSON.stringify(data.user));
+      router.push("/");
+    }
+  });
+
+  const onSubmit = (data: yup.InferType<typeof schema>) => {
+    mutate(data);
+  };
+
   return (
     <div className="flex min-h-screen relative">
       {/* Left Section */}
@@ -25,8 +59,9 @@ export default function SignUp() {
           <p className="text-center text-gray-600 mb-6">
             Enter your details to continue
           </p>
-          <HStack className="mb-4 ">
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* <HStack className="mb-4 "> */}
+            <div className="bg-[#fafafa] rounded-lg mb-4 px-4 py-2">
               <label
                 className="block text-sm font-medium text-gray-700"
                 htmlFor="fname"
@@ -38,76 +73,93 @@ export default function SignUp() {
                 id="fname"
                 className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
                 placeholder="Enter first name"
-                required
+                {...register("full_name")}
               />
             </div>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2">
+            {/* <div className="bg-[#fafafa] rounded-lg  px-4 py-2">
+                <label
+                  className="block text-sm font-medium text-gray-700"
+                  htmlFor="lname"
+                >
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="lname"
+                  className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
+                  placeholder="Enter last name"
+                  {...register("full_name")}
+                />
+              </div> */}
+            {/* </HStack> */}
+            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
               <label
                 className="block text-sm font-medium text-gray-700"
-                htmlFor="lname"
+                htmlFor="email"
               >
-                Last Name
+                Email Address
               </label>
               <input
-                type="text"
-                id="lname"
+                type="email"
+                id="email"
                 className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter last name"
-                required
+                placeholder="Enter email address"
+                {...register("email")}
               />
             </div>
-          </HStack>
-          <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="email"
+            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="phone"
+              >
+                Phone Number
+              </label>
+              <input
+                type="number"
+                id="phone"
+                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
+                placeholder="Enter phone number"
+                {...register("phone")}
+              />
+            </div>
+            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
+                placeholder="Enter password"
+                {...register("password")}
+              />
+            </div>
+            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="confirm-password"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirm-password"
+                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
+                placeholder="Enter confirm password"
+                {...register("confirm_password")}
+              />
+            </div>
+            <Button
+              type="submit"
+              className="w-full px-4 py-2 !text-white !bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380]"
+              isLoading={isPending}
             >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-              placeholder="Enter email address"
-              required
-            />
-          </div>
-          <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="phone"
-            >
-              Email Phone Number
-            </label>
-            <input
-              type="number"
-              id="phone"
-              className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-              placeholder="Enter phone number"
-              required
-            />
-          </div>
-          <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-              placeholder="Enter password"
-              required
-            />
-          </div>
-          <Button
-            type="submit"
-            className="w-full px-4 py-2 text-white bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380]"
-          >
-            Register
-          </Button>
+              Register
+            </Button>
+          </form>
 
           {/* Sign Up Link */}
           <p className="mt-6 text-sm text-center text-gray-600">

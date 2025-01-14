@@ -6,7 +6,7 @@ import {
 import axiosInstance from "../axiosInstance";
 import { endpoints } from "../endpoints";
 
-export const register = async (body: UserRegisterBody) => {
+export const signup = async (body: UserRegisterBody) => {
   const res = await axiosInstance.post(endpoints.user.register, body);
   return res.data;
 };

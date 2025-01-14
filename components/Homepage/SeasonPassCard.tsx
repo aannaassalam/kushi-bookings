@@ -1,13 +1,25 @@
 import { SeasonPass } from "@/typescript/interface/season-pass.interfaces";
 import { FaCheck } from "react-icons/fa6";
+import PaymentModal from "../PaymentForm/PaymentForm";
+import { useRouter } from "next/router";
+import { parseCookies } from "nookies";
+import { useState } from "react";
+import { cx } from "@/lib/utils";
 
 export default function SeasonPassCard({
+  _id,
   name,
   price,
   about,
   expires_in,
+  isCurrentPlan,
   number_of_slots
-}: SeasonPass) {
+}: SeasonPass & { isCurrentPlan: boolean }) {
+  const router = useRouter();
+  const cookies = parseCookies();
+  const user = !!cookies.user && JSON.parse(cookies.user);
+  const [modal, setModal] = useState(false);
+
   return (
     <div className="bg-[#F5F7F2] p-5 rounded-md flex flex-col">
       <p className="text-black py-2 px-4 text-xs rounded-3xl bg-gray-200 w-max mb-2">
@@ -37,9 +49,30 @@ export default function SeasonPassCard({
           for {expires_in} Days
         </span>
       </div>
-      <button className="text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md">
-        Choose
+      <button
+        className={cx(
+          "text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md cursor-pointer",
+          {
+            "!bg-primary !text-white !cursor-not-allowed": isCurrentPlan
+          }
+        )}
+        onClick={() =>
+          isCurrentPlan
+            ? null
+            : user
+            ? setModal(true)
+            : router.push("/auth/login")
+        }
+      >
+        {isCurrentPlan ? "Purchased" : "Choose"}
       </button>
+      <PaymentModal
+        package_id={_id}
+        package_type="season_pass"
+        isOpen={modal}
+        onClose={() => setModal(false)}
+        price={price}
+      />
     </div>
   );
 }

@@ -62,7 +62,8 @@ export function getCookie(cname: string) {
 
 export function setCookieClient(key: string, value: string) {
   setCookie(null, key, value, {
-    path: "/"
+    path: "/",
+    maxAge: 24 * 60 * 60
   });
 }
 

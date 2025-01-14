@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 import { IoBagOutline } from "react-icons/io5";
 import { useRouter } from "next/router";
+import { Button } from "@chakra-ui/react";
 export default function Header() {
   const router = useRouter();
   return (
@@ -57,7 +58,14 @@ export default function Header() {
         <Link href="" className="text-primary ml-6 mr-[20px]">
           <IoBagOutline size={20} />
         </Link>
-        <button className="primaryButton">Login</button>
+        <Button
+          as={Link}
+          href="/auth/login"
+          className="primaryButton"
+          colorScheme="primary"
+        >
+          Login
+        </Button>
       </div>
     </div>
   );

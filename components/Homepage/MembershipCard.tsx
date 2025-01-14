@@ -1,7 +1,26 @@
-import { Membership } from "@/typescript/interface/membership.interfaces";
+import {
+  CurrentMembership,
+  Membership
+} from "@/typescript/interface/membership.interfaces";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import PaymentModal from "../PaymentForm/PaymentForm";
+import { parseCookies } from "nookies";
+import { useRouter } from "next/router";
+import { cx } from "@/lib/utils";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure
+} from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
+import { changeSubscription } from "@/api/functions/payments.api";
+import { queryClient } from "@/pages/_app";
 
 export default function MembershipCard({
   _id,
@@ -12,9 +31,30 @@ export default function MembershipCard({
   facility_price,
   stripe_price_id,
   number_of_free_slots_per_week,
-  recurring_type
-}: Membership) {
+  recurring_type,
+  isCurrentPlan,
+  isUpdatePlan,
+  active_plan
+}: Membership & {
+  isCurrentPlan: boolean;
+  isUpdatePlan: boolean;
+  active_plan: CurrentMembership | null;
+}) {
+  const router = useRouter();
+  const cookies = parseCookies();
+  const user = !!cookies.user && JSON.parse(cookies.user);
   const [modal, setModal] = useState(false);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: changeSubscription,
+    onSuccess: () => {
+      onClose();
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["current_membership"] });
+      }, 500);
+    }
+  });
 
   return (
     <div className="bg-[#F5F7F2] p-5 rounded-md flex flex-col">
@@ -53,19 +93,65 @@ export default function MembershipCard({
         </span>
       </div>
       <button
-        className="text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md"
-        onClick={() => setModal(true)}
+        className={cx(
+          "text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md",
+          {
+            "!bg-primary !text-white !cursor-not-allowed": isCurrentPlan
+          }
+        )}
+        onClick={() => {
+          if (!user) {
+            router.push("/auth/login");
+          }
+          if (isCurrentPlan) {
+            return null;
+          }
+          if (isUpdatePlan) {
+            onOpen();
+          } else {
+            setModal(true);
+          }
+        }}
       >
-        Choose
+        {isCurrentPlan ? "Current Plan" : "Choose"}
       </button>
       <PaymentModal
         price_id={stripe_price_id}
         is_subscription
-        membership_id={_id}
-        user_id={"random"}
+        package_id={_id}
+        price={price}
         isOpen={modal}
         onClose={() => setModal(false)}
       />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Change Plan</ModalHeader>
+          <ModalBody>
+            Are you sure you want to change plan?
+            <br />
+            Changes will take effect from the next billing period...
+          </ModalBody>
+          <ModalFooter gap={2}>
+            <Button variant="ghost" onClick={onClose} size="sm">
+              No, Cancel
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={() =>
+                mutate({
+                  membership_id: _id,
+                  subscription_id: active_plan!.subscription_id
+                })
+              }
+              size="sm"
+              isLoading={isPending}
+            >
+              Yes, Change
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

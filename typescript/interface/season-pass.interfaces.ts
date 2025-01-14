@@ -4,11 +4,20 @@ export interface SeasonPass {
   about: string;
   sport: string;
   price: number;
-  stripe_price_id: string;
-  recurring_frequency: number;
   expires_in: number;
-  type: string;
   number_of_slots: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CurrentSeasonPass {
+  _id: string;
+  season_pass_id: string;
+  user_id: string;
+  sport: string;
+  available_slots: number;
+  expiration_date: string;
+  active: number;
   createdAt: string;
   updatedAt: string;
 }

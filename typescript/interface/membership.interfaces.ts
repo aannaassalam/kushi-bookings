@@ -12,3 +12,17 @@ export interface Membership {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CurrentMembership {
+  _id: string;
+  membership_id: string;
+  user_id: string;
+  sport: string;
+  available_slots: number;
+  facility_feature_price: number;
+  type: string;
+  active: number;
+  subscription_id: string;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -1,14 +1,22 @@
-import { getMemberships } from "@/api/functions/membership.api";
+import {
+  getCurrentMembership,
+  getMemberships
+} from "@/api/functions/membership.api";
 import { cx } from "@/lib/utils";
-import { Membership } from "@/typescript/interface/membership.interfaces";
+import {
+  CurrentMembership,
+  Membership
+} from "@/typescript/interface/membership.interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import MembershipCard from "./MembershipCard";
 
 export default function PackageDetails({
-  memberships
+  memberships,
+  current_membership
 }: {
   memberships: Membership[];
+  current_membership: CurrentMembership | null;
 }) {
   const [sport, setSport] = useState("cricket");
 
@@ -16,6 +24,12 @@ export default function PackageDetails({
     queryKey: ["memberships", sport],
     queryFn: () => getMemberships(sport),
     initialData: memberships
+  });
+
+  const { data: active_plan } = useQuery({
+    queryKey: ["current_membership", sport],
+    queryFn: () => getCurrentMembership(sport),
+    initialData: current_membership
   });
 
   return (
@@ -56,7 +70,13 @@ export default function PackageDetails({
       </div>
       <div className="p-5 border border-gray-300 grid grid-cols-4 gap-5 mt-10 w-full">
         {data.map((_membership) => (
-          <MembershipCard {..._membership} key={_membership._id} />
+          <MembershipCard
+            {..._membership}
+            key={_membership._id}
+            isCurrentPlan={_membership._id === active_plan?.membership_id}
+            isUpdatePlan={Boolean(active_plan)}
+            active_plan={active_plan}
+          />
         ))}
 
         {/* <MemberShipCard name="Basic Yearly" price={119.99} />

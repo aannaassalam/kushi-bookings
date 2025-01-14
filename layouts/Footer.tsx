@@ -52,9 +52,9 @@ export default function Footer() {
             Membership
           </Link>
           <Link
-            href="/seasonPass"
+            href="/season-pass"
             className={` ml-6 ${
-              router.pathname.includes("seasonPass")
+              router.pathname.includes("season-pass")
                 ? "text-primary"
                 : "text-black"
             }`}

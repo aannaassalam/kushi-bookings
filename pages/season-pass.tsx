@@ -1,28 +1,51 @@
-import { getSeasonPasses } from "@/api/functions/season-pass.api";
+import {
+  getCurrentSeasonPass,
+  getSeasonPasses
+} from "@/api/functions/season-pass.api";
 import SeasonPassCard from "@/components/Homepage/SeasonPassCard";
 import AppLayout from "@/layouts/AppLayout";
 import { cx } from "@/lib/utils";
+import {
+  CurrentSeasonPass,
+  SeasonPass
+} from "@/typescript/interface/season-pass.interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 import React, { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = parseCookies(ctx);
   const season_passes = await getSeasonPasses("cricket");
+  const current_season_pass = cookies.token
+    ? await getCurrentSeasonPass("cricket", cookies.token)
+    : null;
 
   return {
-    props: {
-      season_passes
-    }
+    props: { season_passes, current_season_pass }
   };
 };
 
-export default function SeasonPass() {
+export default function SeasonPass({
+  season_passes,
+  current_season_pass
+}: {
+  season_passes: SeasonPass[];
+  current_season_pass: CurrentSeasonPass[];
+}) {
   const [sport, setSport] = useState("cricket");
 
   const { data, isLoading } = useQuery({
     queryKey: ["season_passes", sport],
-    queryFn: () => getSeasonPasses(sport)
+    queryFn: () => getSeasonPasses(sport),
+    initialData: season_passes
+  });
+
+  const { data: active_plan = [] } = useQuery({
+    queryKey: ["current_season_pass", sport],
+    queryFn: () => getCurrentSeasonPass(sport),
+    initialData: current_season_pass
   });
 
   return (
@@ -70,7 +93,15 @@ export default function SeasonPass() {
           </div>
           <div className=" grid grid-cols-2 gap-5 w-full">
             {data?.map((_season_pass) => (
-              <SeasonPassCard {..._season_pass} key={_season_pass._id} />
+              <SeasonPassCard
+                {..._season_pass}
+                key={_season_pass._id}
+                isCurrentPlan={Boolean(
+                  active_plan?.find(
+                    (_plan) => _season_pass._id === _plan.season_pass_id
+                  )
+                )}
+              />
             ))}
             {/* <MemberShipCard name="Silver" price={279.99} /> */}
           </div>

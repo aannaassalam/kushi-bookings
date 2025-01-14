@@ -2,8 +2,43 @@ import assets from "@/json/assets";
 import { Button } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/api/functions/user.api";
+import { setCookieClient } from "@/lib/functions/storage.lib";
+import { useRouter } from "next/router";
+
+const schema = yup.object().shape({
+  email: yup.string().required(),
+  password: yup.string().required()
+});
 
 export default function Login() {
+  const router = useRouter();
+
+  const { register, handleSubmit } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: "",
+      password: ""
+    }
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      setCookieClient("token", data.token);
+      setCookieClient("user", JSON.stringify(data.user));
+      router.push("/");
+    }
+  });
+
+  const onSubmit = (data: yup.InferType<typeof schema>) => {
+    mutate(data);
+  };
+
   return (
     <div className="flex min-h-screen relative">
       {/* Left Section */}
@@ -28,64 +63,69 @@ export default function Login() {
           </p>
 
           {/* Email Input */}
-          <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="email"
-            >
-              Email Address / Phone Number
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-              placeholder="john.doe@companyname.com"
-              required
-            />
-          </div>
-
-          {/* Password Input */}
-          <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-            <label
-              className="block text-sm font-medium text-gray-700"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-              placeholder="Enter password"
-              required
-            />
-          </div>
-
-          {/* Remember Me and Forgot Password */}
-          <div className="flex items-center justify-between mb-4">
-            <label className="flex items-center">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="email"
+              >
+                Email Address
+              </label>
               <input
-                type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                type="email"
+                id="email"
+                className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
+                placeholder="john.doe@companyname.com"
+                // required
+                {...register("email")}
               />
-              <span className="ml-2 text-sm text-gray-700">Remember me</span>
-            </label>
-            <Link href="#" className="text-sm  hover:underline">
-              Forgot password?
-            </Link>
-          </div>
+            </div>
 
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full px-4 py-2 text-white bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380]"
-          >
-            Log In
-          </Button>
+            {/* Password Input */}
+            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
+              <label
+                className="block text-sm font-medium text-gray-700"
+                htmlFor="password"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
+                placeholder="Enter password"
+                // required
+                {...register("password")}
+              />
+            </div>
+
+            {/* Remember Me and Forgot Password */}
+            <div className="flex items-center justify-between mb-4">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <span className="ml-2 text-sm text-gray-700">Remember me</span>
+              </label>
+              <Link href="#" className="text-sm  hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full px-4 py-2 !text-white !bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380]"
+              isLoading={isPending}
+            >
+              Log In
+            </Button>
+          </form>
 
           {/* Sign Up Link */}
           <p className="mt-6 text-sm text-center text-gray-600">
-            Don’t have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               href="/auth/signup"
               className="text-primary font-semibold hover:underline"

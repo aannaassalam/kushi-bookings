@@ -27,8 +27,20 @@ export const endpoints = {
     get_all: "/season-pass"
   },
   payments: {
-    create_subscription: "/payments/create-subscription"
+    create_subscription: "/payments/create-subscription",
+    change_subscription: "/payments/change-subscription",
+    generate_payment_intent: "/payments/generate-payment-intent"
+  },
+  purchased_membership: {
+    current_subscription: "/purchased-membership/get-membership-for-user"
+  },
+  purchased_season_pass: {
+    current_plan: "/purchased-season-pass/get-season-pass-for-user"
   }
 };
 
-export const sucessNotificationEndPoints: string[] = [];
+export const sucessNotificationEndPoints: string[] = [
+  endpoints.user.login,
+  endpoints.user.register,
+  endpoints.payments.change_subscription
+];

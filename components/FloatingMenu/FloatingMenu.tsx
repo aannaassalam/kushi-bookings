@@ -51,8 +51,8 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
   const { start_time, end_time } = useMemo(() => {
     const day_of_week = moment().format("dddd");
     const day = data?.days.find((_day) => _day.day === day_of_week);
-    return isLoading ? { start_time: "", end_time: "" } : day!.timings;
-  }, [data, isLoading]);
+    return !day ? { start_time: "", end_time: "" } : day.timings;
+  }, [data]);
 
   const slots = useMemo(() => {
     const _start_time = moment(start_time, "HH:mm");

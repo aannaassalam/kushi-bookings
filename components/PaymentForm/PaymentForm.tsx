@@ -1,6 +1,9 @@
 "use client";
 
-import { createSubscription } from "@/api/functions/payments.api";
+import {
+  createSubscription,
+  getPurchaseClientSecret
+} from "@/api/functions/payments.api";
 import {
   CardElement,
   PaymentElement,
@@ -20,6 +23,7 @@ import {
   ModalOverlay
 } from "@chakra-ui/react";
 import { toast } from "sonner";
+import { queryClient } from "@/pages/_app";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -28,9 +32,10 @@ const stripePromise = loadStripe(
 export default function PaymentModal(props: {
   is_subscription?: boolean;
   price_id?: string;
-  user_id?: string;
-  membership_id?: string;
+  package_id?: string;
+  package_type?: "season_pass" | "booking";
   isOpen: boolean;
+  price: number;
   onClose: () => void;
 }) {
   const { isOpen, onClose, ...rest } = props;
@@ -39,16 +44,24 @@ export default function PaymentModal(props: {
   }>();
 
   useEffect(() => {
-    if (isOpen) {
-      createSubscription({
-        price_id: props.price_id!,
-        user_id: props.user_id!,
-        membership_id: props.membership_id!
+    if (!props.is_subscription) {
+      getPurchaseClientSecret({
+        price: props.price,
+        type: props.package_type,
+        season_pass_id: props.package_id
       })
-        .then((res) => setPaymentDetails(res))
+        .then((data) => setPaymentDetails(data))
         .catch((err) => console.log(err));
     }
-  }, [isOpen]);
+  }, [
+    props.is_subscription,
+    props.package_id,
+    props.price,
+    props.price_id,
+    props.package_type
+  ]);
+
+  if (!isOpen) return null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -56,18 +69,25 @@ export default function PaymentModal(props: {
       <ModalContent>
         <ModalHeader>Payments</ModalHeader>
         <ModalBody>
-          {payment_details ? (
-            <Elements
-              stripe={stripePromise}
-              options={{ clientSecret: payment_details?.client_secret }}
-            >
-              <PaymentForm
-                {...rest}
-                clientSecret={payment_details?.client_secret}
-                onClose={onClose}
-              />
-            </Elements>
-          ) : null}
+          {/* {payment_details ? ( */}
+          <Elements
+            stripe={stripePromise}
+            options={
+              props.is_subscription
+                ? {
+                    mode: props.is_subscription ? "subscription" : "payment",
+                    paymentMethodCreation: "manual",
+                    currency: "usd",
+                    amount: props.price * 100
+                  }
+                : {
+                    clientSecret: payment_details?.client_secret
+                  }
+            }
+          >
+            <PaymentForm {...rest} onClose={onClose} />
+          </Elements>
+          {/* ) : null} */}
         </ModalBody>
       </ModalContent>
     </Modal>
@@ -77,15 +97,50 @@ export default function PaymentModal(props: {
 const PaymentForm = ({
   is_subscription,
   clientSecret,
-  onClose
+  onClose,
+  price_id,
+  package_id,
+  package_type
 }: {
   is_subscription?: boolean;
   clientSecret?: string;
   onClose: () => void;
+  price_id?: string;
+  package_id?: string;
+  package_type?: string;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
+
+  const purchaseItem = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/payment-success`
+          // return_url: `https://www.google.com`,
+        },
+        redirect: "if_required"
+      });
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["current_season_pass"] });
+      }, 500);
+      onClose();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,16 +156,36 @@ const PaymentForm = ({
         setIsLoading(false);
         return;
       }
+
+      const { error: method_error, paymentMethod } =
+        await stripe.createPaymentMethod({
+          elements
+        });
+
+      if (method_error) {
+        console.error("Error creating payment method:", method_error);
+        alert("Failed to create payment method.");
+        return;
+      }
+
+      const payment_details = await createSubscription({
+        price_id: price_id!,
+        package_id: package_id!,
+        payment_method: paymentMethod.id!
+      });
       //   const { client_secret, subscription_id } = payment_details!;
 
       const { error } = await stripe?.confirmPayment({
-        clientSecret: clientSecret!,
+        clientSecret: payment_details.client_secret,
         elements: elements,
         confirmParams: {
           return_url: "http://localhost:3000/payment-success"
-        }
+        },
+        redirect: "if_required"
         // payment_method: { payment_method:cardElement, }
       });
+      queryClient.invalidateQueries({ queryKey: ["current_membership"] });
+      onClose();
     } catch (error) {
       console.log(error);
     } finally {
@@ -119,7 +194,7 @@ const PaymentForm = ({
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={is_subscription ? onSubmit : purchaseItem}>
       <PaymentElement
         options={{
           layout: "accordion",
