@@ -4,15 +4,7 @@ import {
   createSubscription,
   getPurchaseClientSecret
 } from "@/api/functions/payments.api";
-import {
-  CardElement,
-  PaymentElement,
-  Elements,
-  useElements,
-  useStripe
-} from "@stripe/react-stripe-js";
-import React, { useEffect, useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import { queryClient } from "@/pages/_app";
 import {
   Box,
   Button,
@@ -22,8 +14,15 @@ import {
   ModalHeader,
   ModalOverlay
 } from "@chakra-ui/react";
+import {
+  Elements,
+  PaymentElement,
+  useElements,
+  useStripe
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { queryClient } from "@/pages/_app";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -96,18 +95,14 @@ export default function PaymentModal(props: {
 
 const PaymentForm = ({
   is_subscription,
-  clientSecret,
   onClose,
   price_id,
-  package_id,
-  package_type
+  package_id
 }: {
   is_subscription?: boolean;
-  clientSecret?: string;
   onClose: () => void;
   price_id?: string;
   package_id?: string;
-  package_type?: string;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -131,6 +126,11 @@ const PaymentForm = ({
         },
         redirect: "if_required"
       });
+      if (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+        return;
+      }
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: ["current_season_pass"] });
       }, 500);
@@ -184,6 +184,11 @@ const PaymentForm = ({
         redirect: "if_required"
         // payment_method: { payment_method:cardElement, }
       });
+      if (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+        return;
+      }
       queryClient.invalidateQueries({ queryKey: ["current_membership"] });
       onClose();
     } catch (error) {

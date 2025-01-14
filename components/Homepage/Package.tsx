@@ -20,7 +20,7 @@ export default function PackageDetails({
 }) {
   const [sport, setSport] = useState("cricket");
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["memberships", sport],
     queryFn: () => getMemberships(sport),
     initialData: memberships

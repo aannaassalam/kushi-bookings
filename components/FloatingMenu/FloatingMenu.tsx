@@ -20,7 +20,7 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
   const time_slots = searchParams.getAll("time_slots");
   const sport = searchParams.get("sport");
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["facility"],
     queryFn: getFacility
   });

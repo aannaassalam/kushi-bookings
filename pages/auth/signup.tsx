@@ -1,7 +1,7 @@
 import { signup } from "@/api/functions/user.api";
 import assets from "@/json/assets";
 import { setCookieClient } from "@/lib/functions/storage.lib";
-import { Button, HStack } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";

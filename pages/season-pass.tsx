@@ -7,13 +7,12 @@ import AppLayout from "@/layouts/AppLayout";
 import { cx } from "@/lib/utils";
 import {
   CurrentSeasonPass,
-  SeasonPass
+  SeasonPass as ISeasonPass
 } from "@/typescript/interface/season-pass.interfaces";
 import { useQuery } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
-import React, { useState } from "react";
-import { FaCheck } from "react-icons/fa6";
+import { useState } from "react";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
@@ -31,12 +30,12 @@ export default function SeasonPass({
   season_passes,
   current_season_pass
 }: {
-  season_passes: SeasonPass[];
+  season_passes: ISeasonPass[];
   current_season_pass: CurrentSeasonPass[];
 }) {
   const [sport, setSport] = useState("cricket");
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["season_passes", sport],
     queryFn: () => getSeasonPasses(sport),
     initialData: season_passes
