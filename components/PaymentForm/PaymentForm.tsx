@@ -24,9 +24,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
-);
+const stripePromise = loadStripe(process.env.NEXT_APP_STRIPE_PUBLISHABLE_KEY!);
 
 export default function PaymentModal(props: {
   is_subscription?: boolean;
