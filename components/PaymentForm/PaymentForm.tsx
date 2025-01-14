@@ -41,7 +41,7 @@ export default function PaymentModal(props: {
   }>();
 
   useEffect(() => {
-    if (!props.is_subscription) {
+    if (!props.is_subscription && isOpen) {
       getPurchaseClientSecret({
         price: props.price,
         type: props.package_type,
@@ -55,7 +55,8 @@ export default function PaymentModal(props: {
     props.package_id,
     props.price,
     props.price_id,
-    props.package_type
+    props.package_type,
+    isOpen
   ]);
 
   if (!isOpen) return null;
