@@ -1,5 +1,6 @@
 import { getFacility } from "@/api/functions/facility.api";
 import { getLanes } from "@/api/functions/lane.api";
+import Cart from "@/components/Cart";
 import FloatingMenu from "@/components/FloatingMenu/FloatingMenu";
 import assets from "@/json/assets";
 import AppLayout from "@/layouts/AppLayout";
@@ -9,12 +10,12 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { IoBagOutline } from "react-icons/io5";
 
 const LaneCard = ({ lane, price }: { lane: Lane; price: number }) => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
-
   return (
     <div className="rounded-xl border border-gray-200">
       <div className="flex p-2 items-center border-b border-b-gray-200">
@@ -57,6 +58,7 @@ export default function Facility() {
   const date = searchParams.get("date");
   const sport = searchParams.get("sport");
   const time_slots = searchParams.getAll("time_slots");
+  const [showCart, setShowCart] = useState(true);
 
   const { data } = useQuery({
     queryKey: ["lanes", date, sport, time_slots],
@@ -106,6 +108,7 @@ export default function Facility() {
             ))}
           </div>
         </div>
+        <Cart open={showCart} close={() => setShowCart(false)} />
       </div>
     </AppLayout>
   );
