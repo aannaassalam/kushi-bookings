@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { Montserrat } from "next/font/google";
-import React from "react";
+import React, { createContext, useContext, useState } from "react";
 import { Toaster } from "sonner";
 /**
  * It suppresses the useLayoutEffect warning when running in SSR mode
@@ -31,8 +31,30 @@ export const queryClient = new QueryClient({
   }
 });
 
+export type CartType = {
+  date: string;
+  sport: string;
+  lanes: {
+    lane_id: string;
+    slots: string[];
+    price: number;
+    name: string;
+    about: string;
+  }[];
+};
+
+const CartContext = createContext<{
+  cart?: CartType;
+  setCart: React.Dispatch<React.SetStateAction<CartType | undefined>>;
+}>({
+  setCart: () => {}
+});
+
+export const useCartContext = () => useContext(CartContext);
+
 export default function CustomApp({ Component, pageProps }: AppProps) {
   fixSSRLayout();
+  const [cart, setCart] = useState<CartType>();
 
   return (
     <main className={montserrat.className}>
@@ -41,7 +63,9 @@ export default function CustomApp({ Component, pageProps }: AppProps) {
         <EventListeners />
         <Toaster richColors position="bottom-left" />
         <ChakraProvider>
-          <Component {...pageProps} />
+          <CartContext.Provider value={{ cart, setCart }}>
+            <Component {...pageProps} />
+          </CartContext.Provider>
         </ChakraProvider>
       </QueryClientProvider>
       {/* </SessionProvider> */}

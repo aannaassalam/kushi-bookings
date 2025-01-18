@@ -1,4 +1,5 @@
 import { cx } from "@/lib/utils";
+import { useCartContext } from "@/pages/_app";
 import {
   Box,
   Button,
@@ -25,6 +26,8 @@ export const SelectSport = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const { setCart } = useCartContext();
+
   const [selectedSport, setSelectedSport] = useState(
     searchParams.get("sport") || ""
   );
@@ -69,9 +72,13 @@ export const SelectSport = ({
             className="bg-primary !px-8 !py-4 text-white font-medium mr-auto h-max"
             colorScheme="primary"
             onClick={() => {
+              setCart(undefined);
               const newParams = new URLSearchParams(searchParams.toString());
               newParams.set("sport", selectedSport);
-              router.push(`${pathname}?${newParams.toString()}`);
+              console.log(`${pathname}?${newParams.toString()}`);
+              router.push(`${pathname}?${newParams.toString()}`, undefined, {
+                shallow: true
+              });
               onClose();
             }}
           >

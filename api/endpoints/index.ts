@@ -20,6 +20,9 @@ export const endpoints = {
   lanes: {
     get_lanes: "/lane/get-lanes"
   },
+  bookings: {
+    get_bookings_for_filter: "/bookings/get-bookings-for-filter"
+  },
   membership: {
     get_all: "/membership"
   },
@@ -29,7 +32,8 @@ export const endpoints = {
   payments: {
     create_subscription: "/payments/create-subscription",
     change_subscription: "/payments/change-subscription",
-    generate_payment_intent: "/payments/generate-payment-intent"
+    generate_payment_intent: "/payments/generate-payment-intent",
+    remove_pending_bookings: "/payments/remove-pending-bookings"
   },
   purchased_membership: {
     current_subscription: "/purchased-membership/get-membership-for-user"

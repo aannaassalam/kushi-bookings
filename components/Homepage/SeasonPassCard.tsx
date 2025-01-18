@@ -67,8 +67,8 @@ export default function SeasonPassCard({
         {isCurrentPlan ? "Purchased" : "Choose"}
       </button>
       <PaymentModal
-        package_id={_id}
-        package_type="season_pass"
+        type="season_pass"
+        season_pass_id={_id}
         isOpen={modal}
         onClose={() => setModal(false)}
         price={price}

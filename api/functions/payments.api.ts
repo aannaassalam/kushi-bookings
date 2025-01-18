@@ -1,6 +1,10 @@
 import { CurrentMembership } from "@/typescript/interface/membership.interfaces";
 import axiosInstance from "../axiosInstance";
 import { endpoints } from "../endpoints";
+import {
+  BookingMetaData,
+  SeasonPassMetaData
+} from "@/typescript/interface/payments.interface";
 
 export const createSubscription = async (body: {
   payment_method: string;
@@ -25,14 +29,19 @@ export const changeSubscription = async (body: {
   return res.data;
 };
 
-export const getPurchaseClientSecret = async (body: {
-  price?: number;
-  type?: "season_pass" | "booking";
-  season_pass_id?: string;
-}) => {
+export const getPurchaseClientSecret = async (
+  body: SeasonPassMetaData | BookingMetaData
+) => {
   const res = await axiosInstance.post(
     endpoints.payments.generate_payment_intent,
     body
+  );
+  return res.data;
+};
+
+export const removePendingBookings = async () => {
+  const res = await axiosInstance.get(
+    endpoints.payments.remove_pending_bookings
   );
   return res.data;
 };

@@ -116,10 +116,10 @@ export default function MembershipCard({
         {isCurrentPlan ? "Current Plan" : "Choose"}
       </button>
       <PaymentModal
+        type="subscription"
         price_id={stripe_price_id}
-        is_subscription
         package_id={_id}
-        price={price}
+        // price={price}
         isOpen={modal}
         onClose={() => setModal(false)}
       />

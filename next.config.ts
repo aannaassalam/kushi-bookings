@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "backend.stackwalls.com"
+      },
+      {
+        protocol: "https",
+        hostname: "i.pravatar.cc"
       }
     ]
   },

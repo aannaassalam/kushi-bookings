@@ -1,3 +1,4 @@
+import { useCartContext } from "@/pages/_app";
 import { Value } from "@/typescript/interface/common.interface";
 import {
   Box,
@@ -28,6 +29,8 @@ export const SelectDate = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const { setCart } = useCartContext();
+
   const [selectedDate, setSelectedDate] = useState<Value>(
     searchParams.get("date") ? new Date(searchParams.get("date")!) : new Date()
   );
@@ -66,12 +69,15 @@ export const SelectDate = ({
             className="bg-primary !px-8 !py-4 text-white font-medium mr-auto h-max"
             colorScheme="primary"
             onClick={() => {
+              setCart(undefined);
               const newParams = new URLSearchParams(searchParams.toString());
               newParams.set(
                 "date",
                 moment(selectedDate?.toString()).toISOString()
               );
-              router.push(`${pathname}?${newParams.toString()}`);
+              router.push(`${pathname}?${newParams.toString()}`, undefined, {
+                shallow: true
+              });
               onClose();
             }}
           >

@@ -1,5 +1,6 @@
+import { removePendingBookings } from "@/api/functions/payments.api";
 import assets from "@/json/assets";
-import { Lane } from "@/typescript/interface/lane.interfaces";
+import { CartType, useCartContext } from "@/pages/_app";
 import {
   Box,
   Button,
@@ -11,17 +12,34 @@ import {
   DrawerHeader,
   DrawerOverlay,
   HStack,
-  Input,
+  IconButton,
   Text,
-  Textarea,
+  useDisclosure,
   VStack
 } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
+import { useMemo } from "react";
 import { IoIosRemoveCircleOutline, IoMdClose } from "react-icons/io";
-import { IoBagOutline, IoChatbubblesOutline } from "react-icons/io5";
+import { IoBagOutline } from "react-icons/io5";
+import PaymentModal from "./PaymentForm/PaymentForm";
 
-const LaneCard = ({ lane, price }: { lane: Lane; price: number }) => {
+const LaneCard = ({
+  lane,
+  date
+}: {
+  lane: CartType["lanes"][0];
+  date: string;
+}) => {
+  const { cart, setCart } = useCartContext();
+
+  const removeItemFromCart = () => {
+    const lanes =
+      cart?.lanes.filter((_lane) => _lane.lane_id !== lane.lane_id) ?? [];
+    setCart((prev) => ({ lanes, date, sport: prev!.sport }));
+  };
+
   return (
     <div className="rounded-xl border border-gray-200 w-full">
       <div className="flex p-2 items-center border-b border-b-gray-200">
@@ -36,22 +54,42 @@ const LaneCard = ({ lane, price }: { lane: Lane; price: number }) => {
           <p className="text-black font-semibold">{lane.name}</p>
           <p className="text-gray-600 text-xs">{lane.about}</p>
         </div>
-        <button className="bg-lightPrimary py-2 px-4 rounded-full text-primary font-medium text-xs ml-auto">
-          Available
+        <button
+          className="bg-red-200/40 hover:bg-red-100 transition-all py-2 px-4 rounded-full text-red-500 font-medium text-xs ml-auto"
+          onClick={removeItemFromCart}
+        >
+          Remove
         </button>
       </div>
-      <div className="p-4  flex justify-between items-center">
-        <p className="text-xs">
-          <span className="text-gray-600 font-semibold">
-            {moment(new Date()).format("MMMM D, YYYY")} |
-          </span>{" "}
-          05:00 PM - 06:00 PM
+      <div className="p-4  flex justify-between items-center gap-2">
+        <div className="text-xs">
+          <p className="text-gray-600 font-semibold">
+            {moment(date).format("MMMM D, YYYY")}
+          </p>
+          <div className="flex flex-wrap mt-1">
+            {lane.slots.map((_slot) => (
+              <>
+                <span key={_slot} className="mr-1.5 mb-0.5">
+                  {`${moment(_slot, "HH:mm").format("hh:mm A")} - ${moment(
+                    _slot,
+                    "HH:mm"
+                  )
+                    .add(1, "hour")
+                    .format("hh:mm A")}`}
+                </span>
+                <span className="mr-1.5">|</span>
+              </>
+            ))}
+          </div>
+        </div>
+        <p className="text-base text-primary font-bold whitespace-nowrap">
+          ${lane.price} USD
         </p>
-        <p className="text-base text-primary font-bold">${price} USD</p>
       </div>
     </div>
   );
 };
+
 export default function Cart({
   open = true,
   close
@@ -59,15 +97,18 @@ export default function Cart({
   open: boolean;
   close: () => void;
 }) {
-  const dummylane = {
-    _id: "xyz",
-    name: "Lane 1",
-    about: "With 1 bowling machine",
-    sport: "cricket",
-    createdAt: "something",
-    updatedAt: "something",
-    __v: 123456
-  };
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { cart, setCart } = useCartContext();
+
+  const price = useMemo(
+    () => cart?.lanes.reduce((prev, current) => prev + current.price, 0),
+    [cart?.lanes]
+  );
+
+  const { mutate } = useMutation({
+    mutationFn: removePendingBookings
+  });
+
   return (
     <Drawer isOpen={open} placement="right" onClose={close} size="lg">
       <DrawerOverlay />
@@ -89,42 +130,82 @@ export default function Cart({
           </HStack>
         </DrawerHeader>
         <Divider />
-        <DrawerBody className="!p-8 flex flex-col ">
+        <DrawerBody className="!p-8 flex flex-col">
           <HStack alignItems="center">
             <IoBagOutline size={25} color="#2C8EE3" />
             <p className="text-xl font-semibold text-primaryText ml-1">
-              Your Cart (1 items)
+              Your Cart ({cart?.lanes.length ?? 0} items)
             </p>
-            <IoIosRemoveCircleOutline
-              className="ml-auto cursor-pointer"
-              size={25}
-            />
+            <IconButton
+              variant="ghost"
+              onClick={() => setCart(undefined)}
+              aria-label=""
+              className="ml-auto"
+            >
+              <IoIosRemoveCircleOutline className="" size={25} />
+            </IconButton>
           </HStack>
-          <VStack gap={4} className="mt-6 mb-4">
-            <LaneCard lane={dummylane} price={250} />
-            <LaneCard lane={dummylane} price={250} />
-            <LaneCard lane={dummylane} price={250} />
+          <VStack gap={4} className="mt-6 mb-4 flex-1">
+            {cart?.lanes.map((_lane) => {
+              return (
+                <LaneCard lane={_lane} key={_lane.lane_id} date={cart.date} />
+              );
+            })}
           </VStack>
 
           <HStack className="mt-auto">
             <p className="uppercase text-3xl text-primaryText font-extralight">
               Your total amount
             </p>
-            <p className="text-primaryText font-bold text-3xl ml-4">$35 USD</p>
+            <p className="text-primaryText font-bold text-3xl ml-4">
+              ${price ?? 0} USD
+            </p>
           </HStack>
-          <p className="text-primaryText mt-4">
+          {/* <p className="text-primaryText mt-4">
             Taxes and promo codes applied at checkout
-          </p>
-          <HStack className="mt-4" justifyContent="space-between">
-            <Button className="!bg-primary !text-white mr-3 font-semibold !py-6 w-[48%] !rounded-none">
-              Purchase
-            </Button>
-            <Button className="!text-primaryText !bg-white font-semibold !py-6 px-5 border !rounded-none border-black  w-[48%]">
-              Continue
-            </Button>
-          </HStack>
+          </p> */}
         </DrawerBody>
+        <DrawerFooter className="!px-8 gap-3">
+          <Button
+            className="!bg-primary !text-white font-semibold !py-6 flex-1 !rounded-none"
+            onClick={onOpen}
+            disabled={!Boolean(cart)}
+          >
+            Purchase
+          </Button>
+          <Button
+            className="!text-primaryText !bg-white font-semibold !py-6 px-5 border !rounded-none border-black  flex-1"
+            disabled={!Boolean(cart)}
+          >
+            Continue
+          </Button>
+        </DrawerFooter>
       </DrawerContent>
+      {cart ? (
+        <PaymentModal
+          isOpen={isOpen}
+          onClose={(success?: boolean) => {
+            if (success) {
+              setCart(undefined);
+              close();
+            } else {
+              mutate();
+            }
+            onClose();
+          }}
+          type="booking"
+          date={cart!.date}
+          lanes={
+            cart?.lanes.map((_lane) => ({
+              lane_id: _lane.lane_id!,
+              price: _lane.price!,
+              slots: _lane.slots!
+            })) ?? []
+          }
+          price={price || 0}
+          sport={cart!.sport}
+        />
+      ) : null}
     </Drawer>
   );
 }

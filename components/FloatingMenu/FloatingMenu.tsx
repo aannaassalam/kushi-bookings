@@ -2,19 +2,19 @@ import { getFacility } from "@/api/functions/facility.api";
 import { cx } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { SelectDate } from "../Modals/SelectDate";
 import { SelectSport } from "../Modals/SelectSport";
 import { SelectTimeSlots } from "../Modals/SelectTimeSlots";
+import { toast } from "sonner";
 
 export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
   const [sportModal, setSportModal] = useState(false);
   const [timeModal, setTimeModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const date = searchParams.get("date") ?? moment().toISOString();
   const time_slots = searchParams.getAll("time_slots");
@@ -25,28 +25,28 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
     queryFn: getFacility
   });
 
-  useEffect(() => {
-    if (
-      date &&
-      time_slots.length &&
-      sport &&
-      noButton &&
-      pathname === "/facility"
-    ) {
-      router.replace(
-        {
-          pathname,
-          query: {
-            date,
-            time_slots,
-            sport
-          }
-        },
-        undefined,
-        { shallow: true }
-      );
-    }
-  }, [date, time_slots, sport, router, noButton, pathname]);
+  // useEffect(() => {
+  //   if (
+  //     date &&
+  //     time_slots.length &&
+  //     sport &&
+  //     noButton &&
+  //     pathname === "/facility"
+  //   ) {
+  //     router.replace(
+  //       {
+  //         pathname,
+  //         query: {
+  //           date,
+  //           time_slots,
+  //           sport
+  //         }
+  //       },
+  //       undefined,
+  //       { shallow: true }
+  //     );
+  //   }
+  // }, [date, time_slots.length, sport, noButton, router]);
 
   const { start_time, end_time } = useMemo(() => {
     const day_of_week = moment().format("dddd");
@@ -138,14 +138,18 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
                   const newParams = new URLSearchParams(
                     searchParams.toString()
                   );
-                  newParams.set("sport", sport);
+                  newParams.delete("sport");
+                  newParams.delete("date");
+                  newParams.delete("time_slots");
+                  newParams.set("sport", sport || "cricket");
                   newParams.set("date", date);
                   time_slots.forEach((_slot) => {
                     newParams.append("time_slots", _slot);
                   });
                   router.push(`/facility?${newParams.toString()}`);
                 } else {
-                  router.push("/facility");
+                  // router.push("/facility");
+                  toast.warning("Please select all filters to search");
                 }
               }}
             >

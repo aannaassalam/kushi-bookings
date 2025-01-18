@@ -5,14 +5,17 @@ import {
   getPurchaseClientSecret
 } from "@/api/functions/payments.api";
 import { queryClient } from "@/pages/_app";
+import { MetadataType } from "@/typescript/interface/payments.interface";
 import {
   Box,
   Button,
+  HStack,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
-  ModalOverlay
+  ModalOverlay,
+  Spinner
 } from "@chakra-ui/react";
 import {
   Elements,
@@ -26,38 +29,36 @@ import { toast } from "sonner";
 
 const stripePromise = loadStripe(process.env.NEXT_APP_STRIPE_PUBLISHABLE_KEY!);
 
-export default function PaymentModal(props: {
-  is_subscription?: boolean;
-  price_id?: string;
-  package_id?: string;
-  package_type?: "season_pass" | "booking";
-  isOpen: boolean;
-  price: number;
-  onClose: () => void;
-}) {
-  const { isOpen, onClose, ...rest } = props;
+export default function PaymentModal(
+  props: MetadataType & {
+    isOpen: boolean;
+    onClose: (success?: boolean) => void;
+  }
+) {
+  const { isOpen, onClose, ...metadata } = props;
+  const [loading, setLoading] = useState(true);
   const [payment_details, setPaymentDetails] = useState<{
     client_secret: string;
   }>();
 
   useEffect(() => {
-    if (!props.is_subscription && isOpen) {
-      getPurchaseClientSecret({
-        price: props.price,
-        type: props.package_type,
-        season_pass_id: props.package_id
-      })
-        .then((data) => setPaymentDetails(data))
+    if (metadata.type !== "subscription" && isOpen) {
+      // setLoading(true);
+      getPurchaseClientSecret(metadata)
+        .then((data) => {
+          if (data.status === 400) {
+            toast.error(data.message);
+            onClose();
+          } else {
+            setPaymentDetails(data);
+            setLoading(false);
+          }
+        })
         .catch((err) => console.log(err));
+    } else if (isOpen) {
+      setLoading(false);
     }
-  }, [
-    props.is_subscription,
-    props.package_id,
-    props.price,
-    props.price_id,
-    props.package_type,
-    isOpen
-  ]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -68,23 +69,33 @@ export default function PaymentModal(props: {
         <ModalHeader>Payments</ModalHeader>
         <ModalBody>
           {/* {payment_details ? ( */}
-          <Elements
-            stripe={stripePromise}
-            options={
-              props.is_subscription
-                ? {
-                    mode: props.is_subscription ? "subscription" : "payment",
-                    paymentMethodCreation: "manual",
-                    currency: "usd",
-                    amount: props.price * 100
-                  }
-                : {
-                    clientSecret: payment_details?.client_secret
-                  }
-            }
-          >
-            <PaymentForm {...rest} onClose={onClose} />
-          </Elements>
+          {loading ? (
+            <HStack
+              className="w-full h-32"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Spinner className="mb-10" />
+            </HStack>
+          ) : (
+            <Elements
+              stripe={stripePromise}
+              options={
+                metadata.type === "subscription"
+                  ? {
+                      mode: "subscription",
+                      paymentMethodCreation: "manual",
+                      currency: "usd"
+                      // amount: props.price * 100
+                    }
+                  : {
+                      clientSecret: payment_details?.client_secret
+                    }
+              }
+            >
+              <PaymentForm metadata={metadata} onClose={onClose} />
+            </Elements>
+          )}
           {/* ) : null} */}
         </ModalBody>
       </ModalContent>
@@ -93,15 +104,11 @@ export default function PaymentModal(props: {
 }
 
 const PaymentForm = ({
-  is_subscription,
-  onClose,
-  price_id,
-  package_id
+  metadata,
+  onClose
 }: {
-  is_subscription?: boolean;
-  onClose: () => void;
-  price_id?: string;
-  package_id?: string;
+  metadata: MetadataType;
+  onClose: (success?: boolean) => void;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -121,7 +128,6 @@ const PaymentForm = ({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/payment-success`
-          // return_url: `https://www.google.com`,
         },
         redirect: "if_required"
       });
@@ -132,8 +138,9 @@ const PaymentForm = ({
       }
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: ["current_season_pass"] });
+        queryClient.invalidateQueries({ queryKey: ["bookings"] });
       }, 500);
-      onClose();
+      onClose(true);
     } catch (error) {
       console.log(error);
     } finally {
@@ -143,7 +150,6 @@ const PaymentForm = ({
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const cardElement = elements?.getElement(PaymentElement);
 
     try {
       if (!stripe || !elements) return null;
@@ -167,12 +173,14 @@ const PaymentForm = ({
         return;
       }
 
-      const payment_details = await createSubscription({
-        price_id: price_id!,
-        package_id: package_id!,
-        payment_method: paymentMethod.id!
-      });
-      //   const { client_secret, subscription_id } = payment_details!;
+      let payment_details;
+      if (metadata.type === "subscription") {
+        payment_details = await createSubscription({
+          price_id: metadata.price_id!,
+          package_id: metadata.package_id!,
+          payment_method: paymentMethod.id!
+        });
+      }
 
       const { error } = await stripe?.confirmPayment({
         clientSecret: payment_details.client_secret,
@@ -181,7 +189,6 @@ const PaymentForm = ({
           return_url: "http://localhost:3000/payment-success"
         },
         redirect: "if_required"
-        // payment_method: { payment_method:cardElement, }
       });
       if (error) {
         console.log(error);
@@ -198,7 +205,7 @@ const PaymentForm = ({
   };
 
   return (
-    <form onSubmit={is_subscription ? onSubmit : purchaseItem}>
+    <form onSubmit={metadata.type === "subscription" ? onSubmit : purchaseItem}>
       <PaymentElement
         options={{
           layout: "accordion",
@@ -211,7 +218,7 @@ const PaymentForm = ({
           //   colorScheme="blue"
           //   isLoading={isLoading}
           //   type="submit"
-          onClick={onClose}
+          onClick={() => onClose()}
         >
           Close
         </Button>

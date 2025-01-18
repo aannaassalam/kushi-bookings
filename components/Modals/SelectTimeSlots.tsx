@@ -1,4 +1,5 @@
 import { cx } from "@/lib/utils";
+import { useCartContext } from "@/pages/_app";
 import {
   Box,
   Button,
@@ -33,6 +34,8 @@ export const SelectTimeSlots = ({
   const pathname = usePathname();
   const router = useRouter();
   const time_slots = searchParams.getAll("time_slots");
+  const { setCart } = useCartContext();
+
   const [selectedTime, setSelectedTime] = useState<string[]>(time_slots || []);
 
   return (
@@ -81,12 +84,15 @@ export const SelectTimeSlots = ({
             className="bg-primary !px-8 !py-4 text-white font-medium mr-auto h-max"
             colorScheme="primary"
             onClick={() => {
+              setCart(undefined);
               const newParams = new URLSearchParams(searchParams.toString());
               newParams.delete("time_slots");
               selectedTime.forEach((_slot) => {
                 newParams.append("time_slots", _slot);
               });
-              router.push(`${pathname}?${newParams.toString()}`);
+              router.push(`${pathname}?${newParams.toString()}`, undefined, {
+                shallow: true
+              });
               onClose();
             }}
           >
