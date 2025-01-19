@@ -23,6 +23,7 @@ export interface CurrentMembership {
   type: string;
   active: number;
   subscription_id: string;
+  membership: Membership;
   createdAt: string;
   updatedAt: string;
 }

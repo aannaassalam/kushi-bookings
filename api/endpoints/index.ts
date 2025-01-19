@@ -12,7 +12,9 @@ export const endpoints = {
   user: {
     login: "/user/login",
     register: "/user/register",
-    profile: "/user/profile"
+    profile: "/user/profile",
+    update_profile: "/user/update-profile",
+    change_password: "/user/change-password"
   },
   facility: {
     get_facility: "/facility"
@@ -46,5 +48,7 @@ export const endpoints = {
 export const sucessNotificationEndPoints: string[] = [
   endpoints.user.login,
   endpoints.user.register,
-  endpoints.payments.change_subscription
+  endpoints.payments.change_subscription,
+  endpoints.user.update_profile,
+  endpoints.user.change_password
 ];

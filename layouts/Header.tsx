@@ -86,18 +86,22 @@ export default function Header() {
             Login
           </Button>
         ) : (
-          <HStack className="ml-6">
-            <Image
-              alt="user"
-              width={36}
-              height={36}
-              src="https://i.pravatar.cc/50?img=5"
-              className="!w-[36px] !h-[36px] rounded-full"
-            />
+          <HStack className="ml-0">
+            <Link href="/profile">
+              <Image
+                alt="user"
+                width={36}
+                height={36}
+                src={user.profile_photo ?? assets.default_user}
+                className="!w-[36px] !h-[36px] rounded-full"
+              />
+            </Link>
             <Box>
-              <p className="font-inter text-sm font-semibold capitalize">
-                {user.full_name}
-              </p>
+              <Link href="/profile">
+                <p className="font-inter text-sm font-semibold capitalize">
+                  {user.full_name}
+                </p>
+              </Link>
               <p
                 className="font-inter !p-0 h-max text-xs text-primary capitalize font-semibold cursor-pointer"
                 onClick={() => {

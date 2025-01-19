@@ -7,6 +7,7 @@ export default {
   lane: "/images/lane.png",
   packageGraphic: "/graphics/packageGraphic.png",
   loginImage: "/images/loginImage.png",
+  default_user: "/images/default-user.png",
 
   logo2: "/assets/images/logo2.png"
 };

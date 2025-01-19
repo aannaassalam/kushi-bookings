@@ -18,6 +18,7 @@ export interface CurrentSeasonPass {
   available_slots: number;
   expiration_date: string;
   active: number;
+  season_pass: SeasonPass;
   createdAt: string;
   updatedAt: string;
 }
