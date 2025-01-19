@@ -1,41 +1,35 @@
-import assets from "@/json/assets";
-import AppLayout from "@/layouts/AppLayout";
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  HStack,
-  VisuallyHiddenInput,
-  VStack
-} from "@chakra-ui/react";
-import Image from "next/image";
-import React, { useState } from "react";
-import { FiUser } from "react-icons/fi";
-import { IoCartOutline } from "react-icons/io5";
-import { HiOutlineEnvelope } from "react-icons/hi2";
-import { PiSignOutLight } from "react-icons/pi";
-import { cx } from "@/lib/utils";
-import { FaCheck } from "react-icons/fa6";
-import { GetServerSideProps } from "next";
-import { parseCookies, setCookie } from "nookies";
+import { getCurrentMembership } from "@/api/functions/membership.api";
+import { getCurrentSeasonPass } from "@/api/functions/season-pass.api";
 import {
   changePassword,
   getProfile,
   updateProfile
 } from "@/api/functions/user.api";
-import { User } from "@/typescript/interface/user.interfaces";
-import { getCurrentMembership } from "@/api/functions/membership.api";
-import { getCurrentSeasonPass } from "@/api/functions/season-pass.api";
+import assets from "@/json/assets";
+import AppLayout from "@/layouts/AppLayout";
+import { cx } from "@/lib/utils";
 import { CurrentMembership } from "@/typescript/interface/membership.interfaces";
 import { CurrentSeasonPass } from "@/typescript/interface/season-pass.interfaces";
-import moment from "moment";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import { User } from "@/typescript/interface/user.interfaces";
+import {
+  Box,
+  Button,
+  HStack,
+  VisuallyHiddenInput,
+  VStack
+} from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import moment from "moment";
+import { GetServerSideProps } from "next";
+import Image from "next/image";
+import { parseCookies, setCookie } from "nookies";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { BsCameraFill } from "react-icons/bs";
+import { FaCheck } from "react-icons/fa6";
 import { toast } from "sonner";
+import * as yup from "yup";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const cookies = parseCookies(ctx);
@@ -179,7 +173,7 @@ function Profile({
   const [sport, setSport] = useState("cricket");
   const [profile_photo, setProfilePhoto] = useState<File>();
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["profile"],
     queryFn: () => getProfile(),
     initialData: profile
@@ -243,6 +237,8 @@ function Profile({
     }
     mutate({ ...body, profile_photo });
   };
+
+  console.log(profile);
 
   return (
     <AppLayout>

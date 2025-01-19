@@ -15,11 +15,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "backend.stackwalls.com"
-      },
-      {
-        protocol: "https",
-        hostname: "i.pravatar.cc"
+        hostname: "kushi-bookings.s3.us-east-2.amazonaws.com"
       }
     ]
   },
