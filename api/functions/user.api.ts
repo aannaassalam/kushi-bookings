@@ -1,4 +1,5 @@
 import {
+  PublicUserProfile,
   User,
   UserLoginBody,
   UserRegisterBody
@@ -47,5 +48,19 @@ export const changePassword = async (password: string) => {
   const res = await axiosInstance.post(endpoints.user.change_password, {
     password
   });
+  return res.data;
+};
+
+export const getPublicProfile = async (
+  user_id: string,
+  sport: string
+): Promise<PublicUserProfile> => {
+  const res = await axiosInstance.get(endpoints.user.get_public_profile, {
+    params: {
+      user_id,
+      sport
+    }
+  });
+
   return res.data;
 };

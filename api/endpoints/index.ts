@@ -14,7 +14,8 @@ export const endpoints = {
     register: "/user/register",
     profile: "/user/profile",
     update_profile: "/user/update-profile",
-    change_password: "/user/change-password"
+    change_password: "/user/change-password",
+    get_public_profile: "/user/get-user"
   },
   facility: {
     get_facility: "/facility"

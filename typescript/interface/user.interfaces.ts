@@ -1,3 +1,6 @@
+import { CurrentMembership } from "./membership.interfaces";
+import { CurrentSeasonPass } from "./season-pass.interfaces";
+
 export interface UserRegisterBody {
   email: string;
   password: string;
@@ -17,6 +20,10 @@ export interface User {
   phone: number;
   password: string;
   profile_photo: string;
-  memberships: unknown;
   status: number;
+}
+
+export interface PublicUserProfile extends User {
+  membership: CurrentMembership;
+  season_passes: CurrentSeasonPass[];
 }

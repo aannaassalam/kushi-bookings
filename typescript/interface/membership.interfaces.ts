@@ -1,3 +1,5 @@
+import { User } from "./user.interfaces";
+
 export interface Membership {
   _id: string;
   name: string;
@@ -17,6 +19,7 @@ export interface CurrentMembership {
   _id: string;
   membership_id: string;
   user_id: string;
+  user: User;
   sport: string;
   available_slots: number;
   facility_feature_price: number;
