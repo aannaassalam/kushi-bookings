@@ -1,6 +1,8 @@
 import { removePendingBookings } from "@/api/functions/payments.api";
+import { getCurrentSeasonPass } from "@/api/functions/season-pass.api";
 import assets from "@/json/assets";
 import { CartType, useCartContext } from "@/pages/_app";
+import { CurrentSeasonPass } from "@/typescript/interface/season-pass.interfaces";
 import {
   Box,
   Button,
@@ -13,17 +15,23 @@ import {
   DrawerOverlay,
   HStack,
   IconButton,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
   Text,
   useDisclosure,
   VStack
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
 import { useMemo } from "react";
 import { IoIosRemoveCircleOutline, IoMdClose } from "react-icons/io";
-import { IoBagOutline } from "react-icons/io5";
+import { IoBagOutline, IoChevronDownOutline } from "react-icons/io5";
 import PaymentModal from "./PaymentForm/PaymentForm";
+import { parseCookies } from "nookies";
+import { useRouter } from "next/router";
 
 const LaneCard = ({
   lane,
@@ -33,11 +41,49 @@ const LaneCard = ({
   date: string;
 }) => {
   const { cart, setCart } = useCartContext();
+  const week_end = moment().endOf("week").endOf("day").unix();
 
   const removeItemFromCart = () => {
     const lanes =
       cart?.lanes.filter((_lane) => _lane.lane_id !== lane.lane_id) ?? [];
-    setCart((prev) => ({ lanes, date, sport: prev!.sport }));
+
+    const weekly_slot_guard =
+      moment(cart?.date).unix() <= week_end
+        ? cart?.membership?.available_slots ?? 0
+        : 0;
+
+    let available_slots = cart?.season_pass
+      ? cart?.season_pass?.available_slots
+      : weekly_slot_guard;
+
+    const _lanes = lanes.map((_l) => {
+      const discount =
+        available_slots > _l.slots.length
+          ? 0
+          : _l.slots.length - available_slots;
+
+      _l.price = _l.lane_price * discount;
+
+      _l.free_slots_used =
+        available_slots > _l.slots.length
+          ? available_slots - _l.slots.length
+          : available_slots;
+
+      available_slots =
+        _l.slots.length > available_slots
+          ? 0
+          : available_slots - _l.slots.length;
+      return _l;
+    });
+
+    setCart((prev) => ({
+      lanes: _lanes,
+      date,
+      membership: prev?.membership,
+      season_pass: prev?.season_pass,
+      box_booking_price: undefined,
+      sport: prev!.sport
+    }));
   };
 
   return (
@@ -99,15 +145,116 @@ export default function Cart({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { cart, setCart } = useCartContext();
+  const week_end = moment().endOf("week").endOf("day").unix();
+  const cookies = parseCookies();
+  const router = useRouter();
 
-  const price = useMemo(
-    () => cart?.lanes.reduce((prev, current) => prev + current.price, 0),
-    [cart?.lanes]
-  );
+  const price = useMemo(() => {
+    const _price = cart?.lanes.reduce(
+      (prev, current) => prev + current.price,
+      0
+    );
+    return (_price ?? 0) + (cart?.box_booking_price ?? 0);
+  }, [cart?.box_booking_price, cart?.lanes]);
+
+  const { data = [] } = useQuery({
+    queryKey: ["current_season_pass", cart?.sport],
+    queryFn: () => getCurrentSeasonPass(cart?.sport),
+    enabled: Boolean(cart?.sport) && !!cookies.token
+  });
 
   const { mutate } = useMutation({
     mutationFn: removePendingBookings
   });
+
+  const onSelectedSeasonPassChange = (pass: CurrentSeasonPass) => {
+    let free_slots_used = 0;
+    if (pass._id === cart?.season_pass?._id) {
+      const _lanes = (cart?.lanes ?? []).map((_lane) => {
+        let discount = _lane.slots.length;
+
+        const weekly_slots_guard =
+          moment(cart.date).unix() <= week_end && !!cart?.membership
+            ? cart?.membership?.available_slots ?? 0
+            : 0;
+
+        if (weekly_slots_guard) {
+          const available_free_slots =
+            free_slots_used >= weekly_slots_guard
+              ? 0
+              : weekly_slots_guard - free_slots_used;
+
+          discount =
+            available_free_slots > _lane.slots.length
+              ? 0
+              : _lane.slots.length - available_free_slots;
+
+          free_slots_used += available_free_slots
+            ? available_free_slots >= _lane.slots.length
+              ? _lane.slots.length
+              : _lane.slots.length - available_free_slots
+            : 0;
+
+          _lane.free_slots_used = available_free_slots
+            ? available_free_slots >= _lane.slots.length
+              ? _lane.slots.length
+              : _lane.slots.length - available_free_slots
+            : 0;
+        } else {
+          _lane.free_slots_used = 0;
+        }
+
+        _lane.price = _lane.lane_price * discount;
+
+        return _lane;
+      });
+
+      setCart((prev) => ({
+        ...prev,
+        date: prev!.date,
+        sport: prev!.sport,
+        lanes: _lanes,
+        season_pass: undefined
+      }));
+      return;
+    }
+
+    const _lanes = (cart?.lanes ?? []).map((_lane) => {
+      const available_free_slots =
+        free_slots_used >= pass.available_slots
+          ? 0
+          : pass.available_slots - free_slots_used;
+
+      const discount =
+        available_free_slots > _lane.slots.length
+          ? 0
+          : _lane.slots.length - available_free_slots;
+
+      free_slots_used += available_free_slots
+        ? available_free_slots >= _lane.slots.length
+          ? _lane.slots.length
+          : _lane.slots.length - available_free_slots
+        : 0;
+
+      _lane.free_slots_used = available_free_slots
+        ? available_free_slots >= _lane.slots.length
+          ? _lane.slots.length
+          : _lane.slots.length - available_free_slots
+        : 0;
+
+      _lane.price = _lane.lane_price * discount;
+
+      return _lane;
+    });
+
+    setCart((prev) => ({
+      ...prev,
+      date: prev!.date,
+      sport: prev!.sport,
+      lanes: _lanes,
+      season_pass: pass
+    }));
+  };
 
   return (
     <Drawer isOpen={open} placement="right" onClose={close} size="lg">
@@ -151,6 +298,16 @@ export default function Cart({
                 <LaneCard lane={_lane} key={_lane.lane_id} date={cart.date} />
               );
             })}
+            {!!cart?.box_booking_price && (
+              <div className="rounded-xl border border-gray-200 p-4 w-full flex items-center justify-between">
+                <h4 className="font-semibold">Box Booking Charge</h4>
+                <div className="flex justify-between items-center gap-2">
+                  <p className="text-base text-primary font-bold whitespace-nowrap">
+                    ${cart.box_booking_price} USD
+                  </p>
+                </div>
+              </div>
+            )}
           </VStack>
 
           <HStack className="mt-auto">
@@ -168,17 +325,49 @@ export default function Cart({
         <DrawerFooter className="!px-8 gap-3">
           <Button
             className="!bg-primary !text-white font-semibold !py-6 flex-1 !rounded-none"
-            onClick={onOpen}
+            onClick={() =>
+              cookies.token ? onOpen() : router.push("/auth/login")
+            }
             disabled={!Boolean(cart)}
           >
             Purchase
           </Button>
-          <Button
+          <Menu>
+            <MenuButton
+              as={Button}
+              className="!h-auto !py-4 !px-4"
+              rightIcon={<IoChevronDownOutline />}
+              isDisabled={!Boolean(cart) || data.length === 0}
+            >
+              Season Pass {Boolean(cart?.season_pass) && " (1)"}
+            </MenuButton>
+            <MenuList minWidth="240px">
+              {data.map((_pass) => {
+                return (
+                  <MenuItemOption
+                    key={_pass._id}
+                    isChecked={cart?.season_pass?._id === _pass._id}
+                    onClick={() => {
+                      onSelectedSeasonPassChange(_pass);
+                    }}
+                  >
+                    <VStack alignItems="flex-start" gap={1}>
+                      <p className="font-medium">{_pass.season_pass.name}</p>
+                      <p className=" text-gray-600">
+                        Available slots: {_pass.available_slots}
+                      </p>
+                    </VStack>
+                  </MenuItemOption>
+                );
+              })}
+            </MenuList>
+          </Menu>
+          {/* <Button
             className="!text-primaryText !bg-white font-semibold !py-6 px-5 border !rounded-none border-black  flex-1"
             disabled={!Boolean(cart)}
           >
             Continue
-          </Button>
+          </Button> */}
         </DrawerFooter>
       </DrawerContent>
       {cart ? (
@@ -199,9 +388,13 @@ export default function Cart({
             cart?.lanes.map((_lane) => ({
               lane_id: _lane.lane_id!,
               price: _lane.price!,
-              slots: _lane.slots!
+              slots: _lane.slots!,
+              free_slots_used: _lane.free_slots_used
             })) ?? []
           }
+          box_booking_price={cart?.box_booking_price}
+          membership_id={cart.membership?.membership_id}
+          season_pass_id={cart.season_pass?.season_pass_id}
           price={price || 0}
           sport={cart!.sport}
         />

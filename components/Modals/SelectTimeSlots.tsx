@@ -25,15 +25,20 @@ export const SelectTimeSlots = ({
   open,
   onClose,
   slots
-}: {
+}: // bookings
+// lanes_length
+{
   open: boolean;
   onClose: () => void;
   slots: Slot[];
+  // bookings: BookingFilter;
+  // lanes_length: number;
 }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
   const time_slots = searchParams.getAll("time_slots");
+  // const date = searchParams.getAll("date") ?? moment().toISOString();
   const { setCart } = useCartContext();
 
   const [selectedTime, setSelectedTime] = useState<string[]>(time_slots || []);
@@ -56,27 +61,33 @@ export const SelectTimeSlots = ({
         </ModalHeader>
         <ModalBody pb="4">
           <Box className="grid grid-cols-3 gap-3">
-            {slots.map((slot: Slot) => (
-              <Box
-                key={slot.label}
-                onClick={() =>
-                  setSelectedTime((_slots) =>
-                    _slots.includes(slot.value)
-                      ? _slots.filter((_slot) => _slot !== slot.value)
-                      : [..._slots, slot.value]
-                  )
-                }
-                className={cx(
-                  "w-full p-4 py-3 capitalize bg-gray-100 font-light flex justify-center rounded-full cursor-pointer",
-                  {
-                    "bg-primary": selectedTime.includes(slot.value),
-                    "text-white": selectedTime.includes(slot.value)
+            {slots.map((slot: Slot) => {
+              return (
+                <Box
+                  key={slot.label}
+                  onClick={() =>
+                    slot.available
+                      ? setSelectedTime((_slots) =>
+                          _slots.includes(slot.value)
+                            ? _slots.filter((_slot) => _slot !== slot.value)
+                            : [..._slots, slot.value]
+                        )
+                      : null
                   }
-                )}
-              >
-                {slot.label}
-              </Box>
-            ))}
+                  className={cx(
+                    "w-full p-4 py-3 capitalize bg-gray-100 font-light flex justify-center rounded-full cursor-pointer",
+                    {
+                      "bg-primary": selectedTime.includes(slot.value),
+                      "text-white": selectedTime.includes(slot.value),
+                      "bg-gray-300 !text-gray-800 cursor-not-allowed":
+                        !slot.available
+                    }
+                  )}
+                >
+                  {slot.label}
+                </Box>
+              );
+            })}
           </Box>
         </ModalBody>
         <ModalFooter gap={3}>

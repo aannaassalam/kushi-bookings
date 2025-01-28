@@ -13,7 +13,7 @@ export const getSeasonPasses = async (sport: string): Promise<SeasonPass[]> => {
 };
 
 export const getCurrentSeasonPass = async (
-  sport: string,
+  sport: string = "cricket",
   token?: string
 ): Promise<CurrentSeasonPass[]> => {
   const res = await axiosInstance.get(

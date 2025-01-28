@@ -49,9 +49,22 @@ export default function PaymentModal(
           if (data.status === 400) {
             toast.error(data.message);
             onClose();
-          } else {
+          } else if (data?.client_secret) {
             setPaymentDetails(data);
             setLoading(false);
+          } else {
+            setPaymentDetails(undefined);
+            setTimeout(() => {
+              queryClient.invalidateQueries({
+                queryKey: ["current_season_pass"]
+              });
+              queryClient.invalidateQueries({ queryKey: ["bookings"] });
+              queryClient.invalidateQueries({
+                queryKey: ["current_membership"]
+              });
+            }, 700);
+            toast.success("Payment successful, booking confirmed");
+            onClose(true);
           }
         })
         .catch((err) => console.log(err));
@@ -85,8 +98,8 @@ export default function PaymentModal(
                   ? {
                       mode: "subscription",
                       paymentMethodCreation: "manual",
-                      currency: "usd"
-                      // amount: props.price * 100
+                      currency: "usd",
+                      amount: props.price * 100
                     }
                   : {
                       clientSecret: payment_details?.client_secret
@@ -136,10 +149,12 @@ const PaymentForm = ({
         toast.error("Something went wrong");
         return;
       }
+      toast.success("Payment successful, Confirmation email sent");
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: ["current_season_pass"] });
         queryClient.invalidateQueries({ queryKey: ["bookings"] });
-      }, 500);
+        queryClient.invalidateQueries({ queryKey: ["current_membership"] });
+      }, 1000);
       onClose(true);
     } catch (error) {
       console.log(error);

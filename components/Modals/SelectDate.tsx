@@ -60,6 +60,7 @@ export const SelectDate = ({
             formatShortWeekday={(locale, date) =>
               date.toLocaleDateString(locale, { weekday: "narrow" })
             }
+            calendarType="hebrew"
             nextLabel={<IoChevronForward size={20} />}
             prevLabel={<IoChevronBackOutline size={20} />}
           />
@@ -75,6 +76,7 @@ export const SelectDate = ({
                 "date",
                 moment(selectedDate?.toString()).toISOString()
               );
+              newParams.delete("time_slots");
               router.push(`${pathname}?${newParams.toString()}`, undefined, {
                 shallow: true
               });

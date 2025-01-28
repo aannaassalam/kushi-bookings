@@ -1,6 +1,8 @@
 import EventListeners from "@/components/EventListener/EventListener";
 import { checkWindow } from "@/lib/functions/_helpers.lib";
 import "@/styles/globals.css";
+import { CurrentMembership } from "@/typescript/interface/membership.interfaces";
+import { CurrentSeasonPass } from "@/typescript/interface/season-pass.interfaces";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
@@ -34,12 +36,17 @@ export const queryClient = new QueryClient({
 export type CartType = {
   date: string;
   sport: string;
+  membership?: CurrentMembership;
+  season_pass?: CurrentSeasonPass;
+  box_booking_price?: number;
   lanes: {
     lane_id: string;
+    lane_price: number;
     slots: string[];
     price: number;
     name: string;
     about: string;
+    free_slots_used: number;
   }[];
 };
 

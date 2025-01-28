@@ -5,12 +5,18 @@ import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { SelectDate } from "../Modals/SelectDate";
 import { SelectSport } from "../Modals/SelectSport";
 import { SelectTimeSlots } from "../Modals/SelectTimeSlots";
-import { toast } from "sonner";
 
-export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
+export default function FloatingMenu({
+  noButton
+}: // bookings
+{
+  noButton?: boolean;
+  // bookings: BookingFilter;
+}) {
   const [sportModal, setSportModal] = useState(false);
   const [timeModal, setTimeModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
@@ -25,34 +31,11 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
     queryFn: getFacility
   });
 
-  // useEffect(() => {
-  //   if (
-  //     date &&
-  //     time_slots.length &&
-  //     sport &&
-  //     noButton &&
-  //     pathname === "/facility"
-  //   ) {
-  //     router.replace(
-  //       {
-  //         pathname,
-  //         query: {
-  //           date,
-  //           time_slots,
-  //           sport
-  //         }
-  //       },
-  //       undefined,
-  //       { shallow: true }
-  //     );
-  //   }
-  // }, [date, time_slots.length, sport, noButton, router]);
-
   const { start_time, end_time } = useMemo(() => {
-    const day_of_week = moment().format("dddd");
+    const day_of_week = moment(date).format("dddd");
     const day = data?.days.find((_day) => _day.day === day_of_week);
     return !day ? { start_time: "", end_time: "" } : day.timings;
-  }, [data]);
+  }, [data, date]);
 
   const slots = useMemo(() => {
     const _start_time = moment(start_time, "HH:mm");
@@ -75,14 +58,26 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
         .clone()
         .add(id + 1, "hours")
         .format("hh:mm A");
+
       return {
         label: `${slot_start_time} - ${slot_end_time}`,
-        available: true,
+        available:
+          moment().unix() <
+          moment(date)
+            .add(id, "hours")
+            .set({
+              minute: 0,
+              second: 0,
+              millisecond: 0
+            })
+            .unix()
+            ? true
+            : false,
         value: availability_checker_time_string
       };
     });
     return slots;
-  }, [start_time, end_time]);
+  }, [start_time, end_time, date]);
 
   return (
     <div className="absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10">
@@ -166,6 +161,8 @@ export default function FloatingMenu({ noButton }: { noButton?: boolean }) {
           slots={slots}
           open={timeModal}
           onClose={() => setTimeModal(false)}
+          // bookings={bookings}
+          // lanes_length={data.l}
         />
       )}
       {dateModal && (

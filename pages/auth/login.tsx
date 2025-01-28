@@ -9,6 +9,9 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/api/functions/user.api";
 import { setCookieClient } from "@/lib/functions/storage.lib";
 import { useRouter } from "next/router";
+import { useCartContext } from "../_app";
+import moment from "moment";
+import { getCurrentMembership } from "@/api/functions/membership.api";
 
 const schema = yup.object().shape({
   email: yup.string().required(),
@@ -17,6 +20,7 @@ const schema = yup.object().shape({
 
 export default function Login() {
   const router = useRouter();
+  const { cart, setCart } = useCartContext();
 
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
@@ -28,9 +32,62 @@ export default function Login() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setCookieClient("token", data.token);
       setCookieClient("user", JSON.stringify(data.user));
+      let membership;
+      if (!!cart) {
+        membership = await getCurrentMembership(cart?.sport);
+      }
+      if (!!cart && membership?.type === "free_slots_based") {
+        const week_end = moment().endOf("week").endOf("day").unix();
+        let free_slots_used = 0;
+
+        const _lanes = (cart?.lanes ?? []).map((_lane) => {
+          let discount = _lane.slots.length;
+
+          const weekly_slots_guard =
+            moment(cart?.date).unix() <= week_end && !!membership
+              ? membership?.available_slots ?? 0
+              : 0;
+
+          if (weekly_slots_guard) {
+            const available_free_slots =
+              free_slots_used >= weekly_slots_guard
+                ? 0
+                : weekly_slots_guard - free_slots_used;
+
+            discount =
+              available_free_slots > _lane.slots.length
+                ? 0
+                : _lane.slots.length - available_free_slots;
+
+            free_slots_used +=
+              available_free_slots > _lane.slots.length
+                ? _lane.slots.length
+                : _lane.slots.length - available_free_slots;
+
+            _lane.free_slots_used =
+              available_free_slots > _lane.slots.length
+                ? _lane.slots.length
+                : _lane.slots.length - available_free_slots;
+          } else {
+            _lane.free_slots_used = 0;
+          }
+
+          _lane.price = _lane.lane_price * discount;
+
+          return _lane;
+        });
+
+        setCart((prev) => ({
+          ...prev,
+          date: prev!.date,
+          sport: prev!.sport,
+          lanes: _lanes,
+          season_pass: undefined
+        }));
+      }
       router.push("/");
     }
   });

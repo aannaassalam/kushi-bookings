@@ -13,6 +13,7 @@ export type MembershipMetaData = {
   type: "subscription";
   price_id: string;
   package_id: string;
+  price: number;
 };
 
 export type BookingMetaData = {
@@ -22,10 +23,12 @@ export type BookingMetaData = {
   sport: string;
   membership_id?: string;
   season_pass_id?: string;
+  box_booking_price?: number;
   note?: string;
   lanes: {
     slots: string[];
     lane_id: string;
     price: number;
+    free_slots_used: number;
   }[];
 };

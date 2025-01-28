@@ -35,6 +35,8 @@ export interface Facility {
   price: {
     [key in DaysInterface]: number;
   };
+  box_booking_price: number;
+  reschedule_charge: number;
   status: number;
   createdAt: string;
   updatedAt: string;

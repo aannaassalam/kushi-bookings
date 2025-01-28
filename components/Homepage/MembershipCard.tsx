@@ -119,7 +119,7 @@ export default function MembershipCard({
         type="subscription"
         price_id={stripe_price_id}
         package_id={_id}
-        // price={price}
+        price={price}
         isOpen={modal}
         onClose={() => setModal(false)}
       />
