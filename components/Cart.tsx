@@ -64,10 +64,11 @@ const LaneCard = ({
 
       _l.price = _l.lane_price * discount;
 
-      _l.free_slots_used =
-        available_slots > _l.slots.length
-          ? available_slots - _l.slots.length
-          : available_slots;
+      _l.free_slots_used = available_slots
+        ? available_slots > _l.slots.length
+          ? _l.slots.length
+          : _l.slots.length - available_slots
+        : 0;
 
       available_slots =
         _l.slots.length > available_slots

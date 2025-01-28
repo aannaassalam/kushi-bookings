@@ -154,7 +154,7 @@ const PaymentForm = ({
         queryClient.invalidateQueries({ queryKey: ["current_season_pass"] });
         queryClient.invalidateQueries({ queryKey: ["bookings"] });
         queryClient.invalidateQueries({ queryKey: ["current_membership"] });
-      }, 1000);
+      }, 800);
       onClose(true);
     } catch (error) {
       console.log(error);

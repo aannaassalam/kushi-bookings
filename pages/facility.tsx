@@ -38,11 +38,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const slots = isArray(time_slots) ? time_slots : [time_slots || ""];
 
-  const lanes = await getLanes({
-    date: date?.toString() || "",
-    sport: sport?.toString() || "",
-    time_slots: slots
-  });
+  const lanes = await getLanes(sport?.toString() || "cricket");
 
   const facility_data = await getFacility();
   const memberships_data = await getMemberships(sport?.toString() ?? "cricket");
@@ -266,8 +262,8 @@ export default function Facility({
   const { cart, setCart } = useCartContext();
 
   const { data } = useQuery({
-    queryKey: ["lanes", date, sport, time_slots],
-    queryFn: () => getLanes({ date, sport, time_slots }),
+    queryKey: ["lanes", sport],
+    queryFn: () => getLanes(sport),
     initialData: lanes
   });
 

@@ -24,7 +24,8 @@ export const endpoints = {
     get_lanes: "/lane/get-lanes"
   },
   bookings: {
-    get_bookings_for_filter: "/bookings/get-bookings-for-filter"
+    get_bookings_for_filter: "/bookings/get-bookings-for-filter",
+    get_my_bookings: "/bookings/get-my-bookings"
   },
   membership: {
     get_all: "/membership"

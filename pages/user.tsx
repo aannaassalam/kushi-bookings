@@ -5,7 +5,19 @@ import { cx } from "@/lib/utils";
 import { CurrentMembership } from "@/typescript/interface/membership.interfaces";
 import { CurrentSeasonPass } from "@/typescript/interface/season-pass.interfaces";
 import { PublicUserProfile } from "@/typescript/interface/user.interfaces";
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  VStack
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { GetServerSideProps } from "next";
@@ -13,6 +25,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa6";
+import { toast } from "sonner";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { user_id } = ctx.query;
@@ -135,8 +148,12 @@ const ActiveSeasonPass = ({
 };
 
 function Profile({ profile }: { profile: PublicUserProfile }) {
-  const [sport, setSport] = useState("cricket");
+  const password = "Kushi@2025";
   const { user_id } = useRouter().query;
+  const router = useRouter();
+  const [sport, setSport] = useState("cricket");
+  const [locked, setLocked] = useState(true);
+  const [entered_password, setEnteredPassword] = useState("");
 
   const { data } = useQuery({
     queryKey: ["public_profile", sport, user_id],
@@ -144,12 +161,41 @@ function Profile({ profile }: { profile: PublicUserProfile }) {
     initialData: profile
   });
 
-  console.log(["public_profile", sport, user_id]);
-
-  console.log(profile);
+  const onSubmit = () => {
+    if (entered_password !== password) {
+      toast.error("Wrong password, try again");
+      return;
+    }
+    setLocked(false);
+  };
 
   return (
     <AppLayout>
+      <Modal isOpen={locked} onClose={() => setLocked(false)}>
+        <ModalOverlay className="backdrop-blur-md" />
+        <ModalContent>
+          <ModalHeader>Password</ModalHeader>
+          <ModalBody>
+            <Input
+              placeholder="Enter Password"
+              value={entered_password}
+              onChange={(e) => setEnteredPassword(e.target.value)}
+            />
+          </ModalBody>
+          <ModalFooter gap={3}>
+            <Button size="sm" onClick={() => router.push("/")}>
+              Go to Home
+            </Button>
+            <Button
+              className="!bg-primary !text-white"
+              size="sm"
+              onClick={onSubmit}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
       <div>
         <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center items-center">
           <h1 className="text-white font-bold text-[36px]  uppercase">

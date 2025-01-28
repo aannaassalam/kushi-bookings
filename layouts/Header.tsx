@@ -33,7 +33,7 @@ export default function Header() {
           Home
         </Link>
         <Link
-          href="/"
+          href="/my-bookings"
           className={`ml-6  ${
             router.pathname === "/my-bookings" ? "text-primary" : "text-black"
           }`}
