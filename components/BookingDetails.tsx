@@ -33,7 +33,7 @@ export default function BookingDetails({
 
   const actual_price =
     (data?.price?.[moment(booking?.date).format("dddd") as DaysInterface] ??
-      0) * (booking?.slots.length ?? 1);
+      0) * (booking?.slots?.length ?? 1);
 
   return (
     <Drawer
