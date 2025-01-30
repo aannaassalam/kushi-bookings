@@ -95,7 +95,7 @@ export default function FloatingMenu({
           onClick={() => setSportModal(true)}
         >
           <p className="font-semibold text-lg">Sports</p>
-          <p className="text-base capitalize">{sport || "Select Sport"}</p>
+          <p className="text-base capitalize">{sport || "Cricket"}</p>
         </div>
         <div
           className="w-full p-6 border-r border-r-gray-300 cursor-pointer"
@@ -129,7 +129,7 @@ export default function FloatingMenu({
             <button
               className="primaryButton mr-3 font-semibold !py-4 w-full"
               onClick={() => {
-                if (date && time_slots.length && sport) {
+                if (date && time_slots.length) {
                   const newParams = new URLSearchParams(
                     searchParams.toString()
                   );

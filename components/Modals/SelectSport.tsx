@@ -29,7 +29,7 @@ export const SelectSport = ({
   const { setCart } = useCartContext();
 
   const [selectedSport, setSelectedSport] = useState(
-    searchParams.get("sport") || ""
+    searchParams.get("sport") || "cricket"
   );
 
   return (

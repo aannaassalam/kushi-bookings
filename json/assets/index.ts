@@ -1,13 +1,13 @@
 /* eslint-disable import/no-anonymous-default-export */
 export default {
-  logo: "/images/logo.png",
-  heroImage: "/images/heroImage.png",
-  tennisBall: "/images/tennisBall.png",
-  greenBackground: "/images/greenBackground.png",
-  lane: "/images/lane.png",
-  packageGraphic: "/graphics/packageGraphic.png",
-  loginImage: "/images/loginImage.png",
-  default_user: "/images/default-user.png",
+  logo: "/assets/images/logo.png",
+  heroImage: "/assets/images/heroImage.png",
+  tennisBall: "/assets/images/tennisBall.png",
+  greenBackground: "/assets/images/greenBackground.png",
+  lane: "/assets/images/lane.png",
+  packageGraphic: "/assets/graphics/packageGraphic.png",
+  loginImage: "/assets/images/loginImage.png",
+  default_user: "/assets/images/default-user.png",
 
   logo2: "/assets/images/logo2.png"
 };

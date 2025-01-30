@@ -314,7 +314,7 @@ export default function Facility({
       return current_membership.membership.facility_price;
     }
     return facility.price[moment(date).format("dddd") as DaysInterface];
-  }, [current_membership, date, facility.price]);
+  }, [current_membership, date, facility?.price]);
 
   const onBoxBooking = () => {
     let free_slots_used = 0;
