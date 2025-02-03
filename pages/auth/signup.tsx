@@ -1,13 +1,16 @@
 import { signup } from "@/api/functions/user.api";
 import assets from "@/json/assets";
 import { setCookieClient } from "@/lib/functions/storage.lib";
-import { Button } from "@chakra-ui/react";
+import { Box, Button, HStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { LuImagePlus } from "react-icons/lu";
+import { MdOutlineFileUpload } from "react-icons/md";
+
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -53,7 +56,7 @@ export default function SignUp() {
         <div className="w-[98%] absolute h-[200px] bg-gradient-to-r from-[#2C8EE31C] to-[#2C8EE300] rounded-lg left-[50%] translate-x-[-50%] top-5"></div>
         {/* Login Form */}
         <div className="bg-white  rounded-lg w-full max-w-md p-6 m-auto">
-          <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2">
+          <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2 mt-9">
             Sign Up For The Platform
           </h2>
           <p className="text-center text-gray-600 mb-6">
@@ -61,6 +64,27 @@ export default function SignUp() {
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* <HStack className="mb-4 "> */}
+
+            {/* <Box textAlign="center" className="self-center my-10 w-max mx-auto">
+              <label
+                htmlFor="facilityPhoto"
+                className="relative cursor-pointer w-max flex"
+              >
+                <input type="file" className="hidden" id="facilityPhoto" />
+                <Image
+                  src={assets.lane}
+                  width={100}
+                  height={100}
+                  alt="facility"
+                  className="rounded-full"
+                />
+                <LuImagePlus
+                  size={25}
+                  color="#fff"
+                  className="absolute left-[-50%] translate-x-[50%] translate-y-[-50%] top-[50%]"
+                />
+              </label>
+            </Box> */}
             <div className="bg-[#fafafa] rounded-lg mb-4 px-4 py-2">
               <label
                 className="block text-sm font-medium text-gray-700"
@@ -76,21 +100,7 @@ export default function SignUp() {
                 {...register("full_name")}
               />
             </div>
-            {/* <div className="bg-[#fafafa] rounded-lg  px-4 py-2">
-                <label
-                  className="block text-sm font-medium text-gray-700"
-                  htmlFor="lname"
-                >
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  id="lname"
-                  className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                  placeholder="Enter last name"
-                  {...register("full_name")}
-                />
-              </div> */}
+
             {/* </HStack> */}
             <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
               <label
@@ -150,6 +160,24 @@ export default function SignUp() {
                 className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
                 placeholder="Enter confirm password"
                 {...register("confirm_password")}
+              />
+            </div>
+            <div className="bg-[#fafafa] rounded-lg px-4 py-4 mb-4">
+              <label
+                className="text-sm font-medium text-gray-700 flex-col flex cursor-pointer"
+                htmlFor="profile-picture"
+              >
+                <Box className="flex">
+                  <MdOutlineFileUpload size={20} className="mr-2" /> Click to
+                  upload Profile Picture
+                </Box>
+                {/* <p className=" text-gray-500 mt-2">Screenshot1.png</p>  if image selected then show */}
+              </label>
+              <input
+                type="file"
+                id="profile-picture"
+                className="w-full mt-1 hidden focus:outline-none outline-none bg-[#fafafa]"
+                accept="image/*"
               />
             </div>
             <Button
