@@ -80,32 +80,37 @@ export default function FloatingMenu({
   }, [start_time, end_time, date]);
 
   return (
-    <div className="absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10">
+    <div
+      className={cx(
+        "absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10 max-xl:px-[70px] max-lg:px-[40px]  max-md:px-[20px] max-lg:-bottom-[290px]",
+        { "max-lg:-bottom-[220px]": noButton }
+      )}
+    >
       <div
         className={cx(
-          "w-full bg-white grid rounded-lg shadow-[0px_50px_41px_-50px_#7BB933]",
+          "w-full bg-white grid rounded-lg shadow-[0px_50px_41px_-50px_#7BB933] max-lg:shadow-none",
           {
-            "grid-cols-4": !noButton,
-            "grid-cols-3": noButton
+            "grid-cols-4 max-lg:grid-cols-2": !noButton,
+            "grid-cols-3 max-lg:grid-cols-2": noButton
           }
         )}
       >
         <div
-          className="w-full p-6 border-r border-r-gray-300 cursor-pointer"
+          className="w-full p-6 border-r border-r-gray-300 cursor-pointer max-lg:border-b max-lg:border-b-gray-300"
           onClick={() => setSportModal(true)}
         >
           <p className="font-semibold text-lg">Sports</p>
           <p className="text-base capitalize">{sport || "Cricket"}</p>
         </div>
         <div
-          className="w-full p-6 border-r border-r-gray-300 cursor-pointer"
+          className="w-full p-6 border-r border-r-gray-300 cursor-pointer max-lg:border-r-0 max-lg:border-b max-lg:border-b-gray-300"
           onClick={() => setDateModal(true)}
         >
           <p className="font-semibold text-lg">Date</p>
           <p className="text-base">{moment(date).format("MMMM D, YYYY")}</p>
         </div>
         <div
-          className="w-full p-6 border-r border-r-gray-300 cursor-pointer"
+          className="w-full p-6 border-r border-r-gray-300 cursor-pointer max-lg:col-start-1 max-lg:col-end-13 max-lg:border-r-0 max-lg:border-b max-lg:border-b-gray-300"
           onClick={() => setTimeModal(true)}
         >
           <p className="font-semibold text-lg">Time Slot</p>
@@ -125,7 +130,7 @@ export default function FloatingMenu({
           </p>
         </div>
         {!noButton && (
-          <div className="w-full p-6 ">
+          <div className="w-full p-6 max-lg:col-start-1 max-lg:col-end-13 max-lg:px-0 max-lg:pt-2">
             <button
               className="primaryButton mr-3 font-semibold !py-4 w-full"
               onClick={() => {

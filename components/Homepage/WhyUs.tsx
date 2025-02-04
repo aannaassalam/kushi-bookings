@@ -2,27 +2,27 @@ import React from "react";
 
 export default function WhyUs() {
   return (
-    <div className="px-[100px] w-full mb-[50px]">
+    <div className="px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px]">
       <div className="flex flex-col justify-between items-center">
         <h1 className="text-primaryText text-[32px] font-semibold uppercase">
           Why Choose Us
         </h1>
-        <div className="flex flex-row w-full justify-evenly mt-6 my-10">
-          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg">
+        <div className="flex flex-row w-full justify-evenly mt-6 my-10 flex-wrap gap-4">
+          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
             Spacious And Well Maintained Facilities
           </p>
-          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg">
+          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
             Flexible Booking Options
           </p>
-          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg">
+          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
             Perfect For All Age Groups And Activities
           </p>
         </div>
         <h2 className="text-primaryText text-xl font-bold capitalize">
           Our Versatile space is ideal for
         </h2>
-        <div className="grid grid-cols-5 gap-4 w-full my-10 ">
-          <div className="py-4 px-4 rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
+        <div className="grid grid-cols-5 gap-4 w-full my-10 max-xl:grid-cols-3 max-sm:grid-cols-2 ">
+          <div className="py-4 px-4 rounded-lg max-sm:pr-0 w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
             <div className="p-4 bg-lightPrimary w-max rounded-lg transition-all duration-300">
               <svg
                 width="24"
@@ -44,7 +44,7 @@ export default function WhyUs() {
               Enjoy a thrilling game with friends or colleagues
             </p>
           </div>
-          <div className="py-4 px-4 rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
+          <div className="py-4 px-4 rounded-lg max-sm:pr-0 w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
             <div className="p-4 bg-lightPrimary w-max rounded-lg transition-all duration-300">
               <svg
                 width="24"
@@ -67,7 +67,7 @@ export default function WhyUs() {
               Create fun memories for the little ones.
             </p>
           </div>
-          <div className="py-4 px-4 rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
+          <div className="py-4 px-4 rounded-lg max-sm:pr-0 w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
             <div className="p-4 bg-lightPrimary w-max rounded-lg transition-all duration-300">
               <svg
                 width="24"
@@ -89,7 +89,7 @@ export default function WhyUs() {
               Organize a cometitive yet enjoyable event.
             </p>
           </div>
-          <div className="py-4 px-4 rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
+          <div className="py-4 px-4 rounded-lg max-sm:pr-0 w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
             <div className="p-4 bg-lightPrimary w-max rounded-lg transition-all duration-300">
               <svg
                 width="24"
@@ -112,7 +112,7 @@ export default function WhyUs() {
               Celebrate your birthday with a sporty twist.
             </p>
           </div>
-          <div className="py-4 px-4 rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
+          <div className="py-4 px-4 rounded-lg max-sm:pr-0 w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020] ">
             <div className="p-4 bg-lightPrimary w-max rounded-lg transition-all duration-300">
               <svg
                 width="24"

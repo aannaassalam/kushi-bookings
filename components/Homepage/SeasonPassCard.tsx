@@ -26,7 +26,7 @@ export default function SeasonPassCard({
         Number of Slots <span className="font-semibold">{number_of_slots}</span>
       </p>
       <h2 className="text-[24px] font-bold text-primaryText">{name}</h2>
-      <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 mb-auto">
+      <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 mb-auto max-md:grid-cols-1">
         {about.split("_").map((_key_point) => {
           return (
             <p

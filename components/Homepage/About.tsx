@@ -4,8 +4,8 @@ import React from "react";
 
 export default function About() {
   return (
-    <div className="px-[100px] w-full my-[100px] mb-[50px]">
-      <div className="relative w-full min-h-[420px] rounded-lg overflow-hidden flex items-center">
+    <div className="px-[100px] w-full my-[100px] mb-[50px] max-lg:px-[40px] max-md:px-[0px] max-md:my-[40px]">
+      <div className="relative w-full min-h-[420px] rounded-lg overflow-hidden flex items-center max-md:rounded-none">
         <Image
           src={assets.tennisBall}
           width={1138}
@@ -14,7 +14,7 @@ export default function About() {
           className="absolute top-0 left-0 w-full z-[-1] h-full object-cover"
         />
         <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/40 top-0 left-0 z-0"></div>
-        <div className="relative z-10 pl-10">
+        <div className="relative z-10 pl-10 max-md:pl-4">
           <p className="text-white font-semibold text-lg mb-4 uppercase">
             About Us
           </p>
