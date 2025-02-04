@@ -5,7 +5,7 @@ import FloatingMenu from "../FloatingMenu/FloatingMenu";
 
 function HeroSection() {
   return (
-    <div className="relative min-h-[80vh] pl-[100px] flex items-center">
+    <div className="relative min-h-[80vh] pl-[100px] flex  items-center max-lg:pl-[40px] max-md:h-[95vh] max-md:pl-[20px] ">
       <Image
         src={assets.heroImage}
         width={1600}
@@ -15,7 +15,7 @@ function HeroSection() {
       />
       <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 top-0 left-0 z-0"></div>
       <div className="relative z-10">
-        <h1 className="text-[50px] font-bold text-white uppercase leading-[55px] tracking-tight w-11/12">
+        <h1 className="text-[45px] font-bold text-white uppercase leading-[55px] tracking-tight w-11/12 max-lg:text-[40px] max-lg:leading-[50px] max-md:text-[30px] max-md:leading-[40px]">
           Become a member and book our facility for a discounted price and enjoy
           a <span className="text-primary">10% off</span> on any product bought
           at our store.

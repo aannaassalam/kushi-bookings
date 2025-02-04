@@ -60,7 +60,7 @@ export const SelectTimeSlots = ({
           </Box>
         </ModalHeader>
         <ModalBody pb="4">
-          <Box className="grid grid-cols-3 gap-3">
+          <Box className="grid grid-cols-3 gap-3 max-md:grid-cols-2 max-sm:grid-cols-1">
             {slots.map((slot: Slot) => {
               return (
                 <Box

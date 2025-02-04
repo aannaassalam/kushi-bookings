@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Quote() {
   return (
-    <div className="mt-20 relative min-h-[170px] flex flex-col items-center justify-center py-8">
+    <div className="mt-20 relative min-h-[170px] flex flex-col items-center justify-center py-8 max-lg:px-[20px]">
       <Image
         src={assets.greenBackground}
         width={1600}

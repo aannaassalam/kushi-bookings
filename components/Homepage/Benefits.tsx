@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Benefits() {
   return (
-    <div className="px-[100px] grid grid-cols-4 gap-4 w-full my-[100px] ">
+    <div className="px-[100px] grid grid-cols-4 gap-4 w-full my-[100px] max-lg:grid-cols-2 max-sm:grid-cols-1  max-lg:px-[40px] max-md:px-[20px] max-lg:mt-[300px] max-md:mb-[30px]">
       <div className="py-12 px-4 bg-gradient-to-r from-[rgba(255,255,255,0.4)] to-[rgba(225,225,225,0.22)] rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
         <div className="p-4 bg-primaryText w-max rounded-lg group-hover:bg-primary transition-all duration-300">
           <svg
