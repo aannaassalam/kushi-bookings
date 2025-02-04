@@ -52,25 +52,25 @@ export default function SeasonPass({
   return (
     <AppLayout>
       <div>
-        <div className=" relative w-full h-[150px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center mb-20">
+        <div className=" relative w-full h-[150px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center mb-20 max-md:h-[150px] max-md:mb-8">
           <h1 className="text-white font-bold text-[36px] my-auto uppercase">
             Season Pass
           </h1>
         </div>
-        <div className="px-[100px] w-full flex flex-col items-center">
+        <div className="px-[100px] w-full flex flex-col items-center max-lg:px-[40px] max-md:px-[20px]">
           <div className="flex flex-col items-center">
-            <h1 className="text-primaryText text-[32px] font-semibold uppercase">
+            <h1 className="text-primaryText text-[32px] font-semibold uppercase  max-md:text-2xl max-md:mb-0">
               Season Pass Packages
             </h1>
-            <p className="my-4">
+            <p className="my-4 max-md:text-center">
               Please select the membership package which suits your cricket
               needs
             </p>
 
-            <div className="bg-primary p-2 rounded-md flex flex-row mt-2 mb-10">
+            <div className="bg-primary p-2 rounded-md flex flex-row mt-2 mb-10 max-sm:w-full">
               <p
                 className={cx(
-                  "py-2 px-5 text-white rounded-md pointer cursor-pointer",
+                  "py-2 px-5 text-white rounded-md pointer cursor-pointer max-sm:w-[50%] max-sm:text-center",
                   {
                     "bg-white text-black": sport === "cricket"
                   }
@@ -81,7 +81,7 @@ export default function SeasonPass({
               </p>
               <p
                 className={cx(
-                  "py-2 px-5 text-white rounded-md pointer cursor-pointer",
+                  "py-2 px-5 text-white rounded-md pointer cursor-pointer max-sm:w-[50%] max-sm:text-center",
                   {
                     "bg-white text-black": sport === "badminton"
                   }
@@ -92,7 +92,7 @@ export default function SeasonPass({
               </p>
             </div>
           </div>
-          <div className=" grid grid-cols-2 gap-5 w-full">
+          <div className=" grid grid-cols-2 gap-5 w-full max-md:grid-cols-1">
             {data?.map((_season_pass) => (
               <SeasonPassCard
                 {..._season_pass}

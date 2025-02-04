@@ -16,10 +16,10 @@ export default function Quote() {
       <p className="text-white text-2xl max-w-[900px] relative z-20 text-center font-bold mb-2">
         Call Us Now For Rental Pricing And Availability
       </p>
-      <p className=" text-white text-lg max-w-[900px] relative z-20 text-center font-semibold mb-6">
+      <p className=" text-white text-lg max-w-[900px] relative z-20 text-center font-semibold mb-6 max-md:text-base">
         Let’s Make Your Event Unforgetable
       </p>
-      <p className="italic text-white text-lg max-w-[900px] relative z-20 text-center font-semibold">
+      <p className="italic text-white text-lg max-w-[900px] relative z-20 text-center font-semibold max-md:text-base">
         Whether you&apos;re a cricket/badminton enthusiast looking for premium
         gear or want a place to practice your skills, we&apos;ve got you
         covered. Our dedicated team is here to assist you and ensure you have a

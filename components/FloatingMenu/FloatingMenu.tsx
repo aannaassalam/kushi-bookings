@@ -80,7 +80,12 @@ export default function FloatingMenu({
   }, [start_time, end_time, date]);
 
   return (
-    <div className="absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10 max-xl:px-[70px] max-lg:px-[40px]  max-md:px-[20px] max-lg:-bottom-[290px]">
+    <div
+      className={cx(
+        "absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10 max-xl:px-[70px] max-lg:px-[40px]  max-md:px-[20px] max-lg:-bottom-[290px]",
+        { "max-lg:-bottom-[220px]": noButton }
+      )}
+    >
       <div
         className={cx(
           "w-full bg-white grid rounded-lg shadow-[0px_50px_41px_-50px_#7BB933] max-lg:shadow-none",

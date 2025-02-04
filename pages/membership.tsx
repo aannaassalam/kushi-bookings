@@ -34,7 +34,7 @@ export default function Memberships({
   return (
     <AppLayout>
       <div>
-        <div className=" relative w-full h-[150px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center mb-20">
+        <div className=" relative w-full h-[150px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center mb-20 max-md:h-[150px] max-md:mb-8">
           <h1 className="text-white font-bold text-[36px] my-auto uppercase">
             Membership
           </h1>

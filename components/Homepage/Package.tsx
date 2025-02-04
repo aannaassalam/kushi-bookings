@@ -36,20 +36,20 @@ export default function PackageDetails({
   });
 
   return (
-    <div className="px-[100px] w-full">
-      <div className="flex flex-row justify-between items-center">
+    <div className="px-[100px] w-full max-lg:px-[40px] max-md:px-[20px]">
+      <div className="flex flex-row justify-between items-center max-md:flex-col max-md:items-start">
         <div>
-          <h1 className="text-primaryText text-[32px] font-semibold uppercase">
+          <h1 className="text-primaryText text-[32px] font-semibold uppercase max-md:text-2xl max-md:mb-4">
             The Right Plan for You
           </h1>
           <p>
             Please select the membership package which suits your cricket needs
           </p>
         </div>
-        <div className="bg-primary p-2 rounded-md flex flex-row">
+        <div className="bg-primary p-2 rounded-md flex flex-row max-md:mt-4 max-sm:w-full">
           <p
             className={cx(
-              "py-2 px-5 rounded-md cursor-pointer pointer text-white",
+              "py-2 px-5 rounded-md cursor-pointer pointer text-white max-sm:w-[50%] text-center",
               {
                 "bg-white text-black": sport === "cricket"
               }
@@ -60,7 +60,7 @@ export default function PackageDetails({
           </p>
           <p
             className={cx(
-              "py-2 px-5 rounded-md cursor-pointer pointer text-white",
+              "py-2 px-5 rounded-md cursor-pointer pointer text-white max-sm:w-[50%] text-center",
               {
                 "bg-white text-black": sport === "badminton"
               }
@@ -71,7 +71,7 @@ export default function PackageDetails({
           </p>
         </div>
       </div>
-      <div className="p-5 border border-gray-300 grid grid-cols-4 gap-5 mt-10 w-full">
+      <div className="p-5 border border-gray-300 grid grid-cols-4 gap-5 mt-10 w-full max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 max-md:mt-6">
         {data.map((_membership) => (
           <MembershipCard
             {..._membership}

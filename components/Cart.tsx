@@ -312,10 +312,10 @@ export default function Cart({
           </VStack>
 
           <HStack className="mt-auto">
-            <p className="uppercase text-3xl text-primaryText font-extralight">
+            <p className="uppercase text-3xl text-primaryText font-extralight max-md:text-xl">
               Your total amount
             </p>
-            <p className="text-primaryText font-bold text-3xl ml-4">
+            <p className="text-primaryText font-bold text-3xl ml-4 max-md:text-xl">
               ${price ?? 0} USD
             </p>
           </HStack>

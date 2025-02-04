@@ -372,21 +372,23 @@ export default function Facility({
   return (
     <AppLayout>
       <div>
-        <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center">
-          <h1 className="text-white font-bold text-[36px] mt-10"> FACILITY</h1>
+        <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center max-md:h-[150px]">
+          <h1 className="text-white font-bold text-[36px] mt-10 max-lg:mt-0  max-lg:flex max-lg:items-center">
+            FACILITY
+          </h1>
           <FloatingMenu noButton />
         </div>
-        <div className="px-[100px] mt-[100px] ">
-          <div className="w-full p-10 rounded-md bg-[#F5F7F2] flex flex-row justify-between">
+        <div className="px-[100px] mt-[100px] max-lg:px-[40px] max-md:px-[20px] max-lg:mt-[250px]">
+          <div className="w-full p-10 rounded-md bg-[#F5F7F2] flex flex-row justify-between max-xl:flex-col max-md:p-4">
             <Image
               src={assets.logo}
               width={153}
               height={45}
               alt="logo"
-              className="object-contain"
+              className="object-contain max-xl:mb-4"
             />
             <div>
-              <p className="text-primaryText text-[30px] font-bold">
+              <p className="text-primaryText text-[30px] font-bold max-md:text-2xl max-md:mb-4">
                 Showing Result For {moment(date).format("MMMM D, YYYY")}
               </p>
               <p className="text-primaryText text-sm">
@@ -395,7 +397,7 @@ export default function Facility({
               </p>
             </div>
           </div>
-          <div className="w-full p-7 rounded-md flex flex-row justify-end">
+          <div className="w-full p-7 rounded-md flex flex-row justify-end max-md:px-0">
             <CheckboxGroup
               value={[cart?.box_booking_price || ""]}
               onChange={() => onBoxBooking()}
@@ -409,7 +411,7 @@ export default function Facility({
               </Checkbox>
             </CheckboxGroup>
           </div>
-          <div className="grid grid-cols-3 gap-4 my-0">
+          <div className="grid grid-cols-3 gap-4 my-0 max-xl:grid-cols-2 max-md:grid-cols-1">
             {data?.map((_data) => (
               <LaneCard
                 lane={_data}
