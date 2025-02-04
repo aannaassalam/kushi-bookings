@@ -7,6 +7,7 @@ export interface UserRegisterBody {
   confirm_password: string;
   full_name: string;
   phone: number;
+  profile_photo: File;
 }
 
 export interface UserLoginBody {

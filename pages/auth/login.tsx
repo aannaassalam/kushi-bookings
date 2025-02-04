@@ -157,15 +157,18 @@ export default function Login() {
             </div>
 
             {/* Remember Me and Forgot Password */}
-            <div className="flex items-center justify-between mb-4">
-              <label className="flex items-center">
+            <div className="flex items-center justify-end mb-4">
+              {/* <label className="flex items-center">
                 <input
                   type="checkbox"
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <span className="ml-2 text-sm text-gray-700">Remember me</span>
-              </label>
-              <Link href="#" className="text-sm  hover:underline">
+              </label> */}
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm  hover:underline"
+              >
                 Forgot password?
               </Link>
             </div>
