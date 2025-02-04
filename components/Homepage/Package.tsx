@@ -10,6 +10,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import MembershipCard from "./MembershipCard";
+import { parseCookies } from "nookies";
 
 export default function PackageDetails({
   memberships,
@@ -19,6 +20,7 @@ export default function PackageDetails({
   current_membership: CurrentMembership | null;
 }) {
   const [sport, setSport] = useState("cricket");
+  const cookies = parseCookies();
 
   const { data } = useQuery({
     queryKey: ["memberships", sport],
@@ -29,7 +31,8 @@ export default function PackageDetails({
   const { data: active_plan } = useQuery({
     queryKey: ["current_membership", sport],
     queryFn: () => getCurrentMembership(sport),
-    initialData: current_membership
+    initialData: current_membership,
+    enabled: !!cookies.token
   });
 
   return (

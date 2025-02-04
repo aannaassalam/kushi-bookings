@@ -66,13 +66,13 @@ export default function SignUp() {
                 className="block text-sm font-medium text-gray-700"
                 htmlFor="fname"
               >
-                First Name
+                Full Name
               </label>
               <input
                 type="text"
                 id="fname"
                 className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter first name"
+                placeholder="Enter Full name"
                 {...register("full_name")}
               />
             </div>

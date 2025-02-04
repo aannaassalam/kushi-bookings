@@ -34,6 +34,7 @@ export default function SeasonPass({
   current_season_pass: CurrentSeasonPass[];
 }) {
   const [sport, setSport] = useState("cricket");
+  const cookies = parseCookies();
 
   const { data } = useQuery({
     queryKey: ["season_passes", sport],
@@ -44,7 +45,8 @@ export default function SeasonPass({
   const { data: active_plan = [] } = useQuery({
     queryKey: ["current_season_pass", sport],
     queryFn: () => getCurrentSeasonPass(sport),
-    initialData: current_season_pass
+    initialData: current_season_pass,
+    enabled: !!cookies.token
   });
 
   return (
