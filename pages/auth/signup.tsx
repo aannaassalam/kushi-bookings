@@ -1,15 +1,16 @@
 import { signup } from "@/api/functions/user.api";
 import assets from "@/json/assets";
 import { setCookieClient } from "@/lib/functions/storage.lib";
-import { Box, Button, HStack } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { LuImagePlus } from "react-icons/lu";
 import { MdOutlineFileUpload } from "react-icons/md";
+import { toast } from "sonner";
 
 import * as yup from "yup";
 
@@ -23,6 +24,7 @@ const schema = yup.object().shape({
 
 export default function SignUp() {
   const router = useRouter();
+  const [profile_picture, setProfile_picture] = useState<File>();
 
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema)
@@ -38,7 +40,11 @@ export default function SignUp() {
   });
 
   const onSubmit = (data: yup.InferType<typeof schema>) => {
-    mutate(data);
+    if (!profile_picture) {
+      toast.error("Please Upload a profile picture");
+      return;
+    }
+    mutate({ ...data, profile_photo: profile_picture });
   };
 
   return (
@@ -63,28 +69,6 @@ export default function SignUp() {
             Enter your details to continue
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            {/* <HStack className="mb-4 "> */}
-
-            {/* <Box textAlign="center" className="self-center my-10 w-max mx-auto">
-              <label
-                htmlFor="facilityPhoto"
-                className="relative cursor-pointer w-max flex"
-              >
-                <input type="file" className="hidden" id="facilityPhoto" />
-                <Image
-                  src={assets.lane}
-                  width={100}
-                  height={100}
-                  alt="facility"
-                  className="rounded-full"
-                />
-                <LuImagePlus
-                  size={25}
-                  color="#fff"
-                  className="absolute left-[-50%] translate-x-[50%] translate-y-[-50%] top-[50%]"
-                />
-              </label>
-            </Box> */}
             <div className="bg-[#fafafa] rounded-lg mb-4 px-4 py-2">
               <label
                 className="block text-sm font-medium text-gray-700"
@@ -168,8 +152,10 @@ export default function SignUp() {
                 htmlFor="profile-picture"
               >
                 <Box className="flex">
-                  <MdOutlineFileUpload size={20} className="mr-2" /> Click to
-                  upload Profile Picture
+                  <MdOutlineFileUpload size={20} className="mr-2" />{" "}
+                  {profile_picture
+                    ? profile_picture.name
+                    : "Click to upload Profile Picture"}
                 </Box>
                 {/* <p className=" text-gray-500 mt-2">Screenshot1.png</p>  if image selected then show */}
               </label>
@@ -178,11 +164,12 @@ export default function SignUp() {
                 id="profile-picture"
                 className="w-full mt-1 hidden focus:outline-none outline-none bg-[#fafafa]"
                 accept="image/*"
+                onChange={(e) => setProfile_picture(e.target.files?.[0])}
               />
             </div>
             <Button
               type="submit"
-              className="w-full px-4 py-2 !text-white !bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380]"
+              className="w-full px-4 py-2 !text-white !bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380] cursor-pointer"
               isLoading={isPending}
             >
               Register

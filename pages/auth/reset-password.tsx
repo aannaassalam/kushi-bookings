@@ -1,9 +1,38 @@
+import { resetPassword } from "@/api/functions/user.api";
 import assets from "@/json/assets";
 import { Button } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  password: yup.string().required()
+});
 
 export default function ResetPassword() {
+  const router = useRouter();
+
+  const { register, handleSubmit } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      password: ""
+    }
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: resetPassword,
+    onSuccess: () => {
+      router.replace("/auth/login");
+    }
+  });
+
+  const onSubmit = (body: yup.InferType<typeof schema>) => {
+    mutate({ password: body.password, token: router.query.token?.toString() });
+  };
+
   return (
     <div className="flex min-h-screen relative">
       {/* Left Section */}
@@ -28,7 +57,7 @@ export default function ResetPassword() {
           </p>
 
           {/* Email Input */}
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
               <label
                 className="block text-sm font-medium text-gray-700"
@@ -41,9 +70,10 @@ export default function ResetPassword() {
                 id="password"
                 className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
                 placeholder="Enter password"
+                {...register("password")}
               />
             </div>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
+            {/* <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
               <label
                 className="block text-sm font-medium text-gray-700"
                 htmlFor="confirm-password"
@@ -56,11 +86,12 @@ export default function ResetPassword() {
                 className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
                 placeholder="Enter confirm password"
               />
-            </div>
+            </div> */}
             {/* Submit Button */}
             <Button
               type="submit"
               className="w-full px-4 py-2 !text-white !bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380] mt-4"
+              isLoading={isPending}
             >
               Submit
             </Button>

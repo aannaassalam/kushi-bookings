@@ -39,10 +39,10 @@ export default function BookingsGrid({
   }, [start_date]);
 
   const colors = [
-    "bg-[#005A9C]",
-    "bg-[#007791]",
-    "bg-[#007FFF]",
-    "bg-[#4B9CD3]"
+    { bg: "bg-[#f79931]", text: "text-white" },
+    { bg: "bg-[#00b0f0]", text: "text-white" },
+    { bg: "bg-[#ffff00]", text: "text-gray-600" },
+    { bg: "bg-[#47d359]", text: "text-white" }
   ];
 
   return (
@@ -137,11 +137,6 @@ export default function BookingsGrid({
                             const booking = booking_for_day.filter(
                               (_booking) => _booking.lane_id === lane._id
                             );
-                            console.log(
-                              booking_for_day,
-                              day.format("DD/MM/YYYY"),
-                              time
-                            );
 
                             return (
                               <Box
@@ -160,16 +155,20 @@ export default function BookingsGrid({
                                 {booking.map((_booking) => {
                                   return (
                                     <Box
-                                      className={`p-2 h-full ${colors[id]} border cursor-pointer rounded-md`}
+                                      className={`p-2 h-full ${colors[id].bg} border cursor-pointer rounded-md`}
                                       key={_booking._id}
                                       onClick={() =>
                                         setBookingDetails(_booking)
                                       }
                                     >
-                                      <p className="text-sm text-white font-semibold">
+                                      <p
+                                        className={`text-sm ${colors[id].text} font-semibold`}
+                                      >
                                         {_booking?.user.full_name}
                                       </p>
-                                      <p className="text-xs text-white mt-1.5">
+                                      <p
+                                        className={`text-xs ${colors[id].text} font-medium mt-1.5`}
+                                      >
                                         {_booking?.lane.name}
                                       </p>
                                     </Box>

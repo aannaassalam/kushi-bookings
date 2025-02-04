@@ -105,8 +105,12 @@ export default function Header() {
               <p
                 className="font-inter !p-0 h-max text-xs text-primary capitalize font-semibold cursor-pointer"
                 onClick={() => {
-                  destroyCookie(null, "token");
-                  destroyCookie(null, "user");
+                  destroyCookie(null, "token", {
+                    path: "/"
+                  });
+                  destroyCookie(null, "user", {
+                    path: "/"
+                  });
                   router.push("/auth/login");
                 }}
               >

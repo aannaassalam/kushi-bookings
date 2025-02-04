@@ -19,6 +19,34 @@ export const login = async (body: UserLoginBody) => {
   return res.data;
 };
 
+export const forgotPassword = async (email: string) => {
+  const res = await axiosInstance.post(endpoints.user.forgot_password, {
+    email
+  });
+  return res.data;
+};
+
+export const resetPassword = async ({
+  password,
+  token
+}: {
+  password: string;
+  token?: string;
+}) => {
+  const res = await axiosInstance.post(
+    endpoints.user.reset_password,
+    {
+      password
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
+  );
+  return res.data;
+};
+
 export const getProfile = async (token?: string): Promise<User> => {
   const res = await axiosInstance.get(endpoints.user.profile, {
     headers: token

@@ -1,9 +1,39 @@
+import { forgotPassword } from "@/api/functions/user.api";
 import assets from "@/json/assets";
 import { Button } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup.string().email().required()
+});
 
 export default function ForgotPassword() {
+  const router = useRouter();
+
+  const { register, handleSubmit } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: ""
+    }
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: forgotPassword,
+    onSuccess: () => {
+      router.push("/auth/login");
+    }
+  });
+
+  const onSubmit = (body: yup.InferType<typeof schema>) => {
+    mutate(body.email);
+  };
+
   return (
     <div className="flex min-h-screen relative">
       {/* Left Section */}
@@ -28,7 +58,7 @@ export default function ForgotPassword() {
           </p>
 
           {/* Email Input */}
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
               <label
                 className="block text-sm font-medium text-gray-700"
@@ -41,7 +71,7 @@ export default function ForgotPassword() {
                 id="email"
                 className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
                 placeholder="john.doe@companyname.com"
-                // required
+                {...register("email")}
               />
             </div>
 
@@ -49,9 +79,18 @@ export default function ForgotPassword() {
             <Button
               type="submit"
               className="w-full px-4 py-2 !text-white !bg-primary !shadow-[0px_5px_50px_0px_#2C8EE380] mt-4"
+              isLoading={isPending}
             >
-              Send Email
+              Submit
             </Button>
+            <p className="mt-6 text-sm text-center text-gray-600">
+              <Link
+                href="/auth/login"
+                className="text-primary font-semibold hover:underline"
+              >
+                Back to login
+              </Link>
+            </p>
           </form>
 
           {/* Sign Up Link */}
