@@ -289,7 +289,7 @@ function Profile({
                       alt="profile pic"
                       width={240}
                       height={240}
-                      className="object-cover"
+                      className="object-cover aspect-square"
                     />
                     <Box className="absolute h-full w-full bg-blackAlpha-500 top-0 left-0 flex items-center justify-center transition-all opacity-0 group-hover:opacity-100">
                       <BsCameraFill fontSize={35} color="#fff" />
