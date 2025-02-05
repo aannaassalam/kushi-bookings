@@ -52,8 +52,7 @@ export default function Benefits() {
           Become a Member at Kushi
         </h2>
         <p className="mt-2 text-sm text-black">
-          Become a member and book lanes at a discounted price and take 10% off
-          on any product bought at our store.
+          Discounted prices on lanes and products
         </p>
       </div>
       <div className="py-12 px-4 bg-gradient-to-r from-[rgba(255,255,255,0.4)] to-[rgba(225,225,225,0.22)] rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
@@ -79,10 +78,10 @@ export default function Benefits() {
           </svg>
         </div>
         <h2 className="text-primaryText capitalize text-[20px] font-semibold mt-6">
-          Reschedule your booking.
+          Business
         </h2>
         <p className="mt-2 text-sm text-black">
-          Reschedule your booking for a fee
+          Contact us to feature your business on our Website
         </p>
       </div>
       <div className="py-12 px-4 bg-gradient-to-r from-[rgba(255,255,255,0.4)] to-[rgba(225,225,225,0.22)] rounded-lg w-full group hover:bg-white transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">

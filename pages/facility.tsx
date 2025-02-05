@@ -231,9 +231,7 @@ const LaneCard = ({
               free slots available
             </p>
           ) : Boolean(minimum_lane_price) ? (
-            <p className="text-xs">
-              Get this as low as ${minimum_lane_price} with Membership
-            </p>
+            <p className="text-xs">Get it free with Membership</p>
           ) : null}
         </Skeleton>
       </div>

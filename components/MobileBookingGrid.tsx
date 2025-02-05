@@ -1,13 +1,24 @@
 import { cx } from "@/lib/utils";
 import { Booking } from "@/typescript/interface/bookings.interface";
 import { Lane } from "@/typescript/interface/lane.interfaces";
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  HStack,
+  IconButton,
+  Text,
+  VStack
+} from "@chakra-ui/react";
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import BookingDetails from "./BookingDetails";
+import { SelectDate } from "./Modals/SelectDate";
+import { MobileSelectDate } from "./Modals/MobileSelectDate";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
-export default function BookingsGrid({
+export default function MobileBookingsGrid({
   bookings,
   lanes
 }: {
@@ -16,6 +27,8 @@ export default function BookingsGrid({
 }) {
   const searchParams = useSearchParams();
   const [bookingDetails, setBookingDetails] = useState<Booking>();
+  const [dateModal, setDateModal] = useState(false);
+
   const start_date =
     searchParams.get("start_date") ?? moment().startOf("week").toISOString();
 
@@ -33,7 +46,7 @@ export default function BookingsGrid({
   }, []);
 
   const weekdays = useMemo(() => {
-    return Array.from({ length: 7 }, (_, id) => {
+    return Array.from({ length: 1 }, (_, id) => {
       return moment(start_date).startOf("week").add(id, "day");
     });
   }, [start_date]);
@@ -46,9 +59,9 @@ export default function BookingsGrid({
   ];
 
   return (
-    <Box w="full" mt={8} className="shadow-custom max-md:hidden">
+    <Box w="full" mt={8} className="shadow-custom md:hidden">
       <Grid
-        templateColumns="1fr 7fr"
+        templateColumns="3fr 7fr"
         border="1px solid"
         borderColor="gray.300"
         rounded="md"
@@ -83,7 +96,7 @@ export default function BookingsGrid({
         <GridItem>
           {/* Header Row */}
           <Grid
-            templateColumns="repeat(7, 1fr)"
+            templateColumns="repeat(1, 1fr)"
             borderBottom="1px solid"
             borderColor="gray.300"
             h="60px"
@@ -92,6 +105,7 @@ export default function BookingsGrid({
               return (
                 <Box
                   key={day.unix()}
+                  onClick={() => setDateModal(true)}
                   h="60px"
                   display="flex"
                   flexDirection="column"
@@ -105,10 +119,28 @@ export default function BookingsGrid({
                     // "bg-lightPrimary text-primary": id !== 0,
                   })}
                 >
-                  <Text>{day.format("ddd")}</Text>
-                  <Text className="text-xs mt-1">
-                    {day.format("DD-MM-YYYY")}
-                  </Text>
+                  <HStack className="w-full px-4">
+                    <IconButton
+                      aria-label=""
+                      className="flex !h-auto !min-w-0 !p-1 rounded-md justify-center items-center !bg-lightPrimary mr-auto cursor-pointer"
+                      onClick={() => {}}
+                    >
+                      <IoIosArrowBack color="#2C8EE3" size={20} />
+                    </IconButton>
+                    <Box className="">
+                      <Text textAlign="center">{day.format("ddd")}</Text>
+                      <Text className="text-xs mt-1">
+                        {day.format("DD-MM-YYYY")}
+                      </Text>
+                    </Box>
+                    <IconButton
+                      aria-label=""
+                      className="flex !h-auto !min-w-0 !p-1 rounded-md justify-center items-center !bg-lightPrimary ml-auto cursor-pointer"
+                      onClick={() => {}}
+                    >
+                      <IoIosArrowForward color="#2C8EE3" size={20} />
+                    </IconButton>
+                  </HStack>
                 </Box>
               );
             })}
@@ -118,7 +150,7 @@ export default function BookingsGrid({
             {timings.map((time, rowIndex) => {
               const comparison_time = moment(time, "hh:mm A").format("HH:mm");
               return (
-                <Grid templateColumns="repeat(7, 1fr)" key={rowIndex}>
+                <Grid templateColumns="repeat(1, 1fr)" key={rowIndex}>
                   {weekdays.map((day, colIndex) => {
                     const booking_for_day = bookings.filter(
                       (_booking) =>
@@ -190,6 +222,12 @@ export default function BookingsGrid({
         booking={bookingDetails}
         close={() => setBookingDetails(undefined)}
       />
+      {dateModal && (
+        <MobileSelectDate
+          open={dateModal}
+          onClose={() => setDateModal(false)}
+        />
+      )}
     </Box>
   );
 }
