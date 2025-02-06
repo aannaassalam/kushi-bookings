@@ -15,10 +15,11 @@ function HeroSection() {
       />
       <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 top-0 left-0 z-0"></div>
       <div className="relative z-10">
-        <h1 className="text-[45px] font-bold text-white uppercase leading-[55px] tracking-tight w-11/12 max-lg:text-[40px] max-lg:leading-[50px] max-md:text-[30px] max-md:leading-[40px]">
-          Become a member and book our facility for a discounted price and enjoy
-          a <span className="text-primary">10% off</span> on any product bought
-          at our store.
+        <h1 className="text-[45px] font-bold text-white uppercase leading-[55px] tracking-tight w-[95%] max-lg:text-[40px] max-lg:leading-[50px] max-md:text-[30px] max-md:leading-[40px]">
+          Membership Perks <br /> Lane booking - As low as $0 per Hour <br />{" "}
+          <span className="text-primary">
+            10% discount at Kushi Cricket Store
+          </span>{" "}
         </h1>
         <p className="text-lg my-6 text-white max-w-[500px]">
           Looking to book lanes in bulk ?? choose our season passes which give

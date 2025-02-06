@@ -82,7 +82,7 @@ export default function FloatingMenu({
   return (
     <div
       className={cx(
-        "absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10 max-xl:px-[70px] max-lg:px-[40px]  max-md:px-[20px] max-lg:-bottom-[290px]",
+        "absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10 max-xl:px-[40px]   max-md:px-[20px] max-lg:-bottom-[290px]",
         { "max-lg:-bottom-[220px]": noButton }
       )}
     >

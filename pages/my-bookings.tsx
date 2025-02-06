@@ -2,6 +2,7 @@ import { getMyBookings } from "@/api/functions/bookings.api";
 import { getLanes } from "@/api/functions/lane.api";
 import BookingsFilter from "@/components/BookingsFilter";
 import BookingsGrid from "@/components/BookingsGrid";
+import MobileBookingsGrid from "@/components/MobileBookingGrid";
 import AppLayout from "@/layouts/AppLayout";
 import { Booking } from "@/typescript/interface/bookings.interface";
 import { Lane } from "@/typescript/interface/lane.interfaces";
@@ -77,12 +78,12 @@ export default function MyBookings({
           {/* </Box> */}
         </ModalContent>
       </Modal>
-      <div className=" relative w-full h-[200px] bg-gradient-to-r items-center from-[#1C1744] to-[#1C1744]/70 flex justify-center">
+      <div className=" relative w-full h-[200px] bg-gradient-to-r items-center from-[#1C1744] to-[#1C1744]/70 flex justify-center max-md:h-[150px]">
         <h1 className="text-white font-bold text-[36px]"> Bookings</h1>
         {/* <FloatingMenu /> */}
       </div>
 
-      <div className="px-[100px] mt-[50px] ">
+      <div className="px-[100px] mt-[50px] max-xl:px-[40px] max-lg:px-[20px] max-md:mt-6">
         <div className="w-full  rounded-md  flex flex-row justify-between">
           <VStack alignItems="flex-start">
             <p className="text-xl font-semibold">Bookings Lists</p>
@@ -107,6 +108,10 @@ export default function MyBookings({
         </div>
         <BookingsFilter />
         <BookingsGrid
+          bookings={data}
+          lanes={lanes_data.filter((_lane) => _lane.sport === "cricket")}
+        />
+        <MobileBookingsGrid
           bookings={data}
           lanes={lanes_data.filter((_lane) => _lane.sport === "cricket")}
         />

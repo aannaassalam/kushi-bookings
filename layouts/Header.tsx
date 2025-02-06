@@ -77,10 +77,10 @@ export default function Header() {
           }`}
         >
           Facility
-        </Link>
+        </Link> */}
         <Link
           href="/membership"
-          className={` ml-6 ${
+          className={` ml-6 max-md:hidden ${
             router.pathname.includes("membership")
               ? "text-primary"
               : "text-black"
@@ -89,15 +89,15 @@ export default function Header() {
           Membership
         </Link>
         <Link
-          href="/seasonPass"
-          className={` ml-6 ${
+          href="/season-pass"
+          className={` ml-6 max-md:hidden ${
             router.pathname.includes("seasonPass")
               ? "text-primary"
               : "text-black"
           }`}
         >
           Season Pass
-        </Link> */}
+        </Link>
         <IconButton
           variant="ghost"
           className="ml-2 mr-[10px]"
@@ -175,6 +175,26 @@ export default function Header() {
                 }`}
               >
                 My Bookings
+              </Link>
+              <Link
+                href="/membership"
+                className={`text-lg my-1 ${
+                  router.pathname.includes("membership")
+                    ? "text-primary"
+                    : "text-black"
+                }`}
+              >
+                Membership
+              </Link>
+              <Link
+                href="/season-pass"
+                className={`text-lg my-1 ${
+                  router.pathname.includes("season-pass")
+                    ? "text-primary"
+                    : "text-black"
+                }`}
+              >
+                Season Pass
               </Link>
             </VStack>
           </DrawerBody>

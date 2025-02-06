@@ -7,15 +7,15 @@ export default function WhyUs() {
         <h1 className="text-primaryText text-[32px] font-semibold uppercase">
           Why Choose Us
         </h1>
-        <div className="flex flex-row w-full justify-evenly mt-6 my-10 flex-wrap gap-4">
+        <div className="flex flex-row w-full justify-center mt-6 my-10 flex-wrap gap-4">
           <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
-            Spacious And Well Maintained Facilities
+            Collaborators
           </p>
           <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
-            Flexible Booking Options
+            FCC
           </p>
           <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
-            Perfect For All Age Groups And Activities
+            Cricket Badgers
           </p>
         </div>
         <h2 className="text-primaryText text-xl font-bold capitalize">
