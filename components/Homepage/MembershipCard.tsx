@@ -75,7 +75,7 @@ export default function MembershipCard({
       {type === "price_based" ? (
         <p className="text-black py-2 px-4 text-xs rounded-3xl bg-gray-200 w-max mt-8">
           Price For Members{" "}
-          <span className="font-semibold">${facility_price}</span>
+          <span className="font-semibold">${facility_price.Sunday}</span>
         </p>
       ) : (
         <p className="text-black py-2 px-4 text-xs rounded-3xl bg-gray-200 w-max mt-8">

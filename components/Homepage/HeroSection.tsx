@@ -1,6 +1,5 @@
 import assets from "@/json/assets";
 import Image from "next/image";
-import Link from "next/link";
 import FloatingMenu from "../FloatingMenu/FloatingMenu";
 
 function HeroSection() {
@@ -15,9 +14,13 @@ function HeroSection() {
       />
       <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 top-0 left-0 z-0"></div>
       <div className="relative z-10">
-        <h1 className="text-[45px] font-bold text-white uppercase leading-[55px] tracking-tight w-[95%] max-lg:text-[40px] max-lg:leading-[50px] max-md:text-[30px] max-md:leading-[40px]">
-          Membership Perks <br /> Lane booking - As low as $0 per Hour <br />{" "}
-          <span className="text-primary">
+        <h1 className="text-[45px] font-bold text-white uppercase leading-[55px] tracking-tight max-lg:text-[40px] max-lg:leading-[50px] max-md:text-[30px] max-md:leading-[40px]">
+          Membership Perks <br />{" "}
+          <span className="text-[30px] max-lg:text-[26px]  max-md:text-[24px]">
+            Lane booking - As low as $0 per Hour
+          </span>{" "}
+          <br />{" "}
+          <span className="text-primary text-[30px] max-lg:text-[26px]  max-md:text-[24px]">
             10% discount at Kushi Cricket Store
           </span>{" "}
         </h1>
@@ -25,7 +28,7 @@ function HeroSection() {
           Looking to book lanes in bulk ?? choose our season passes which give
           you discounted prices on bulk bookings .
         </p>
-        <div className="mt-10">
+        {/* <div className="mt-10">
           <Link
             href="/membership"
             className="primaryButton !text-primaryText mr-3 font-semibold !py-4"
@@ -38,7 +41,7 @@ function HeroSection() {
           >
             Season Pass
           </Link>
-        </div>
+        </div> */}
       </div>
       <FloatingMenu />
     </div>

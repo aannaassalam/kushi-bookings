@@ -7,16 +7,14 @@ import {
   GridItem,
   HStack,
   IconButton,
-  Text,
-  VStack
+  Text
 } from "@chakra-ui/react";
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import BookingDetails from "./BookingDetails";
-import { SelectDate } from "./Modals/SelectDate";
-import { MobileSelectDate } from "./Modals/MobileSelectDate";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import BookingDetails from "./BookingDetails";
+import { MobileSelectDate } from "./Modals/MobileSelectDate";
 
 export default function MobileBookingsGrid({
   bookings,

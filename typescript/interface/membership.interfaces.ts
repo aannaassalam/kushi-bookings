@@ -1,3 +1,4 @@
+import { DaysInterface } from "./facility.interfaces";
 import { User } from "./user.interfaces";
 
 export interface Membership {
@@ -8,7 +9,9 @@ export interface Membership {
   price: number;
   stripe_price_id: string;
   recurring_type: string;
-  facility_price: number;
+  facility_price: {
+    [key in DaysInterface]: number;
+  };
   type: string;
   number_of_free_slots_per_week: number;
   createdAt: string;
@@ -22,7 +25,9 @@ export interface CurrentMembership {
   user: User;
   sport: string;
   available_slots: number;
-  facility_feature_price: number;
+  facility_feature_price: {
+    [key in DaysInterface]: number;
+  };
   type: string;
   active: number;
   subscription_id: string;

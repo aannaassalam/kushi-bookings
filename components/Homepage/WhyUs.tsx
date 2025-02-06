@@ -5,12 +5,9 @@ export default function WhyUs() {
     <div className="px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px]">
       <div className="flex flex-col justify-between items-center">
         <h1 className="text-primaryText text-[32px] font-semibold uppercase">
-          Why Choose Us
+          Collaborators
         </h1>
         <div className="flex flex-row w-full justify-center mt-6 my-10 flex-wrap gap-4">
-          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
-            Collaborators
-          </p>
           <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
             FCC
           </p>

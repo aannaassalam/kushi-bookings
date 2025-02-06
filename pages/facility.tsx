@@ -1,9 +1,10 @@
+import {
+  BookingFilter,
+  getBookingsForFilter
+} from "@/api/functions/bookings.api";
 import { getFacility } from "@/api/functions/facility.api";
 import { getLanes } from "@/api/functions/lane.api";
-import {
-  getCurrentMembership,
-  getMemberships
-} from "@/api/functions/membership.api";
+import { getCurrentMembership } from "@/api/functions/membership.api";
 import FloatingMenu from "@/components/FloatingMenu/FloatingMenu";
 import assets from "@/json/assets";
 import AppLayout from "@/layouts/AppLayout";
@@ -17,20 +18,16 @@ import {
   CurrentMembership,
   Membership
 } from "@/typescript/interface/membership.interfaces";
+import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { isArray, min } from "lodash";
+import { isArray } from "lodash";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { parseCookies } from "nookies";
 import { useMemo } from "react";
 import { useCartContext } from "./_app";
-import {
-  BookingFilter,
-  getBookingsForFilter
-} from "@/api/functions/bookings.api";
-import { parseCookies } from "nookies";
-import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { date, sport, time_slots } = ctx.query;
@@ -41,7 +38,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const lanes = await getLanes(sport?.toString() || "cricket");
 
   const facility_data = await getFacility();
-  const memberships_data = await getMemberships(sport?.toString() ?? "cricket");
   const bookings_data = await getBookingsForFilter({
     date: date?.toString() || "",
     sport: sport?.toString() || "",
@@ -55,7 +51,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       lanes,
       facility_data,
-      memberships_data,
       bookings_data,
       current_membership
     }
@@ -68,7 +63,8 @@ const LaneCard = ({
   minimum_lane_price,
   bookings,
   current_membership,
-  isLoading
+  isLoading,
+  image
 }: {
   lane: Lane;
   price: number;
@@ -76,6 +72,7 @@ const LaneCard = ({
   bookings: BookingFilter;
   current_membership: CurrentMembership;
   isLoading: boolean;
+  image: string;
 }) => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
@@ -95,10 +92,12 @@ const LaneCard = ({
 
   const discounted_price = useMemo(() => {
     if (current_membership) {
-      return current_membership.membership.facility_price;
+      return current_membership.membership.facility_price[
+        moment(date).format("dddd") as DaysInterface
+      ];
     }
     return price;
-  }, [current_membership, price]);
+  }, [current_membership, price, date]);
 
   const onAddToCart = () => {
     const lanes = (cart?.lanes ?? []).filter(
@@ -151,11 +150,11 @@ const LaneCard = ({
     <div className="rounded-xl border border-gray-200">
       <div className="flex p-2 items-center border-b border-b-gray-200">
         <Image
-          src={assets.lane}
+          src={image ?? assets.lane}
           width={50}
           height={50}
           alt=""
-          className="w-[50px] h-[50px]"
+          className="w-[50px] h-[50px] object-contain"
         />
         <div className="ml-4">
           <p className="text-black font-semibold">{lane.name}</p>
@@ -242,7 +241,6 @@ const LaneCard = ({
 export default function Facility({
   lanes,
   facility_data,
-  memberships_data,
   bookings_data,
   current_membership
 }: {
@@ -282,12 +280,6 @@ export default function Facility({
     initialData: bookings_data
   });
 
-  const { data: memberships, isPending: isMembershipLoading } = useQuery({
-    queryKey: ["memberships", sport],
-    queryFn: () => getMemberships(sport?.toString() ?? "cricket"),
-    initialData: memberships_data
-  });
-
   const { data: user_membership, isPending: isUserMembershipLoading } =
     useQuery({
       queryKey: ["current_membership", sport],
@@ -296,20 +288,15 @@ export default function Facility({
       enabled: !!current_membership
     });
 
-  const minimum_lane_price = useMemo(() => {
-    const facility_prices = memberships.map(
-      (_membership) => _membership.facility_price
-    );
-    return min(facility_prices);
-  }, [memberships]);
-
   const box_booking_not_available = useMemo(() => {
     return Object.keys(bookings).some((_key) => bookings[_key].length > 0);
   }, [bookings]);
 
   const discounted_price = useMemo(() => {
     if (current_membership) {
-      return current_membership.membership.facility_price;
+      return current_membership.membership.facility_price[
+        moment(date).format("dddd") as DaysInterface
+      ];
     }
     return facility.price[moment(date).format("dddd") as DaysInterface];
   }, [current_membership, date, facility?.price]);
@@ -365,26 +352,24 @@ export default function Facility({
     }
   };
 
-  console.log(Boolean(cart?.box_booking_price));
-
   return (
     <AppLayout>
       <div>
         <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center max-md:h-[150px]">
-          <h1 className="text-white font-bold text-[36px] mt-10 max-lg:mt-0  max-lg:flex max-lg:items-center">
+          {/* <h1 className="text-white font-bold text-[36px] mt-10 max-lg:mt-0  max-lg:flex max-lg:items-center">
             FACILITY
-          </h1>
+          </h1> */}
+          <Image
+            src={assets.logo}
+            width={153}
+            height={45}
+            alt="logo"
+            className="object-contain mb-10 max-lg:mb-0"
+          />
           <FloatingMenu noButton />
         </div>
         <div className="px-[100px] mt-[100px] max-lg:px-[40px] max-md:px-[20px] max-lg:mt-[250px]">
           <div className="w-full p-10 rounded-md bg-[#F5F7F2] flex flex-row justify-between max-xl:flex-col max-md:p-4">
-            <Image
-              src={assets.logo}
-              width={153}
-              height={45}
-              alt="logo"
-              className="object-contain max-xl:mb-4"
-            />
             <div>
               <p className="text-primaryText text-[30px] font-bold max-md:text-2xl max-md:mb-4">
                 Showing Result For {moment(date).format("MMMM D, YYYY")}
@@ -417,15 +402,12 @@ export default function Facility({
                 price={
                   facility!.price[moment(date).format("dddd") as DaysInterface]
                 }
-                minimum_lane_price={minimum_lane_price}
                 bookings={bookings}
                 current_membership={user_membership}
                 isLoading={
-                  isPending ||
-                  isBookingsLoading ||
-                  isMembershipLoading ||
-                  isUserMembershipLoading
+                  isPending || isBookingsLoading || isUserMembershipLoading
                 }
+                image={facility.image}
               />
             ))}
           </div>
