@@ -5,7 +5,9 @@ import {
   getProfile,
   updateProfile
 } from "@/api/functions/user.api";
+import CustomInput from "@/components/CustomInput";
 import assets from "@/json/assets";
+import validationText from "@/json/messages/validationText";
 import AppLayout from "@/layouts/AppLayout";
 import { cx } from "@/lib/utils";
 import { CurrentMembership } from "@/typescript/interface/membership.interfaces";
@@ -152,13 +154,23 @@ const ActiveSeasonPass = ({
 };
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
-  phone: yup.number().required(),
-  full_name: yup.string().required()
+  full_name: yup.string().required(validationText.error.fullName),
+  phone: yup
+    .number()
+    .test(
+      "len",
+      "Phone number must be exactly 10 digits",
+      (val) => val?.toString().length === 10
+    )
+    .required(validationText.error.phoneNumberIsValid),
+  email: yup.string().required(validationText.error.enter_email)
 });
 
 const changePasswordSchema = yup.object().shape({
-  password: yup.string().min(8).required()
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .required(validationText.error.passwordTooShort)
 });
 
 function Profile({
@@ -179,7 +191,11 @@ function Profile({
     initialData: profile
   });
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       email: data.email,
@@ -308,65 +324,30 @@ function Profile({
                   </Button>
                 </VStack>
                 <Box className="flex-1 max-md:w-full">
-                  <div className="bg-white rounded-lg px-4 py-2 mb-4">
-                    <label
-                      className="block text-sm font-medium text-gray-700"
-                      htmlFor="fName"
-                    >
-                      Full Name
-                    </label>
-                    <input
-                      type="text"
-                      id="fName"
-                      className="w-full  mt-1  focus:outline-none outline-none bg-white"
-                      placeholder="Full Name"
-                      {...register("full_name")}
-                    />
-                  </div>
-                  {/* <div className="bg-white rounded-lg px-4 py-2 mb-4">
-                      <label
-                        className="block text-sm font-medium text-gray-700"
-                        htmlFor="lName"
-                      >
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        id="lName"
-                        className="w-full  mt-1  focus:outline-none outline-none bg-white"
-                        placeholder="First Name"
-                      />
-                    </div> */}
-                  <div className="bg-white rounded-lg px-4 py-2 mb-4">
-                    <label
-                      className="block text-sm font-medium text-gray-700"
-                      htmlFor="email"
-                    >
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="w-full  mt-1  focus:outline-none outline-none bg-white"
-                      placeholder="Enter Email Address"
-                      {...register("email")}
-                    />
-                  </div>
-                  <div className="bg-white rounded-lg px-4 py-2 mb-4">
-                    <label
-                      className="block text-sm font-medium text-gray-700"
-                      htmlFor="phone"
-                    >
-                      Phone Number
-                    </label>
-                    <input
-                      type="number"
-                      id="phone"
-                      className="w-full  mt-1  focus:outline-none outline-none bg-white"
-                      placeholder="Enter Phone Number"
-                      {...register("phone")}
-                    />
-                  </div>
+                  <CustomInput
+                    id="fname"
+                    text="Full Name"
+                    type="text"
+                    placeholder="Enter Full name"
+                    validationProps={{ ...register("full_name") }}
+                    error={errors?.full_name?.message || ""}
+                  />
+                  <CustomInput
+                    id="email"
+                    text="Email Address"
+                    type="email"
+                    placeholder="Enter email address"
+                    validationProps={{ ...register("email") }}
+                    error={errors?.email?.message || ""}
+                  />
+                  <CustomInput
+                    id="phone"
+                    text="Phone Number"
+                    type="number"
+                    placeholder="Enter phone number"
+                    validationProps={{ ...register("phone") }}
+                    error={errors?.phone?.message || ""}
+                  />
                   <div className="bg-white rounded-lg px-4 py-2 mb-4">
                     <label
                       className="block text-sm font-medium text-gray-700"

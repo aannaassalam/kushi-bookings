@@ -1,5 +1,7 @@
 import { forgotPassword } from "@/api/functions/user.api";
+import CustomInput from "@/components/CustomInput";
 import assets from "@/json/assets";
+import validationText from "@/json/messages/validationText";
 import { Button } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -10,13 +12,17 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  email: yup.string().email().required()
+  email: yup.string().required(validationText.error.enter_email)
 });
 
 export default function ForgotPassword() {
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       email: ""
@@ -59,21 +65,14 @@ export default function ForgotPassword() {
 
           {/* Email Input */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="john.doe@companyname.com"
-                {...register("email")}
-              />
-            </div>
+            <CustomInput
+              id="email"
+              text="Email Address"
+              type="email"
+              placeholder="johndoe@example.com"
+              validationProps={{ ...register("email") }}
+              error={errors?.email?.message || ""}
+            />
 
             {/* Submit Button */}
             <Button

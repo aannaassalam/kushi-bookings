@@ -1,5 +1,7 @@
 import { signup } from "@/api/functions/user.api";
+import CustomInput from "@/components/CustomInput";
 import assets from "@/json/assets";
+import validationText from "@/json/messages/validationText";
 import { setCookieClient } from "@/lib/functions/storage.lib";
 import { Box, Button } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,18 +17,35 @@ import { toast } from "sonner";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  full_name: yup.string().required(),
-  phone: yup.number().required(),
-  email: yup.string().required(),
-  password: yup.string().required(),
-  confirm_password: yup.string().required()
+  full_name: yup.string().required(validationText.error.fullName),
+  phone: yup
+    .number()
+    .test(
+      "len",
+      "Phone number must be exactly 10 digits",
+      (val) => val?.toString().length === 10
+    )
+    .required(validationText.error.phoneNumberIsValid),
+  email: yup.string().required(validationText.error.enter_email),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .required(validationText.error.passwordTooShort),
+  confirm_password: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required(validationText.error.enter_password_confirm)
 });
 
 export default function SignUp() {
   const router = useRouter();
   const [profile_picture, setProfile_picture] = useState<File>();
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     resolver: yupResolver(schema)
   });
 
@@ -69,83 +88,48 @@ export default function SignUp() {
             Enter your details to continue
           </p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-[#fafafa] rounded-lg mb-4 px-4 py-2">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="fname"
-              >
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="fname"
-                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter Full name"
-                {...register("full_name")}
-              />
-            </div>
+            <CustomInput
+              id="fname"
+              text="Full Name"
+              type="text"
+              placeholder="Enter Full name"
+              validationProps={{ ...register("full_name") }}
+              error={errors?.full_name?.message || ""}
+            />
+            <CustomInput
+              id="email"
+              text="Email Address"
+              type="email"
+              placeholder="Enter email address"
+              validationProps={{ ...register("email") }}
+              error={errors?.email?.message || ""}
+            />
+            <CustomInput
+              id="phone"
+              text="Phone Number"
+              type="number"
+              placeholder="Enter phone number"
+              validationProps={{ ...register("phone") }}
+              error={errors?.phone?.message || ""}
+            />
+            <CustomInput
+              id="password"
+              text="Password"
+              type="password"
+              placeholder="Enter Password"
+              validationProps={{ ...register("password") }}
+              error={errors?.password?.message || ""}
+            />
 
-            {/* </HStack> */}
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter email address"
-                {...register("email")}
-              />
-            </div>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="phone"
-              >
-                Phone Number
-              </label>
-              <input
-                type="number"
-                id="phone"
-                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter phone number"
-                {...register("phone")}
-              />
-            </div>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter password"
-                {...register("password")}
-              />
-            </div>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="confirm-password"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirm-password"
-                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter confirm password"
-                {...register("confirm_password")}
-              />
-            </div>
+            <CustomInput
+              id="confirm_password"
+              text="Confirm Password"
+              type="password"
+              placeholder="Enter Confirm Password"
+              validationProps={{ ...register("confirm_password") }}
+              error={errors?.confirm_password?.message || ""}
+            />
+
             <div className="bg-[#fafafa] rounded-lg px-4 py-4 mb-4">
               <label
                 className="text-sm font-medium text-gray-700 flex-col flex cursor-pointer"
@@ -157,7 +141,6 @@ export default function SignUp() {
                     ? profile_picture.name
                     : "Click to upload Profile Picture"}
                 </Box>
-                {/* <p className=" text-gray-500 mt-2">Screenshot1.png</p>  if image selected then show */}
               </label>
               <input
                 type="file"

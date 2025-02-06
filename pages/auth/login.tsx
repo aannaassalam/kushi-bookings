@@ -12,17 +12,26 @@ import { useRouter } from "next/router";
 import { useCartContext } from "../_app";
 import moment from "moment";
 import { getCurrentMembership } from "@/api/functions/membership.api";
+import validationText from "@/json/messages/validationText";
+import CustomInput from "@/components/CustomInput";
 
 const schema = yup.object().shape({
-  email: yup.string().required(),
-  password: yup.string().required()
+  email: yup.string().required(validationText.error.enter_email),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .required(validationText.error.passwordTooShort)
 });
 
 export default function Login() {
   const router = useRouter();
   const { cart, setCart } = useCartContext();
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       email: "",
@@ -121,41 +130,22 @@ export default function Login() {
 
           {/* Email Input */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="john.doe@companyname.com"
-                // required
-                {...register("email")}
-              />
-            </div>
-
-            {/* Password Input */}
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                className="w-full  mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter password"
-                // required
-                {...register("password")}
-              />
-            </div>
-
+            <CustomInput
+              id="email"
+              text="Email Address"
+              type="email"
+              placeholder="johndoe@example.com"
+              validationProps={{ ...register("email") }}
+              error={errors?.email?.message || ""}
+            />
+            <CustomInput
+              id="password"
+              text="Password"
+              type="password"
+              placeholder="Enter Password"
+              validationProps={{ ...register("password") }}
+              error={errors?.password?.message || ""}
+            />
             {/* Remember Me and Forgot Password */}
             <div className="flex items-center justify-end mb-4">
               {/* <label className="flex items-center">
