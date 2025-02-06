@@ -1,9 +1,10 @@
+import {
+  BookingFilter,
+  getBookingsForFilter
+} from "@/api/functions/bookings.api";
 import { getFacility } from "@/api/functions/facility.api";
 import { getLanes } from "@/api/functions/lane.api";
-import {
-  getCurrentMembership,
-  getMemberships
-} from "@/api/functions/membership.api";
+import { getCurrentMembership } from "@/api/functions/membership.api";
 import FloatingMenu from "@/components/FloatingMenu/FloatingMenu";
 import assets from "@/json/assets";
 import AppLayout from "@/layouts/AppLayout";
@@ -17,20 +18,16 @@ import {
   CurrentMembership,
   Membership
 } from "@/typescript/interface/membership.interfaces";
+import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { isArray, min } from "lodash";
+import { isArray } from "lodash";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { parseCookies } from "nookies";
 import { useMemo } from "react";
 import { useCartContext } from "./_app";
-import {
-  BookingFilter,
-  getBookingsForFilter
-} from "@/api/functions/bookings.api";
-import { parseCookies } from "nookies";
-import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { date, sport, time_slots } = ctx.query;
@@ -41,7 +38,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const lanes = await getLanes(sport?.toString() || "cricket");
 
   const facility_data = await getFacility();
-  const memberships_data = await getMemberships(sport?.toString() ?? "cricket");
   const bookings_data = await getBookingsForFilter({
     date: date?.toString() || "",
     sport: sport?.toString() || "",
@@ -55,7 +51,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {
       lanes,
       facility_data,
-      memberships_data,
       bookings_data,
       current_membership
     }
@@ -95,10 +90,12 @@ const LaneCard = ({
 
   const discounted_price = useMemo(() => {
     if (current_membership) {
-      return current_membership.membership.facility_price;
+      return current_membership.membership.facility_price[
+        moment(date).format("dddd") as DaysInterface
+      ];
     }
     return price;
-  }, [current_membership, price]);
+  }, [current_membership, price, date]);
 
   const onAddToCart = () => {
     const lanes = (cart?.lanes ?? []).filter(
@@ -231,9 +228,7 @@ const LaneCard = ({
               free slots available
             </p>
           ) : Boolean(minimum_lane_price) ? (
-            <p className="text-xs">
-              Get this as low as ${minimum_lane_price} with Membership
-            </p>
+            <p className="text-xs">Get it free with Membership</p>
           ) : null}
         </Skeleton>
       </div>
@@ -244,7 +239,6 @@ const LaneCard = ({
 export default function Facility({
   lanes,
   facility_data,
-  memberships_data,
   bookings_data,
   current_membership
 }: {
@@ -284,12 +278,6 @@ export default function Facility({
     initialData: bookings_data
   });
 
-  const { data: memberships, isPending: isMembershipLoading } = useQuery({
-    queryKey: ["memberships", sport],
-    queryFn: () => getMemberships(sport?.toString() ?? "cricket"),
-    initialData: memberships_data
-  });
-
   const { data: user_membership, isPending: isUserMembershipLoading } =
     useQuery({
       queryKey: ["current_membership", sport],
@@ -298,20 +286,15 @@ export default function Facility({
       enabled: !!current_membership
     });
 
-  const minimum_lane_price = useMemo(() => {
-    const facility_prices = memberships.map(
-      (_membership) => _membership.facility_price
-    );
-    return min(facility_prices);
-  }, [memberships]);
-
   const box_booking_not_available = useMemo(() => {
     return Object.keys(bookings).some((_key) => bookings[_key].length > 0);
   }, [bookings]);
 
   const discounted_price = useMemo(() => {
     if (current_membership) {
-      return current_membership.membership.facility_price;
+      return current_membership.membership.facility_price[
+        moment(date).format("dddd") as DaysInterface
+      ];
     }
     return facility.price[moment(date).format("dddd") as DaysInterface];
   }, [current_membership, date, facility?.price]);
@@ -419,14 +402,10 @@ export default function Facility({
                 price={
                   facility!.price[moment(date).format("dddd") as DaysInterface]
                 }
-                minimum_lane_price={minimum_lane_price}
                 bookings={bookings}
                 current_membership={user_membership}
                 isLoading={
-                  isPending ||
-                  isBookingsLoading ||
-                  isMembershipLoading ||
-                  isUserMembershipLoading
+                  isPending || isBookingsLoading || isUserMembershipLoading
                 }
               />
             ))}
