@@ -34,7 +34,7 @@ export default function Footer() {
           >
             Home
           </Link>
-          <Link
+          {/* <Link
             href="/facility"
             className={` ml-6 ${
               router.pathname.includes("facility")
@@ -43,7 +43,7 @@ export default function Footer() {
             }`}
           >
             Facilities
-          </Link>
+          </Link> */}
           <Link
             href="/membership"
             className={` ml-6 ${

@@ -2,9 +2,9 @@ import { getFacility } from "@/api/functions/facility.api";
 import { cx } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { SelectDate } from "../Modals/SelectDate";
 import { SelectSport } from "../Modals/SelectSport";
@@ -21,6 +21,7 @@ export default function FloatingMenu({
   const [timeModal, setTimeModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const date = searchParams.get("date") ?? moment().toISOString();
   const time_slots = searchParams.getAll("time_slots");
@@ -36,6 +37,16 @@ export default function FloatingMenu({
     const day = data?.days.find((_day) => _day.day === day_of_week);
     return !day ? { start_time: "", end_time: "" } : day.timings;
   }, [data, date]);
+
+  useEffect(() => {
+    router.replace({
+      pathname,
+      query: {
+        date,
+        sport
+      }
+    });
+  }, [moment().format("HH:mm")]);
 
   const slots = useMemo(() => {
     const _start_time = moment(start_time, "HH:mm");

@@ -63,7 +63,8 @@ const LaneCard = ({
   minimum_lane_price,
   bookings,
   current_membership,
-  isLoading
+  isLoading,
+  image
 }: {
   lane: Lane;
   price: number;
@@ -71,6 +72,7 @@ const LaneCard = ({
   bookings: BookingFilter;
   current_membership: CurrentMembership;
   isLoading: boolean;
+  image: string;
 }) => {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
@@ -148,11 +150,11 @@ const LaneCard = ({
     <div className="rounded-xl border border-gray-200">
       <div className="flex p-2 items-center border-b border-b-gray-200">
         <Image
-          src={assets.lane}
+          src={image ?? assets.lane}
           width={50}
           height={50}
           alt=""
-          className="w-[50px] h-[50px]"
+          className="w-[50px] h-[50px] object-contain"
         />
         <div className="ml-4">
           <p className="text-black font-semibold">{lane.name}</p>
@@ -350,26 +352,24 @@ export default function Facility({
     }
   };
 
-  console.log(Boolean(cart?.box_booking_price));
-
   return (
     <AppLayout>
       <div>
         <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center max-md:h-[150px]">
-          <h1 className="text-white font-bold text-[36px] mt-10 max-lg:mt-0  max-lg:flex max-lg:items-center">
+          {/* <h1 className="text-white font-bold text-[36px] mt-10 max-lg:mt-0  max-lg:flex max-lg:items-center">
             FACILITY
-          </h1>
+          </h1> */}
+          <Image
+            src={assets.logo}
+            width={153}
+            height={45}
+            alt="logo"
+            className="object-contain mb-10 max-lg:mb-0"
+          />
           <FloatingMenu noButton />
         </div>
         <div className="px-[100px] mt-[100px] max-lg:px-[40px] max-md:px-[20px] max-lg:mt-[250px]">
           <div className="w-full p-10 rounded-md bg-[#F5F7F2] flex flex-row justify-between max-xl:flex-col max-md:p-4">
-            <Image
-              src={assets.logo}
-              width={153}
-              height={45}
-              alt="logo"
-              className="object-contain max-xl:mb-4"
-            />
             <div>
               <p className="text-primaryText text-[30px] font-bold max-md:text-2xl max-md:mb-4">
                 Showing Result For {moment(date).format("MMMM D, YYYY")}
@@ -407,6 +407,7 @@ export default function Facility({
                 isLoading={
                   isPending || isBookingsLoading || isUserMembershipLoading
                 }
+                image={facility.image}
               />
             ))}
           </div>
