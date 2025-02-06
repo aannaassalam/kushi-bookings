@@ -26,10 +26,10 @@ function BookingsFilter() {
   return (
     <div
       className={cx(
-        "w-full bg-white grid grid-cols-5 rounded-lg shadow-custom mt-8 border border-gray-200 max-md:hidden"
+        "w-full bg-white grid grid-cols-5 rounded-lg shadow-custom mt-8 border border-gray-200 max-md:grid-cols-2"
       )}
     >
-      <HStack className="p-3 border-r border-r-gray-200 min-w-[200px] col-span-3 max-lg:col-span-5 max-lg:border-b max-lg:border-b-gray-300">
+      <HStack className="p-3 border-r border-r-gray-200 min-w-[200px] col-span-3 max-lg:col-span-5 max-lg:border-b max-lg:border-b-gray-300 max-md:!hidden">
         <Box>
           <p className="text-gray-700 font-semibold">Date</p>
           <p className="text-gray-700">
@@ -86,7 +86,7 @@ function BookingsFilter() {
         </IconButton>
       </HStack>
       <HStack
-        className="p-3 border-r border-r-gray-200 min-w-[200px] cursor-pointer max-lg:col-start-1 "
+        className="p-3 border-r border-r-gray-200 min-w-[200px] cursor-pointer max-lg:col-start-1 max-md:min-w-[150px]"
         onClick={() => setSportModal(true)}
       >
         <Box>
@@ -98,7 +98,7 @@ function BookingsFilter() {
         </Box>
       </HStack>
       <HStack
-        className="p-3 border-r border-r-gray-200 min-w-[200px] cursor-pointer max-lg:ml-[40px]"
+        className="p-3 border-r border-r-gray-200 min-w-[200px] cursor-pointer max-lg:ml-[40px] max-md:ml-0 max-md:min-w-[150px]"
         onClick={() => setLaneModal(true)}
       >
         <Box>

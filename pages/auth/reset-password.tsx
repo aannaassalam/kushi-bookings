@@ -1,5 +1,7 @@
 import { resetPassword } from "@/api/functions/user.api";
+import CustomInput from "@/components/CustomInput";
 import assets from "@/json/assets";
+import validationText from "@/json/messages/validationText";
 import { Button } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
@@ -9,13 +11,20 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  password: yup.string().required()
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .required(validationText.error.passwordTooShort)
 });
 
 export default function ResetPassword() {
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       password: ""
@@ -58,35 +67,15 @@ export default function ResetPassword() {
 
           {/* Email Input */}
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter password"
-                {...register("password")}
-              />
-            </div>
-            {/* <div className="bg-[#fafafa] rounded-lg  px-4 py-2 mb-4">
-              <label
-                className="block text-sm font-medium text-gray-700"
-                htmlFor="confirm-password"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="confirm-password"
-                className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-                placeholder="Enter confirm password"
-              />
-            </div> */}
+            <CustomInput
+              id="password"
+              text="Password"
+              type="password"
+              placeholder="Enter Password"
+              validationProps={{ ...register("password") }}
+              error={errors?.password?.message || ""}
+            />
+
             {/* Submit Button */}
             <Button
               type="submit"
