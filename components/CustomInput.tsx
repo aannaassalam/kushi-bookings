@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { error } from "console";
-import React from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 function CustomInput({
   id,
@@ -14,7 +13,7 @@ function CustomInput({
   text: string;
   placeholder: string;
   type: string;
-  validationProps: any;
+  validationProps: UseFormRegisterReturn;
   error: string;
 }) {
   return (
