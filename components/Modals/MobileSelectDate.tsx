@@ -56,10 +56,9 @@ export const MobileSelectDate = ({
         <ModalBody pb="4">
           <Calendar
             onChange={setSelectedDate}
-            value={[
-              moment(selectedDate?.toString()).startOf("week").toISOString(),
-              moment(selectedDate?.toString()).endOf("week").toISOString()
-            ]}
+            value={moment(selectedDate?.toString())
+              .startOf("day")
+              .toISOString()}
             className="text-sm relative"
             calendarType="hebrew"
             formatShortWeekday={(locale, date) =>

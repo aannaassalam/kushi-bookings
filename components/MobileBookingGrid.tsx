@@ -15,6 +15,7 @@ import { useMemo, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BookingDetails from "./BookingDetails";
 import { MobileSelectDate } from "./Modals/MobileSelectDate";
+import { useRouter } from "next/router";
 
 export default function MobileBookingsGrid({
   bookings,
@@ -26,6 +27,7 @@ export default function MobileBookingsGrid({
   const searchParams = useSearchParams();
   const [bookingDetails, setBookingDetails] = useState<Booking>();
   const [dateModal, setDateModal] = useState(false);
+  const router = useRouter();
 
   const start_date =
     searchParams.get("start_date") ?? moment().startOf("week").toISOString();
@@ -43,9 +45,9 @@ export default function MobileBookingsGrid({
     });
   }, []);
 
-  const weekdays = useMemo(() => {
+  const currentDay = useMemo(() => {
     return Array.from({ length: 1 }, (_, id) => {
-      return moment(start_date).startOf("week").add(id, "day");
+      return moment(start_date).startOf("day").add(id, "day");
     });
   }, [start_date]);
 
@@ -99,11 +101,10 @@ export default function MobileBookingsGrid({
             borderColor="gray.300"
             h="60px"
           >
-            {weekdays.map((day, id) => {
+            {currentDay.map((day, id) => {
               return (
                 <Box
                   key={day.unix()}
-                  onClick={() => setDateModal(true)}
                   h="60px"
                   display="flex"
                   flexDirection="column"
@@ -120,12 +121,29 @@ export default function MobileBookingsGrid({
                   <HStack className="w-full px-4">
                     <IconButton
                       aria-label=""
-                      className="flex !h-auto !min-w-0 !p-1 rounded-md justify-center items-center !bg-lightPrimary mr-auto cursor-pointer"
-                      onClick={() => {}}
+                      className={cx(
+                        "flex !h-auto !min-w-0 !p-1 rounded-md justify-center items-center !bg-lightPrimary mr-auto cursor-pointer",
+                        {
+                          "!bg-white":
+                            day.format("DD/MM/YYYY") ===
+                            moment().format("DD/MM/YYYY")
+                        }
+                      )}
+                      onClick={() => {
+                        const params = new URLSearchParams();
+                        params.set(
+                          "start_date",
+                          moment(start_date).subtract(1, "day").toISOString()
+                        );
+
+                        router.push({ search: params.toString() }, undefined, {
+                          shallow: true
+                        });
+                      }}
                     >
                       <IoIosArrowBack color="#2C8EE3" size={20} />
                     </IconButton>
-                    <Box className="">
+                    <Box className="" onClick={() => setDateModal(true)}>
                       <Text textAlign="center">{day.format("ddd")}</Text>
                       <Text className="text-xs mt-1">
                         {day.format("DD-MM-YYYY")}
@@ -133,8 +151,25 @@ export default function MobileBookingsGrid({
                     </Box>
                     <IconButton
                       aria-label=""
-                      className="flex !h-auto !min-w-0 !p-1 rounded-md justify-center items-center !bg-lightPrimary ml-auto cursor-pointer"
-                      onClick={() => {}}
+                      className={cx(
+                        "flex !h-auto !min-w-0 !p-1 rounded-md justify-center items-center !bg-lightPrimary ml-auto cursor-pointer",
+                        {
+                          "!bg-white":
+                            day.format("DD/MM/YYYY") ===
+                            moment().format("DD/MM/YYYY")
+                        }
+                      )}
+                      onClick={() => {
+                        const params = new URLSearchParams();
+                        params.set(
+                          "start_date",
+                          moment(start_date).add(1, "day").toISOString()
+                        );
+
+                        router.push({ search: params.toString() }, undefined, {
+                          shallow: true
+                        });
+                      }}
                     >
                       <IoIosArrowForward color="#2C8EE3" size={20} />
                     </IconButton>
@@ -149,7 +184,7 @@ export default function MobileBookingsGrid({
               const comparison_time = moment(time, "hh:mm A").format("HH:mm");
               return (
                 <Grid templateColumns="repeat(1, 1fr)" key={rowIndex}>
-                  {weekdays.map((day, colIndex) => {
+                  {currentDay.map((day, colIndex) => {
                     const booking_for_day = bookings.filter(
                       (_booking) =>
                         moment(_booking.date).format("DD/MM/YYYY") ===
