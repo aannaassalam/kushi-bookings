@@ -1,5 +1,6 @@
 import { getFacility } from "@/api/functions/facility.api";
 import assets from "@/json/assets";
+import { cx } from "@/lib/utils";
 import { Booking } from "@/typescript/interface/bookings.interface";
 import { DaysInterface } from "@/typescript/interface/facility.interfaces";
 import {
@@ -17,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { IoMdClose } from "react-icons/io";
 import { IoChatbubblesOutline } from "react-icons/io5";
@@ -29,6 +31,7 @@ export default function BookingDetails({
   close: () => void;
 }) {
   // const { isOpen, onClose, onOpen } = useDisclosure();
+  const [viewNotes, setViewNotes] = useState(false);
   const { data } = useQuery({ queryKey: ["facility"], queryFn: getFacility });
 
   const actual_price =
@@ -94,10 +97,25 @@ export default function BookingDetails({
                 <p className="text-gray-600 text-sm">Transaction ID</p>
                 <p className="text-xs">{booking?.transaction_id}</p>
               </Box>
-              <Box className="bg-primary p-4 rounded-md ml-auto">
+              <Box
+                className={cx(
+                  "bg-primary p-4 rounded-md ml-auto cursor-pointer",
+                  {
+                    "bg-primary/50 cursor-not-allowed": !booking?.note
+                  }
+                )}
+                onClick={() => !!booking?.note && setViewNotes((prev) => !prev)}
+              >
                 <IoChatbubblesOutline size={20} color="#fff" />
               </Box>
             </HStack>
+            <Box
+              className={cx("w-full bg-gray-50 rounded-lg p-4 mt-5", {
+                hidden: !viewNotes
+              })}
+            >
+              {booking?.note}
+            </Box>
             {/* Create Timing Section */}
             <Box mt={6}>
               <Box

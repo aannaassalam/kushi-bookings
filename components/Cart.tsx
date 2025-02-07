@@ -20,25 +20,29 @@ import {
   MenuItemOption,
   MenuList,
   Text,
+  Textarea,
   useDisclosure,
   VStack
 } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { IoIosRemoveCircleOutline, IoMdClose } from "react-icons/io";
 import { IoBagOutline, IoChevronDownOutline } from "react-icons/io5";
 import PaymentModal from "./PaymentForm/PaymentForm";
 import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
+import { getFacility } from "@/api/functions/facility.api";
 
 const LaneCard = ({
   lane,
-  date
+  date,
+  image
 }: {
   lane: CartType["lanes"][0];
   date: string;
+  image?: string;
 }) => {
   const { cart, setCart } = useCartContext();
   const week_end = moment().endOf("week").endOf("day").unix();
@@ -91,11 +95,11 @@ const LaneCard = ({
     <div className="rounded-xl border border-gray-200 w-full">
       <div className="flex p-2 items-center border-b border-b-gray-200">
         <Image
-          src={assets.lane}
+          src={image ?? assets.lane}
           width={50}
           height={50}
           alt=""
-          className="w-[50px] h-[50px]"
+          className="w-[50px] h-[50px] object-contain"
         />
         <div className="ml-4">
           <p className="text-black font-semibold">{lane.name}</p>
@@ -149,6 +153,7 @@ export default function Cart({
   const week_end = moment().endOf("week").endOf("day").unix();
   const cookies = parseCookies();
   const router = useRouter();
+  const [notes, setNotes] = useState("");
 
   const price = useMemo(() => {
     const _price = cart?.lanes.reduce(
@@ -162,6 +167,11 @@ export default function Cart({
     queryKey: ["current_season_pass", cart?.sport],
     queryFn: () => getCurrentSeasonPass(cart?.sport),
     enabled: Boolean(cart?.sport) && !!cookies.token
+  });
+
+  const { data: facility } = useQuery({
+    queryKey: ["facility"],
+    queryFn: getFacility
   });
 
   const { mutate } = useMutation({
@@ -296,7 +306,12 @@ export default function Cart({
           <VStack gap={4} className="mt-6 mb-4 flex-1">
             {cart?.lanes.map((_lane) => {
               return (
-                <LaneCard lane={_lane} key={_lane.lane_id} date={cart.date} />
+                <LaneCard
+                  lane={_lane}
+                  key={_lane.lane_id}
+                  date={cart.date}
+                  image={facility?.image}
+                />
               );
             })}
             {!!cart?.box_booking_price && (
@@ -310,8 +325,19 @@ export default function Cart({
               </div>
             )}
           </VStack>
-
-          <HStack className="mt-auto">
+          {/* <p className="text-primaryText mt-4">
+            Taxes and promo codes applied at checkout
+          </p> */}
+        </DrawerBody>
+        <DrawerFooter className="!px-8 flex-col" alignItems="stretch">
+          <Textarea
+            className="mb-3 h-auto"
+            placeholder="Add notes..."
+            resize="none"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
+          <HStack className="mb-5">
             <p className="uppercase text-3xl text-primaryText font-extralight max-md:text-xl">
               Your total amount
             </p>
@@ -319,50 +345,47 @@ export default function Cart({
               ${price ?? 0} USD
             </p>
           </HStack>
-          {/* <p className="text-primaryText mt-4">
-            Taxes and promo codes applied at checkout
-          </p> */}
-        </DrawerBody>
-        <DrawerFooter className="!px-8 gap-3">
-          <Button
-            className="!bg-primary !text-white font-semibold !py-6 flex-1 !rounded-none"
-            onClick={() =>
-              cookies.token ? onOpen() : router.push("/auth/login")
-            }
-            disabled={!Boolean(cart)}
-          >
-            Purchase
-          </Button>
-          <Menu>
-            <MenuButton
-              as={Button}
-              className="!h-auto !py-4 !px-4"
-              rightIcon={<IoChevronDownOutline />}
-              isDisabled={!Boolean(cart) || data.length === 0}
+          <HStack gap={3}>
+            <Button
+              className="!bg-primary !text-white font-semibold !py-6 flex-1 !rounded-none"
+              onClick={() =>
+                cookies.token ? onOpen() : router.push("/auth/login")
+              }
+              disabled={!Boolean(cart)}
             >
-              Season Pass {Boolean(cart?.season_pass) && " (1)"}
-            </MenuButton>
-            <MenuList minWidth="240px">
-              {data.map((_pass) => {
-                return (
-                  <MenuItemOption
-                    key={_pass._id}
-                    isChecked={cart?.season_pass?._id === _pass._id}
-                    onClick={() => {
-                      onSelectedSeasonPassChange(_pass);
-                    }}
-                  >
-                    <VStack alignItems="flex-start" gap={1}>
-                      <p className="font-medium">{_pass.season_pass.name}</p>
-                      <p className=" text-gray-600">
-                        Available slots: {_pass.available_slots}
-                      </p>
-                    </VStack>
-                  </MenuItemOption>
-                );
-              })}
-            </MenuList>
-          </Menu>
+              Purchase
+            </Button>
+            <Menu>
+              <MenuButton
+                as={Button}
+                className="!h-auto !py-4 !px-4"
+                rightIcon={<IoChevronDownOutline />}
+                isDisabled={!Boolean(cart) || data.length === 0}
+              >
+                Season Pass {Boolean(cart?.season_pass) && " (1)"}
+              </MenuButton>
+              <MenuList minWidth="240px">
+                {data.map((_pass) => {
+                  return (
+                    <MenuItemOption
+                      key={_pass._id}
+                      isChecked={cart?.season_pass?._id === _pass._id}
+                      onClick={() => {
+                        onSelectedSeasonPassChange(_pass);
+                      }}
+                    >
+                      <VStack alignItems="flex-start" gap={1}>
+                        <p className="font-medium">{_pass.season_pass.name}</p>
+                        <p className=" text-gray-600">
+                          Available slots: {_pass.available_slots}
+                        </p>
+                      </VStack>
+                    </MenuItemOption>
+                  );
+                })}
+              </MenuList>
+            </Menu>
+          </HStack>
           {/* <Button
             className="!text-primaryText !bg-white font-semibold !py-6 px-5 border !rounded-none border-black  flex-1"
             disabled={!Boolean(cart)}
@@ -398,6 +421,7 @@ export default function Cart({
           season_pass_id={cart.season_pass?.season_pass_id}
           price={price || 0}
           sport={cart!.sport}
+          note={notes}
         />
       ) : null}
     </Drawer>

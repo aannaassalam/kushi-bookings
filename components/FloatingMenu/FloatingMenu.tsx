@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { SelectDate } from "../Modals/SelectDate";
 import { SelectSport } from "../Modals/SelectSport";
@@ -17,6 +17,7 @@ export default function FloatingMenu({
   noButton?: boolean;
   // bookings: BookingFilter;
 }) {
+  const first_run = useRef(true);
   const [sportModal, setSportModal] = useState(false);
   const [timeModal, setTimeModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
@@ -39,14 +40,18 @@ export default function FloatingMenu({
   }, [data, date]);
 
   useEffect(() => {
-    router.replace({
-      pathname,
-      query: {
-        date,
-        sport
-      }
-    });
-  }, [moment().format("HH:mm")]);
+    if (first_run) {
+      first_run.current = false;
+    } else {
+      router.replace({
+        pathname,
+        query: {
+          date,
+          sport
+        }
+      });
+    }
+  }, [moment().format("HH")]);
 
   const slots = useMemo(() => {
     const _start_time = moment(start_time, "HH:mm");
@@ -75,6 +80,7 @@ export default function FloatingMenu({
         available:
           moment().unix() <
           moment(date)
+            .set({ hour: parseInt(_start_time.format("HH")) })
             .add(id, "hours")
             .set({
               minute: 0,

@@ -56,10 +56,9 @@ export const MobileSelectDate = ({
         <ModalBody pb="4">
           <Calendar
             onChange={setSelectedDate}
-            value={[
-              moment(selectedDate?.toString()).startOf("week").toISOString(),
-              moment(selectedDate?.toString()).endOf("week").toISOString()
-            ]}
+            value={moment(selectedDate?.toString())
+              .startOf("day")
+              .toISOString()}
             className="text-sm relative"
             calendarType="hebrew"
             formatShortWeekday={(locale, date) =>
@@ -74,15 +73,16 @@ export const MobileSelectDate = ({
             className="bg-primary !px-8 !py-4 text-white font-medium mr-auto h-max"
             colorScheme="primary"
             onClick={() => {
-              const params = new URLSearchParams();
+              const params = new URLSearchParams(searchParams.toString());
               params.set(
                 "start_date",
-                moment(selectedDate?.toString()).startOf("week").toISOString()
+                moment(selectedDate?.toString()).startOf("day").toISOString()
               );
               params.set(
                 "end_date",
-                moment(selectedDate?.toString()).endOf("week").toISOString()
+                moment(selectedDate?.toString()).endOf("day").toISOString()
               );
+
               router.push({ search: params.toString() }, undefined, {
                 shallow: true
               });
