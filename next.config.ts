@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "kushi-bookings.s3.us-east-2.amazonaws.com"
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com"
       }
     ]
   },
