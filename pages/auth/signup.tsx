@@ -95,6 +95,7 @@ export default function SignUp() {
               placeholder="Enter Full name"
               validationProps={{ ...register("full_name") }}
               error={errors?.full_name?.message || ""}
+              isRequired={true}
             />
             <CustomInput
               id="email"
@@ -103,6 +104,7 @@ export default function SignUp() {
               placeholder="Enter email address"
               validationProps={{ ...register("email") }}
               error={errors?.email?.message || ""}
+              isRequired={true}
             />
             <CustomInput
               id="phone"
@@ -111,6 +113,7 @@ export default function SignUp() {
               placeholder="Enter phone number"
               validationProps={{ ...register("phone") }}
               error={errors?.phone?.message || ""}
+              isRequired={true}
             />
             <CustomInput
               id="password"
@@ -119,6 +122,7 @@ export default function SignUp() {
               placeholder="Enter Password"
               validationProps={{ ...register("password") }}
               error={errors?.password?.message || ""}
+              isRequired={true}
             />
 
             <CustomInput
@@ -128,6 +132,7 @@ export default function SignUp() {
               placeholder="Enter Confirm Password"
               validationProps={{ ...register("confirm_password") }}
               error={errors?.confirm_password?.message || ""}
+              isRequired={true}
             />
 
             <div className="bg-[#fafafa] rounded-lg px-4 py-4 mb-4">
@@ -140,6 +145,7 @@ export default function SignUp() {
                   {profile_picture
                     ? profile_picture.name
                     : "Click to upload Profile Picture"}
+                  <p className="text-red-600">*</p>
                 </Box>
               </label>
               <input

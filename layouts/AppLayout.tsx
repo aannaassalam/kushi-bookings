@@ -9,7 +9,6 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     <div className="">
       <Header />
       {children}
-      <Quote />
       <Footer />
     </div>
   );

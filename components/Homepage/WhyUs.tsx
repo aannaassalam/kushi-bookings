@@ -1,3 +1,5 @@
+import assets from "@/json/assets";
+import Image from "next/image";
 import React from "react";
 
 export default function WhyUs() {
@@ -8,10 +10,24 @@ export default function WhyUs() {
           Collaborators
         </h1>
         <div className="flex flex-row w-full justify-center mt-6 my-10 flex-wrap gap-4">
-          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
+          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
+            <Image
+              src={assets.fcc}
+              alt="fcc"
+              width={100}
+              height={100}
+              className="mb-2"
+            />
             FCC
           </p>
-          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center">
+          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
+            <Image
+              src={assets.cricketBadger}
+              alt="fcc"
+              width={75}
+              height={75}
+              className="mb-2"
+            />
             Cricket Badgers
           </p>
         </div>

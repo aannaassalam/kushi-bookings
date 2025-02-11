@@ -72,6 +72,7 @@ export default function ForgotPassword() {
               placeholder="johndoe@example.com"
               validationProps={{ ...register("email") }}
               error={errors?.email?.message || ""}
+              isRequired={true}
             />
 
             {/* Submit Button */}

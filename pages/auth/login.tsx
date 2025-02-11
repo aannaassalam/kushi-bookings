@@ -137,6 +137,7 @@ export default function Login() {
               placeholder="johndoe@example.com"
               validationProps={{ ...register("email") }}
               error={errors?.email?.message || ""}
+              isRequired={true}
             />
             <CustomInput
               id="password"
@@ -145,6 +146,7 @@ export default function Login() {
               placeholder="Enter Password"
               validationProps={{ ...register("password") }}
               error={errors?.password?.message || ""}
+              isRequired={true}
             />
             {/* Remember Me and Forgot Password */}
             <div className="flex items-center justify-end mb-4">

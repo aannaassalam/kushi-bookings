@@ -331,6 +331,7 @@ function Profile({
                     placeholder="Enter Full name"
                     validationProps={{ ...register("full_name") }}
                     error={errors?.full_name?.message || ""}
+                    isRequired={true}
                   />
                   <CustomInput
                     id="email"
@@ -339,6 +340,7 @@ function Profile({
                     placeholder="Enter email address"
                     validationProps={{ ...register("email") }}
                     error={errors?.email?.message || ""}
+                    isRequired={true}
                   />
                   <CustomInput
                     id="phone"
@@ -347,6 +349,7 @@ function Profile({
                     placeholder="Enter phone number"
                     validationProps={{ ...register("phone") }}
                     error={errors?.phone?.message || ""}
+                    isRequired={true}
                   />
                   <div className="bg-white rounded-lg px-4 py-2 mb-4">
                     <label

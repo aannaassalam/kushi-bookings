@@ -7,7 +7,8 @@ function CustomInput({
   placeholder,
   type,
   validationProps,
-  error
+  error,
+  isRequired
 }: {
   id: string;
   text: string;
@@ -15,12 +16,14 @@ function CustomInput({
   type: string;
   validationProps: UseFormRegisterReturn;
   error: string;
+  isRequired?: boolean;
 }) {
   return (
     <Box className="mb-4">
       <div className="bg-[#fafafa] rounded-lg mb-1 px-4 py-2">
-        <label className="block text-sm font-medium text-gray-700" htmlFor={id}>
+        <label className="text-sm font-medium text-gray-700 flex" htmlFor={id}>
           {text}
+          {isRequired && <p className="text-red-600">*</p>}
         </label>
         <input
           type={type}
