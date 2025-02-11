@@ -8,7 +8,7 @@ export default {
   packageGraphic: "/assets/graphics/packageGraphic.png",
   loginImage: "/assets/images/loginImage.png",
   default_user: "/assets/images/default-user.png",
-  cricketBadger: "/assets/images/cricketbadger.JPG",
+  cricketBadger: "/assets/images/cricketBadger.JPG",
   fcc: "/assets/images/fcc.PNG",
 
   logo2: "/assets/images/logo2.png"
