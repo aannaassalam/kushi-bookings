@@ -71,12 +71,14 @@ export default function SignUp() {
       {/* Left Section */}
       <div className="flex flex-col items-center  w-full lg:w-1/2 p-8">
         <div className=" self-start p-10 relative z-10 mt-6">
-          <Image
-            src={assets.logo}
-            alt="Kushi Cricket Store Logo"
-            width={150}
-            height={50}
-          />
+          <Link href="/">
+            <Image
+              src={assets.logo}
+              alt="Kushi Cricket Store Logo"
+              width={150}
+              height={50}
+            />
+          </Link>
         </div>
         <div className="w-[98%] absolute h-[200px] bg-gradient-to-r from-[#2C8EE31C] to-[#2C8EE300] rounded-lg left-[50%] translate-x-[-50%] top-5"></div>
         {/* Login Form */}
