@@ -9,7 +9,7 @@ export default {
   loginImage: "/assets/images/loginImage.png",
   default_user: "/assets/images/default-user.png",
   cricketBadger: "/assets/images/cricketbadger.JPG",
-  fcc: "/assets/images/fcc.png",
+  fcc: "/assets/images/fcc.PNG",
 
   logo2: "/assets/images/logo2.png"
 };
