@@ -13,7 +13,7 @@ export default function Footer() {
   const router = useRouter();
 
   return (
-    <div className="">
+    <div className="" id="footer">
       <div className="w-full grid grid-cols-3 items-center px-[100px] py-10 max-xl:grid-cols-2 max-md:grid-cols-1 max-lg:px-[40px] max-md:px-[20px]">
         <div>
           <Image src={assets.logo} width={153} height={45} alt="logo" />

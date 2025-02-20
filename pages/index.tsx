@@ -15,7 +15,7 @@ export default function Home() {
       {/* <PackageDetails /> */}
       <About />
       <WhyUs />
-      <Quote />
+      {/* <Quote /> */}
 
       {/* <SeasonPass /> */}
     </AppLayout>

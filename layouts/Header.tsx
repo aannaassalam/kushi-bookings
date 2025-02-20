@@ -63,6 +63,15 @@ export default function Header() {
           Home
         </Link>
         <Link
+          href="https://www.kushicricketstore.com/"
+          target="_blank"
+          className={`ml-6 max-md:hidden  ${
+            router.pathname === "/pro" ? "text-primary" : "text-black"
+          }`}
+        >
+          PRO Shop
+        </Link>
+        <Link
           href="/my-bookings"
           className={`ml-6 max-md:hidden ${
             router.pathname === "/my-bookings" ? "text-primary" : "text-black"
@@ -165,6 +174,15 @@ export default function Header() {
                 }`}
               >
                 Home
+              </Link>
+              <Link
+                href="https://www.kushicricketstore.com/"
+                target="_blank"
+                className={` text-lg my-1 ${
+                  router.pathname === "/proshop" ? "text-primary" : "text-black"
+                }`}
+              >
+                PRO Shop
               </Link>
               <Link
                 href="/my-bookings"
