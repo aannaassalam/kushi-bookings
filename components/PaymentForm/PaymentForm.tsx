@@ -241,7 +241,9 @@ const PaymentForm = ({
   };
 
   return (
-    <form onSubmit={metadata.type === "subscription" ? onSubmit : purchaseItem}>
+    <form
+      onSubmit={metadata?.type === "subscription" ? onSubmit : purchaseItem}
+    >
       <PaymentElement
         options={{
           layout: "accordion",
