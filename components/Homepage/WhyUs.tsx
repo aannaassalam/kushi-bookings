@@ -9,8 +9,8 @@ export default function WhyUs() {
         <h1 className="text-primaryText text-[32px] font-semibold uppercase">
           Collaborators
         </h1>
-        <div className="flex flex-row w-full justify-center mt-6 my-16 flex-wrap gap-4">
-          <p className="text-primaryText font-semibold p-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
+        <div className="flex flex-row w-full justify-center mt-6 my-10  gap-4">
+          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
             <Image
               src={assets.fcc}
               alt="fcc"

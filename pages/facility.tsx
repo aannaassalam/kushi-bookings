@@ -18,7 +18,13 @@ import {
   CurrentMembership,
   Membership
 } from "@/typescript/interface/membership.interfaces";
-import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Skeleton,
+  useDisclosure
+} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { isArray } from "lodash";
 import moment from "moment";
@@ -28,6 +34,7 @@ import { useSearchParams } from "next/navigation";
 import { parseCookies } from "nookies";
 import { useMemo } from "react";
 import { useCartContext } from "./_app";
+import Cart from "@/components/Cart";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { date, sport, time_slots } = ctx.query;
@@ -256,6 +263,7 @@ export default function Facility({
   const time_slots = searchParams.getAll("time_slots");
   const week_end = moment().endOf("week").endOf("day").unix();
   const { cart, setCart } = useCartContext();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data } = useQuery({
     queryKey: ["lanes", sport],
@@ -411,8 +419,17 @@ export default function Facility({
               />
             ))}
           </div>
+          <div className="w-full rounded-md flex flex-row justify-end max-md:px-0">
+            <Button
+              className="!bg-primary !text-white font-semibold !py-6 !px-8 mt-6 max-md:!w-full "
+              onClick={onOpen}
+            >
+              Checkout
+            </Button>
+          </div>
         </div>
       </div>
+      <Cart open={isOpen} close={onClose} />
     </AppLayout>
   );
 }
