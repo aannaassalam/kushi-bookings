@@ -263,7 +263,6 @@ export default function Facility({
   const time_slots = searchParams.getAll("time_slots");
   const week_end = moment().endOf("week").endOf("day").unix();
   const { cart, setCart } = useCartContext();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data } = useQuery({
     queryKey: ["lanes", sport],
@@ -419,17 +418,8 @@ export default function Facility({
               />
             ))}
           </div>
-          <div className="w-full rounded-md flex flex-row justify-end max-md:px-0">
-            <Button
-              className="!bg-primary !text-white font-semibold !py-6 !px-8 mt-6 max-md:!w-full "
-              onClick={onOpen}
-            >
-              Checkout
-            </Button>
-          </div>
         </div>
       </div>
-      <Cart open={isOpen} close={onClose} />
     </AppLayout>
   );
 }

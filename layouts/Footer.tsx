@@ -1,13 +1,12 @@
 import assets from "@/json/assets";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { SlMap } from "react-icons/sl";
-import { FiPhone } from "react-icons/fi";
-import { MdOutlineEmail } from "react-icons/md";
+import { useRouter } from "next/router";
 import { FaFacebookF } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa6";
-import { useRouter } from "next/router";
+import { FiPhone } from "react-icons/fi";
+import { MdOutlineEmail } from "react-icons/md";
+import { SlMap } from "react-icons/sl";
 
 export default function Footer() {
   const router = useRouter();

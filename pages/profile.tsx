@@ -78,6 +78,11 @@ const ActiveMembership = ({
             {current_membership.membership.recurring_type + "ly"}
           </span>
         </div>
+        {current_membership.type === "free_slots_based" && (
+          <div className="whitespace-nowrap flex items-center mt-5 font-medium text-gray-600">
+            Available Slots - {current_membership.available_slots}
+          </div>
+        )}
       </Box>
       <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 flex-1 mb-auto max-sm:grid-cols-1">
         {current_membership.membership.about.split("_").map((_key_point) => {
@@ -125,6 +130,9 @@ const ActiveSeasonPass = ({
           </span>
 
           {/* <span className="text-base text-gray-600 self-start">Yearly</span> */}
+        </div>
+        <div className="whitespace-nowrap flex items-center mt-5 font-medium text-gray-600">
+          Available Slots - {current_season_pass.available_slots}
         </div>
       </Box>
       <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 flex-1 mb-auto max-sm:grid-cols-1">

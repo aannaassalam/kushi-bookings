@@ -34,6 +34,7 @@ import PaymentModal from "./PaymentForm/PaymentForm";
 import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
 import { getFacility } from "@/api/functions/facility.api";
+import TermsAndConditions from "./Modals/TermsAndConditions";
 
 const LaneCard = ({
   lane,
@@ -149,6 +150,11 @@ export default function Cart({
   close: () => void;
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isTermsOpen,
+    onOpen: onTermsOpen,
+    onClose: onTermsClose
+  } = useDisclosure();
   const { cart, setCart } = useCartContext();
   const week_end = moment().endOf("week").endOf("day").unix();
   const cookies = parseCookies();
@@ -349,7 +355,7 @@ export default function Cart({
             <Button
               className="!bg-primary !text-white font-semibold !py-6 flex-1 !rounded-none"
               onClick={() =>
-                cookies.token ? onOpen() : router.push("/auth/login")
+                cookies.token ? onTermsOpen() : router.push("/auth/login")
               }
               disabled={!Boolean(cart)}
             >
@@ -394,7 +400,15 @@ export default function Cart({
           </Button> */}
         </DrawerFooter>
       </DrawerContent>
-      {cart ? (
+      <TermsAndConditions
+        isOpen={isTermsOpen}
+        onClose={onTermsClose}
+        onProceed={() => {
+          onOpen();
+          onTermsClose();
+        }}
+      />
+      {!!cart ? (
         <PaymentModal
           isOpen={isOpen}
           onClose={(success?: boolean) => {

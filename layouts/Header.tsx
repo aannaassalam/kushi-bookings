@@ -107,25 +107,17 @@ export default function Header() {
         >
           Season Pass
         </Link>
-        <IconButton
-          variant="ghost"
-          className="ml-2 mr-[10px]"
-          onClick={onOpen}
-          aria-label=""
-        >
-          <IoBagOutline size={20} className="text-primary" />
-        </IconButton>
         {!Boolean(user.full_name) ? (
           <Button
             as={Link}
             href="/auth/login"
-            className="primaryButton"
+            className="primaryButton ml-6"
             colorScheme="primary"
           >
             Login
           </Button>
         ) : (
-          <HStack className="ml-0">
+          <HStack className="ml-6">
             <Link href="/profile">
               <Image
                 alt="user"
@@ -218,7 +210,6 @@ export default function Header() {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-      <Cart open={isOpen} close={onClose} />
     </div>
   );
 }

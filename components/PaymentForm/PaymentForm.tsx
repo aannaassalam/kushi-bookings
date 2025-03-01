@@ -25,6 +25,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import React, { useEffect, useState } from "react";
+import Countdown, { CountdownRenderProps } from "react-countdown";
 import { toast } from "sonner";
 
 const stripePromise = loadStripe(process.env.NEXT_APP_STRIPE_PUBLISHABLE_KEY!);
@@ -42,8 +43,8 @@ export default function PaymentModal(
   }>();
 
   useEffect(() => {
+    setLoading(true);
     if (metadata.type !== "subscription" && isOpen) {
-      // setLoading(true);
       getPurchaseClientSecret(metadata)
         .then((data) => {
           if (data.status === 400) {
@@ -67,11 +68,26 @@ export default function PaymentModal(
             onClose(true);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
     } else if (isOpen) {
       setLoading(false);
     }
   }, [isOpen]);
+
+  const renderer = ({ minutes, seconds, completed }: CountdownRenderProps) => {
+    if (completed) {
+      onClose();
+      return <></>;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          {minutes}:{seconds}
+        </span>
+      );
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -79,7 +95,12 @@ export default function PaymentModal(
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Payments</ModalHeader>
+        <ModalHeader className="flex items-center justify-between gap-5">
+          Payments
+          {!loading && (
+            <Countdown date={Date.now() + 178999} renderer={renderer} />
+          )}
+        </ModalHeader>
         <ModalBody>
           {/* {payment_details ? ( */}
           {loading ? (
@@ -227,7 +248,7 @@ const PaymentForm = ({
           business: { name: "Kushi Bookings" }
         }}
       />
-      <Box className="flex justify-end mt-10 gap-4">
+      <Box className="flex justify-end mt-10 mb-3 gap-2">
         <Button
           variant="ghost"
           //   colorScheme="blue"
