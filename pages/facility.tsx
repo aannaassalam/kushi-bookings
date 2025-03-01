@@ -18,13 +18,7 @@ import {
   CurrentMembership,
   Membership
 } from "@/typescript/interface/membership.interfaces";
-import {
-  Button,
-  Checkbox,
-  CheckboxGroup,
-  Skeleton,
-  useDisclosure
-} from "@chakra-ui/react";
+import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { isArray } from "lodash";
 import moment from "moment";
@@ -34,7 +28,6 @@ import { useSearchParams } from "next/navigation";
 import { parseCookies } from "nookies";
 import { useMemo } from "react";
 import { useCartContext } from "./_app";
-import Cart from "@/components/Cart";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { date, sport, time_slots } = ctx.query;

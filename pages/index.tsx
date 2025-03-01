@@ -4,8 +4,6 @@ import HeroSection from "@/components/Homepage/HeroSection";
 // import PackageDetails from "@/components/Homepage/Package";
 // import SeasonPass from "@/components/Homepage/SeasonPass";
 import WhyUs from "@/components/Homepage/WhyUs";
-import TermsAndConditions from "@/components/Modals/TermsAndConditions";
-import Quote from "@/components/Quote/Quote";
 import AppLayout from "@/layouts/AppLayout";
 
 export default function Home() {
