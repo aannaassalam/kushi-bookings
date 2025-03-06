@@ -1,5 +1,6 @@
 import assets from "@/json/assets";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function WhyUs() {
@@ -10,26 +11,30 @@ export default function WhyUs() {
           Collaborators
         </h1>
         <div className="flex flex-row w-full justify-center mt-6 my-10  gap-4">
-          <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
-            <Image
-              src={assets.fcc}
-              alt="fcc"
-              width={100}
-              height={100}
-              className="mb-2"
-            />
-            FCC
-          </p>
-          <p className="text-primaryText font-semibold p-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
-            <Image
-              src={assets.cricketBadger}
-              alt="cricket badger"
-              width={70}
-              height={70}
-              className="mb-3 rounded-lg"
-            />
-            Cricket Badgers
-          </p>
+          <Link href="https://www.instagram.com/farmingtoncricketclub?igsh=YnZxcGt2aGc0dzJh">
+            <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
+              <Image
+                src={assets.fcc}
+                alt="fcc"
+                width={100}
+                height={100}
+                className="mb-2"
+              />
+              FCC
+            </p>
+          </Link>
+          <Link href="https://www.instagram.com/cricket_badger_hub?igsh=MW5mN3cydDdlZWVhYQ==">
+            <p className="text-primaryText font-semibold p-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
+              <Image
+                src={assets.cricketBadger}
+                alt="cricket badger"
+                width={70}
+                height={70}
+                className="mb-3 rounded-lg"
+              />
+              Cricket Badger
+            </p>
+          </Link>
         </div>
         <h2 className="text-primaryText text-xl font-bold capitalize">
           Our Versatile space is ideal for
@@ -99,7 +104,7 @@ export default function WhyUs() {
               Badminton <br /> Tournament
             </h2>
             <p className="mt-2 text-sm text-black">
-              Organize a cometitive yet enjoyable event.
+              Organize a competitive yet enjoyable event.
             </p>
           </div>
           <div className="py-4 px-4 rounded-lg max-sm:pr-0 w-full group bg-lightPrimary/5 transition-all duration-300 hover:shadow-[0px_10px_20px_0px_#00000020]">
