@@ -272,7 +272,7 @@ export default function Facility({
     initialData: {}
   });
 
-  const { data: user_membership, isPending: isUserMembershipLoading } =
+  const { data: user_membership, isLoading: isUserMembershipLoading } =
     useQuery({
       queryKey: ["current_membership", sport],
       queryFn: () => getCurrentMembership(sport!.toString()),
