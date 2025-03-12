@@ -166,9 +166,8 @@ const LaneCard = ({
                   <span
                     key={lane._id + _slot}
                     className={cx("mr-1.5 mb-0.5", {
-                      "text-red-500 font-medium": bookings_for_slot?.includes(
-                        lane._id
-                      )
+                      "text-red-500 font-medium line-through":
+                        bookings_for_slot?.includes(lane._id)
                     })}
                   >
                     {`${moment(_slot, "HH:mm").format("hh:mm A")} - ${moment(
