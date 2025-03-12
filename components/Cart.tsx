@@ -35,6 +35,7 @@ import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
 import { getFacility } from "@/api/functions/facility.api";
 import TermsAndConditions from "./Modals/TermsAndConditions";
+import { LuTrash2 } from "react-icons/lu";
 
 const LaneCard = ({
   lane,
@@ -51,6 +52,83 @@ const LaneCard = ({
   const removeItemFromCart = () => {
     const lanes =
       cart?.lanes.filter((_lane) => _lane.lane_id !== lane.lane_id) ?? [];
+
+    const weekly_slot_guard =
+      moment(cart?.date).unix() <= week_end
+        ? cart?.membership?.available_slots ?? 0
+        : 0;
+
+    let available_slots = cart?.season_pass
+      ? cart?.season_pass?.available_slots
+      : weekly_slot_guard;
+
+    const _lanes = lanes.map((_l) => {
+      const discount =
+        available_slots > _l.slots.length
+          ? 0
+          : _l.slots.length - available_slots;
+
+      _l.price = _l.lane_price * discount;
+
+      _l.free_slots_used = available_slots
+        ? available_slots > _l.slots.length
+          ? _l.slots.length
+          : _l.slots.length - available_slots
+        : 0;
+
+      available_slots =
+        _l.slots.length > available_slots
+          ? 0
+          : available_slots - _l.slots.length;
+      return _l;
+    });
+
+    setCart((prev) => ({
+      lanes: _lanes,
+      date,
+      membership: prev?.membership,
+      season_pass: prev?.season_pass,
+      box_booking_price: undefined,
+      sport: prev!.sport
+    }));
+  };
+
+  const removeSlotFromCart = (slot: string) => {
+    if (!cart?.lanes) return;
+
+    const selected_lane = cart?.lanes.find(
+      (_lane) => _lane.lane_id === lane.lane_id
+    );
+
+    const filtered_selected_lane = {
+      ...selected_lane,
+      slots: selected_lane?.slots.filter((_slot) => _slot !== slot)
+    };
+
+    let lanes: {
+      lane_id: string;
+      lane_price: number;
+      slots: string[];
+      price: number;
+      name: string;
+      about: string;
+      free_slots_used: number;
+    }[] = [];
+
+    if (
+      filtered_selected_lane?.slots &&
+      filtered_selected_lane.slots?.length > 0
+    ) {
+      lanes = cart?.lanes.map((_lane) => {
+        if (_lane.lane_id === filtered_selected_lane.lane_id) {
+          _lane.slots = filtered_selected_lane.slots || [];
+        }
+        return _lane;
+      });
+    } else {
+      lanes =
+        cart?.lanes.filter((_lane) => _lane.lane_id !== lane.lane_id) ?? [];
+    }
 
     const weekly_slot_guard =
       moment(cart?.date).unix() <= week_end
@@ -113,30 +191,38 @@ const LaneCard = ({
           Remove
         </button>
       </div>
-      <div className="p-4  flex justify-between items-center gap-2">
+      <div className="p-4 flex justify-between items-center gap-2">
         <div className="text-xs">
           <p className="text-gray-600 font-semibold">
             {moment(date).format("MMMM D, YYYY")}
           </p>
-          <div className="flex flex-wrap mt-1">
-            {lane.slots.map((_slot) => (
-              <>
-                <span key={_slot} className="mr-1.5 mb-0.5">
-                  {`${moment(_slot, "HH:mm").format("hh:mm A")} - ${moment(
-                    _slot,
-                    "HH:mm"
-                  )
-                    .add(1, "hour")
-                    .format("hh:mm A")}`}
-                </span>
-                <span className="mr-1.5">|</span>
-              </>
-            ))}
-          </div>
         </div>
         <p className="text-base text-primary font-bold whitespace-nowrap">
           ${lane.price} USD
         </p>
+      </div>
+      <div className="mt-1 p-4 pt-0">
+        {lane.slots.map((_slot) => (
+          <Box
+            key={_slot}
+            className="flex justify-between items-center gap-5 mt-2 first-of-type:mt-0 group"
+          >
+            <span className="mr-1.5 text-gray-600 text-sm group-hover:font-medium transition-all">
+              {`${moment(_slot, "HH:mm").format("hh:mm A")} - ${moment(
+                _slot,
+                "HH:mm"
+              )
+                .add(1, "hour")
+                .format("hh:mm A")}`}
+            </span>
+            <button
+              className="transition-all rounded-full text-red-500 font-medium text-base"
+              onClick={() => removeSlotFromCart(_slot)}
+            >
+              <LuTrash2 />
+            </button>
+          </Box>
+        ))}
       </div>
     </div>
   );

@@ -9,18 +9,11 @@ import FloatingMenu from "@/components/FloatingMenu/FloatingMenu";
 import assets from "@/json/assets";
 import AppLayout from "@/layouts/AppLayout";
 import { cx } from "@/lib/utils";
-import {
-  DaysInterface,
-  Facility as IFacility
-} from "@/typescript/interface/facility.interfaces";
+import { DaysInterface } from "@/typescript/interface/facility.interfaces";
 import { Lane } from "@/typescript/interface/lane.interfaces";
-import {
-  CurrentMembership,
-  Membership
-} from "@/typescript/interface/membership.interfaces";
+import { CurrentMembership } from "@/typescript/interface/membership.interfaces";
 import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { isArray } from "lodash";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
@@ -30,29 +23,29 @@ import { useMemo } from "react";
 import { useCartContext } from "./_app";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { date, sport, time_slots } = ctx.query;
-  const cookies = parseCookies(ctx);
+  const { sport } = ctx.query;
+  // const cookies = parseCookies(ctx);
 
-  const slots = isArray(time_slots) ? time_slots : [time_slots || ""];
+  // const slots = isArray(time_slots) ? time_slots : [time_slots || ""];
 
   const lanes = await getLanes(sport?.toString() || "cricket");
 
-  const facility_data = await getFacility();
-  const bookings_data = await getBookingsForFilter({
-    date: date?.toString() || "",
-    sport: sport?.toString() || "",
-    slots
-  });
-  const current_membership = cookies.token
-    ? await getCurrentMembership("cricket", cookies.token)
-    : null;
+  // const facility_data = await getFacility();
+  // const bookings_data = await getBookingsForFilter({
+  //   date: date?.toString() || "",
+  //   sport: sport?.toString() || "",
+  //   slots
+  // });
+  // const current_membership = cookies.token
+  //   ? await getCurrentMembership("cricket", cookies.token)
+  //   : null;
 
   return {
     props: {
-      lanes,
-      facility_data,
-      bookings_data,
-      current_membership
+      lanes
+      // facility_data,
+      // bookings_data,
+      // current_membership
     }
   };
 };
@@ -70,7 +63,7 @@ const LaneCard = ({
   price: number;
   minimum_lane_price?: number;
   bookings: BookingFilter;
-  current_membership: CurrentMembership;
+  current_membership?: CurrentMembership;
   isLoading: boolean;
   image: string;
 }) => {
@@ -149,24 +142,25 @@ const LaneCard = ({
   return (
     <div className="rounded-xl border border-gray-200">
       <div className="flex p-2 items-center border-b border-b-gray-200">
-        <Image
-          src={image ?? assets.lane}
-          width={50}
-          height={50}
-          alt=""
-          className="w-[50px] h-[50px] object-contain"
-        />
+        <Skeleton isLoaded={!isLoading} borderRadius={5}>
+          <Image
+            src={image ?? assets.lane}
+            width={50}
+            height={50}
+            alt=""
+            className="w-[50px] h-[50px] object-contain"
+          />
+        </Skeleton>
         <div className="ml-4">
           <p className="text-black font-semibold">{lane.name}</p>
           <p className="text-gray-600 text-xs">{lane.about}</p>
         </div>
       </div>
       <div className="p-4 py-2 flex justify-between items-center gap-3">
-        <Skeleton isLoaded={!isLoading}>
+        <Skeleton isLoaded={!isLoading} borderRadius={5}>
           <div className="flex flex-wrap text-xs">
             {time_slots.map((_slot) => {
               const bookings_for_slot = bookings[_slot];
-              console.log(bookings_for_slot, _slot);
               return (
                 <>
                   <span
@@ -191,7 +185,7 @@ const LaneCard = ({
           </div>
         </Skeleton>
         {/* </div> */}
-        <Skeleton isLoaded={!isLoading}>
+        <Skeleton isLoaded={!isLoading} borderRadius={5}>
           <button
             className={cx(
               "bg-lightPrimary py-2 px-4 rounded-full text-primary font-medium text-xs self-start whitespace-nowrap",
@@ -216,12 +210,12 @@ const LaneCard = ({
         </Skeleton>
       </div>
       <div className="p-4 py-2 flex justify-between items-center">
-        <Skeleton isLoaded={!isLoading}>
+        <Skeleton isLoaded={!isLoading} borderRadius={5}>
           <p className="text-base text-primary font-bold">
             ${discounted_price} USD
           </p>
         </Skeleton>
-        <Skeleton isLoaded={!isLoading}>
+        <Skeleton isLoaded={!isLoading} borderRadius={5}>
           {current_membership?.type === "free_slots_based" ? (
             <p className="text-xs">
               {moment(date).unix() <= week_end
@@ -239,18 +233,18 @@ const LaneCard = ({
 };
 
 export default function Facility({
-  lanes,
-  facility_data,
-  bookings_data,
-  current_membership
-}: {
+  lanes
+}: // facility_data,
+// bookings_data,
+// current_membership
+{
   lanes: Lane[];
-  facility_data: IFacility;
-  memberships_data: Membership[];
-  bookings_data: BookingFilter;
-  current_membership: CurrentMembership;
+  // facility_data: IFacility;
+  // bookings_data: BookingFilter;
+  // current_membership: CurrentMembership;
 }) {
   const searchParams = useSearchParams();
+  const cookies = parseCookies();
   const date = searchParams.get("date");
   const sport = searchParams.get("sport");
   const time_slots = searchParams.getAll("time_slots");
@@ -265,8 +259,7 @@ export default function Facility({
 
   const { data: facility, isPending } = useQuery({
     queryKey: ["facility"],
-    queryFn: getFacility,
-    initialData: facility_data
+    queryFn: getFacility
   });
 
   const { data: bookings, isPending: isBookingsLoading } = useQuery({
@@ -277,15 +270,15 @@ export default function Facility({
         sport: sport || "",
         slots: time_slots
       }),
-    initialData: bookings_data
+    initialData: {}
   });
 
   const { data: user_membership, isPending: isUserMembershipLoading } =
     useQuery({
       queryKey: ["current_membership", sport],
       queryFn: () => getCurrentMembership(sport!.toString()),
-      initialData: current_membership,
-      enabled: !!current_membership
+      // initialData: current_membership,
+      enabled: !!cookies.token
     });
 
   const box_booking_not_available = useMemo(() => {
@@ -293,13 +286,13 @@ export default function Facility({
   }, [bookings]);
 
   const discounted_price = useMemo(() => {
-    if (current_membership) {
-      return current_membership.membership.facility_price[
+    if (user_membership) {
+      return user_membership.membership.facility_price[
         moment(date).format("dddd") as DaysInterface
       ];
     }
-    return facility.price[moment(date).format("dddd") as DaysInterface];
-  }, [current_membership, date, facility?.price]);
+    return facility?.price[moment(date).format("dddd") as DaysInterface] ?? 55;
+  }, [user_membership, date, facility?.price]);
 
   const onBoxBooking = () => {
     let free_slots_used = 0;
@@ -307,8 +300,8 @@ export default function Facility({
       setCart(undefined);
     } else {
       const weekly_slots_guard =
-        moment(date).unix() <= week_end && !!current_membership
-          ? current_membership.available_slots
+        moment(date).unix() <= week_end && !!user_membership
+          ? user_membership.available_slots
           : 0;
       const _lanes = lanes.map((_lane) => {
         const available_free_slots =
@@ -345,8 +338,8 @@ export default function Facility({
       setCart({
         date: date!,
         sport: sport!,
-        membership: current_membership,
-        box_booking_price: facility.box_booking_price,
+        membership: user_membership,
+        box_booking_price: facility?.box_booking_price,
         lanes: _lanes
       });
     }
@@ -388,7 +381,12 @@ export default function Facility({
               <Checkbox
                 className="font-medium border-2 p-3 rounded-lg"
                 value={facility?.box_booking_price}
-                disabled={box_booking_not_available}
+                disabled={
+                  box_booking_not_available ||
+                  isPending ||
+                  isBookingsLoading ||
+                  isUserMembershipLoading
+                }
               >
                 Box Booking
               </Checkbox>
@@ -400,14 +398,16 @@ export default function Facility({
                 lane={_data}
                 key={_data._id}
                 price={
-                  facility!.price[moment(date).format("dddd") as DaysInterface]
+                  facility?.price[
+                    moment(date).format("dddd") as DaysInterface
+                  ] ?? 55
                 }
                 bookings={bookings}
                 current_membership={user_membership}
                 isLoading={
                   isPending || isBookingsLoading || isUserMembershipLoading
                 }
-                image={facility.image}
+                image={facility?.image ?? ""}
               />
             ))}
           </div>
