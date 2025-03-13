@@ -360,7 +360,15 @@ export default function Cart({
   };
 
   return (
-    <Drawer isOpen={open} placement="right" onClose={close} size="lg">
+    <Drawer
+      isOpen={open}
+      placement="right"
+      onClose={() => {
+        close();
+        setNotes("");
+      }}
+      size="lg"
+    >
       <DrawerOverlay />
       <DrawerContent className="rounded-tl-xl rounded-bl-xl">
         {/* <DrawerCloseButton /> */}
