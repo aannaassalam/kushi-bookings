@@ -68,12 +68,13 @@ export default function PaymentModal(
             onClose(true);
           }
         })
-        .catch((err) => console.log(err))
-        .finally(() => setLoading(false));
+        .catch((err) => console.log(err));
     } else if (isOpen) {
       setLoading(false);
     }
   }, [isOpen]);
+
+  console.log(payment_details);
 
   const renderer = ({ minutes, seconds, completed }: CountdownRenderProps) => {
     if (completed) {
