@@ -53,7 +53,7 @@ export default function Sponsored() {
             as={Link}
             href="#footer"
           >
-            CONTACT NOW
+            ADVERTISE HERE
           </Button>
         </HStack>
       </VStack>
