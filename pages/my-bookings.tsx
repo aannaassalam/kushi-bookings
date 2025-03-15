@@ -2,13 +2,11 @@ import { getMyBookings } from "@/api/functions/bookings.api";
 import { getLanes } from "@/api/functions/lane.api";
 import BookingsFilter from "@/components/BookingsFilter";
 import BookingsGrid from "@/components/BookingsGrid";
-import BookingsTable from "@/components/BookingsTable";
 import MobileBookingsGrid from "@/components/MobileBookingGrid";
 import AppLayout from "@/layouts/AppLayout";
 import { Booking } from "@/typescript/interface/bookings.interface";
 import { Lane } from "@/typescript/interface/lane.interfaces";
 import {
-  HStack,
   Modal,
   ModalContent,
   ModalOverlay,

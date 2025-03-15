@@ -11,27 +11,33 @@ export default function WhyUs() {
           Collaborators
         </h1>
         <div className="flex flex-row w-full justify-center mt-6 my-10  gap-4">
-          <Link href="https://www.instagram.com/farmingtoncricketclub?igsh=YnZxcGt2aGc0dzJh">
-            <p className="text-primaryText font-semibold p-2 px-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
-              <Image
-                src={assets.fcc}
-                alt="fcc"
-                width={100}
-                height={100}
-                className="mb-2"
-              />
+          <Link
+            href="https://www.instagram.com/farmingtoncricketclub?igsh=YnZxcGt2aGc0dzJh"
+            className=" p-4 px-6 bg-lightPrimary rounded-lg flex flex-col items-center"
+          >
+            <Image
+              src={assets.fcc}
+              alt="fcc"
+              width={100}
+              height={100}
+              className="mb-2"
+            />
+            <p className="text-primaryText font-semibold rounded-lg max-sm:w-full text-center flex flex-col items-center">
               FCC
             </p>
           </Link>
-          <Link href="https://www.instagram.com/cricket_badger_hub?igsh=MW5mN3cydDdlZWVhYQ==">
-            <p className="text-primaryText font-semibold p-4 bg-lightPrimary rounded-lg max-sm:w-full text-center flex flex-col items-center">
-              <Image
-                src={assets.cricketBadger}
-                alt="cricket badger"
-                width={70}
-                height={70}
-                className="mb-3 rounded-lg"
-              />
+          <Link
+            href="https://www.instagram.com/cricket_badger_hub?igsh=MW5mN3cydDdlZWVhYQ=="
+            className=" p-4 px-6 bg-lightPrimary rounded-lg flex flex-col items-center"
+          >
+            <Image
+              src={assets.cricketBadger}
+              alt="cricket badger"
+              width={100}
+              height={100}
+              className="mb-3 rounded-lg"
+            />
+            <p className="text-primaryText font-semibold max-sm:w-full text-center flex flex-col items-center">
               Cricket Badger
             </p>
           </Link>

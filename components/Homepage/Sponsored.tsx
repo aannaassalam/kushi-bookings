@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export default function Sponsored() {
   return (
-    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] py-[50px] flex">
+    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex justify-center">
       <VStack align="start" maxW="6xl" mx="auto" spacing={4} marginX={0}>
         <Text className="text-primaryText" fontWeight="bold">
           SPONSORED
@@ -49,7 +49,7 @@ export default function Sponsored() {
             color="green.900"
             fontWeight="bold"
             as={Link}
-            href=""
+            href="#footer"
           >
             CONTACT NOW
           </Button>
@@ -57,12 +57,7 @@ export default function Sponsored() {
       </VStack>
 
       {/* Image Section */}
-      <Box
-        position="relative"
-        maxW="4xl"
-        className="ml-20 max-xl:ml-12"
-        mt={12}
-      >
+      <Box position="relative" className="ml-20 max-xl:ml-12 w-[30%]" mt={12}>
         <Box className="relative">
           <Image
             src={assets.sponsor1}
@@ -72,7 +67,7 @@ export default function Sponsored() {
             objectFit="cover"
             width="250px"
           />
-          <Box position="absolute" bottom={-5} left={-5}>
+          <Box position="absolute" bottom={0} left={-5}>
             {/* triangle */}
             <div className="w-0 h-0 border-l-[20px] border-l-[#00000000] border-b-[20px] border-b-primary"></div>
 
@@ -97,7 +92,7 @@ export default function Sponsored() {
           shadow="lg"
           position="absolute"
           top={16}
-          right="-70%"
+          right="3%"
           width="250px"
         />
       </Box>

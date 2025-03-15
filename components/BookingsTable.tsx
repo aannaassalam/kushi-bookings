@@ -1,11 +1,4 @@
-import React from "react";
-import {
-  Box,
-  Button,
-  HStack,
-  VisuallyHiddenInput,
-  VStack
-} from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 function BookingsTable() {
   return (
     <Box className="w-full mx-auto max-xl:w-full">

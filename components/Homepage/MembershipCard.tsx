@@ -130,7 +130,9 @@ export default function MembershipCard({
           <ModalBody>
             Are you sure you want to change plan?
             <br />
-            Changes will take effect from the next billing period...
+            The current membership will be deactivated and replaced with the
+            newly selected option, and the credit card on file will be charged
+            right away. Would you like to continue?
           </ModalBody>
           <ModalFooter gap={2}>
             <Button variant="ghost" onClick={onClose} size="sm">

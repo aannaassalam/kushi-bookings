@@ -4,7 +4,7 @@ import FloatingMenu from "../FloatingMenu/FloatingMenu";
 
 function HeroSection() {
   return (
-    <div className="relative min-h-[80vh] pl-[100px] flex flex-col  justify-center max-lg:pl-[40px] max-md:min-h-[95vh] max-md:pl-[20px] max-md:pb-[20px]">
+    <div className="relative min-h-[92vh] pl-[100px] flex flex-col  justify-center max-lg:pl-[40px] max-md:min-h-[95vh] max-md:pl-[20px] max-md:pb-[20px]">
       <Image
         src={assets.heroImage}
         width={1600}
