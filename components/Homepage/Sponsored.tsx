@@ -18,7 +18,9 @@ export default function Sponsored() {
           SPONSORED
         </Text>
         <Heading as="h2" size="xl" fontWeight="bold" className="text-primary">
-          A LEGENDARY WELCOME, EVERY TIME
+          A LEGENDARY WELCOME,
+          <br />
+          EVERY TIME
         </Heading>
         <Text fontSize="lg" color="gray.700" maxW="xl" my={4}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ornare
