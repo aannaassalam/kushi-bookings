@@ -19,6 +19,9 @@ export const endpoints = {
     forgot_password: "/user/forgot-password",
     reset_password: "/user/reset-password"
   },
+  advertise: {
+    submit_form: "/advertise/submit_form"
+  },
   facility: {
     get_facility: "/facility"
   },

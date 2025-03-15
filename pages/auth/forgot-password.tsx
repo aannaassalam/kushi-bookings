@@ -70,7 +70,7 @@ export default function ForgotPassword() {
               text="Email Address"
               type="email"
               placeholder="johndoe@example.com"
-              validationProps={{ ...register("email") }}
+              validationProps={register("email")}
               error={errors?.email?.message || ""}
               isRequired={true}
             />

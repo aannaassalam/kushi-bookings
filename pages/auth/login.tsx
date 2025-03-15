@@ -137,7 +137,7 @@ export default function Login() {
               text="Email Address"
               type="email"
               placeholder="johndoe@example.com"
-              validationProps={{ ...register("email") }}
+              validationProps={register("email")}
               error={errors?.email?.message || ""}
               isRequired={true}
             />
@@ -146,7 +146,7 @@ export default function Login() {
               text="Password"
               type="password"
               placeholder="Enter Password"
-              validationProps={{ ...register("password") }}
+              validationProps={register("password")}
               error={errors?.password?.message || ""}
               isRequired={true}
             />

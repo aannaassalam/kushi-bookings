@@ -95,7 +95,7 @@ export default function SignUp() {
               text="Full Name"
               type="text"
               placeholder="Enter Full name"
-              validationProps={{ ...register("full_name") }}
+              validationProps={register("full_name")}
               error={errors?.full_name?.message || ""}
               isRequired={true}
             />
@@ -104,7 +104,7 @@ export default function SignUp() {
               text="Email Address"
               type="email"
               placeholder="Enter email address"
-              validationProps={{ ...register("email") }}
+              validationProps={register("email")}
               error={errors?.email?.message || ""}
               isRequired={true}
             />
@@ -113,7 +113,7 @@ export default function SignUp() {
               text="Phone Number"
               type="number"
               placeholder="Enter phone number"
-              validationProps={{ ...register("phone") }}
+              validationProps={register("phone")}
               error={errors?.phone?.message || ""}
               isRequired={true}
             />
@@ -122,7 +122,7 @@ export default function SignUp() {
               text="Password"
               type="password"
               placeholder="Enter Password"
-              validationProps={{ ...register("password") }}
+              validationProps={register("password")}
               error={errors?.password?.message || ""}
               isRequired={true}
             />
@@ -132,7 +132,7 @@ export default function SignUp() {
               text="Confirm Password"
               type="password"
               placeholder="Enter Confirm Password"
-              validationProps={{ ...register("confirm_password") }}
+              validationProps={register("confirm_password")}
               error={errors?.confirm_password?.message || ""}
               isRequired={true}
             />

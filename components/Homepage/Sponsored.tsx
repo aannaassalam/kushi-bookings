@@ -6,11 +6,53 @@ import {
   Text,
   VStack,
   HStack,
-  Image
+  Image,
+  Modal,
+  useDisclosure,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "@chakra-ui/react";
 import Link from "next/link";
+import CustomInput from "../CustomInput";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useMutation } from "@tanstack/react-query";
+import { submitAdvertiseForm } from "@/api/functions/advertise.api";
+
+const schema = yup.object().shape({
+  full_name: yup.string().required(),
+  email: yup.string().email().required(),
+  nature_of_business: yup.string().required()
+});
 
 export default function Sponsored() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: submitAdvertiseForm,
+    onSuccess: () => {
+      onClose();
+      reset();
+    }
+  });
+
+  const onSubmit = (body: yup.InferType<typeof schema>) => {
+    mutate(body);
+  };
+
   return (
     <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex justify-center">
       <VStack align="start" maxW="6xl" mx="auto" spacing={4} marginX={0}>
@@ -50,8 +92,7 @@ export default function Sponsored() {
             variant="link"
             color="green.900"
             fontWeight="bold"
-            as={Link}
-            href="#footer"
+            onClick={onOpen}
           >
             ADVERTISE HERE
           </Button>
@@ -98,6 +139,62 @@ export default function Sponsored() {
           width="250px"
         />
       </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Contact us</ModalHeader>
+          <ModalBody>
+            <CustomInput
+              id="name"
+              text="Full name"
+              type="text"
+              placeholder="John Doe"
+              validationProps={register("full_name")}
+              error={errors?.full_name?.message || ""}
+              isRequired={true}
+            />
+            <CustomInput
+              id="email"
+              text="Email address"
+              type="email"
+              placeholder="John Doe"
+              validationProps={register("email")}
+              error={errors?.email?.message || ""}
+              isRequired={true}
+            />
+            <CustomInput
+              id="nature"
+              text="Nature of your business"
+              type="text"
+              placeholder="Enter here..."
+              validationProps={register("nature_of_business")}
+              error={errors?.nature_of_business?.message || ""}
+              isRequired={true}
+            />
+          </ModalBody>
+          <ModalFooter gap={2}>
+            <Button
+              variant="solid"
+              onClick={() => {
+                onClose();
+                reset();
+              }}
+              className="flex-1"
+              isDisabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              colorScheme="blue"
+              onClick={handleSubmit(onSubmit)}
+              className="flex-1"
+              isLoading={isPending}
+            >
+              Submit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }

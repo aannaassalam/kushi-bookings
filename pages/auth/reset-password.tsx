@@ -72,7 +72,7 @@ export default function ResetPassword() {
               text="Password"
               type="password"
               placeholder="Enter Password"
-              validationProps={{ ...register("password") }}
+              validationProps={register("password")}
               error={errors?.password?.message || ""}
               isRequired={true}
             />
