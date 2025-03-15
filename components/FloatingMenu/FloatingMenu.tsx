@@ -99,8 +99,11 @@ export default function FloatingMenu({
   return (
     <div
       className={cx(
-        "absolute left-0 -bottom-[44px] px-[100px] flex items-center justify-center w-full overflow-visible z-10 max-xl:px-[40px]   max-md:px-[20px] max-lg:-bottom-[290px]",
-        { "max-lg:-bottom-[220px]": noButton }
+        "pr-[100px] flex items-center justify-center w-full overflow-visible z-10 max-lg:-bottom-[290px] max-lg:pr-[40px] max-md:pr-[20px]",
+        {
+          "max-lg:-bottom-[220px] absolute left-0 -bottom-[44px] px-[100px] max-xl:px-[40px] max-md:px-[20px]":
+            noButton
+        }
       )}
     >
       <div
@@ -147,7 +150,7 @@ export default function FloatingMenu({
           </p>
         </div>
         {!noButton && (
-          <div className="w-full p-6 max-lg:col-start-1 max-lg:col-end-13 max-lg:px-0 max-lg:pt-2">
+          <div className="w-full p-6 max-lg:col-start-1 max-lg:col-end-13 max-lg:px-0 max-lg:pt-2 max-lg:pb-0">
             <button
               className="primaryButton mr-3 font-semibold !py-4 w-full"
               onClick={() => {

@@ -2,6 +2,7 @@ import { getMyBookings } from "@/api/functions/bookings.api";
 import { getLanes } from "@/api/functions/lane.api";
 import BookingsFilter from "@/components/BookingsFilter";
 import BookingsGrid from "@/components/BookingsGrid";
+import BookingsTable from "@/components/BookingsTable";
 import MobileBookingsGrid from "@/components/MobileBookingGrid";
 import AppLayout from "@/layouts/AppLayout";
 import { Booking } from "@/typescript/interface/bookings.interface";
@@ -79,7 +80,7 @@ export default function MyBookings({
         </ModalContent>
       </Modal>
       <div className=" relative w-full h-[200px] bg-gradient-to-r items-center from-[#1C1744] to-[#1C1744]/70 flex justify-center max-md:h-[150px]">
-        <h1 className="text-white font-bold text-[36px]"> Bookings</h1>
+        <h1 className="text-white font-bold text-[36px]"> My Bookings</h1>
         {/* <FloatingMenu /> */}
       </div>
 
@@ -91,21 +92,8 @@ export default function MyBookings({
               {data.length} Bookings
             </p>
           </VStack>
-          <HStack alignItems="stretch">
-            {/* <Input
-              placeholder="Search"
-              className="!w-[250px] !h-full mr-6 rounded-lg px-4 py-2 focus:outline-none outline-none !bg-[#fafafa]"
-            /> */}
-            {/* <HStack className="bg-[#fafafa] p-2 rounded-md flex flex-row">
-              <p className="py-2 px-5 bg-white font-semibold rounded-md text-black pointer">
-                Cricket
-              </p>
-              <p className="py-2 px-5  rounded-md font-semibold pointer">
-                Badminton
-              </p>
-            </HStack> */}
-          </HStack>
         </div>
+        {/* <BookingsTable /> */}
         <BookingsFilter />
         <BookingsGrid
           bookings={data}
