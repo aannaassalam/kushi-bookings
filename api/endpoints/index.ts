@@ -59,5 +59,6 @@ export const sucessNotificationEndPoints: string[] = [
   endpoints.user.register,
   endpoints.payments.change_subscription,
   endpoints.user.update_profile,
-  endpoints.user.change_password
+  endpoints.user.change_password,
+  endpoints.advertise.submit_form
 ];
