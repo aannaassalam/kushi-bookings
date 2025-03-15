@@ -10,6 +10,8 @@ export default {
   default_user: "/assets/images/default-user.png",
   cricketBadger: "/assets/images/cricketBadger.JPG",
   fcc: "/assets/images/fcc.PNG",
+  sponsor1: "/assets/images/sponsor1.jpeg",
+  sponsor2: "/assets/images/sponsor2.jpeg",
 
   logo2: "/assets/images/logo2.png"
 };
