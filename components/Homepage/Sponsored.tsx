@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { submitAdvertiseForm } from "@/api/functions/advertise.api";
+import { submitAdvertiseForm } from "@/api/functions/user.api";
 
 const schema = yup.object().shape({
   full_name: yup.string().required(),
