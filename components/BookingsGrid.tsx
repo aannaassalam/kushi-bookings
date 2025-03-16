@@ -45,6 +45,8 @@ export default function BookingsGrid({
     { bg: "bg-[#47d359]", text: "text-white" }
   ];
 
+  console.log(lanes.length);
+
   return (
     <Box w="full" mt={8} className="shadow-custom max-md:hidden">
       <Grid
@@ -68,7 +70,7 @@ export default function BookingsGrid({
           {timings.map((time) => (
             <Box
               key={time}
-              h="240px"
+              h={`${lanes.length * 60}px`}
               display="flex"
               alignItems="center"
               justifyContent="center"
@@ -128,13 +130,16 @@ export default function BookingsGrid({
                     );
 
                     return (
-                      <Grid templateRows="repeat(4),1fr)" key={colIndex}>
+                      <Grid
+                        templateRows={`repeat(${lanes.length},1fr)`}
+                        key={colIndex}
+                      >
                         {/* lane 1 */}
 
                         {lanes
                           .sort((a, b) => a.name.localeCompare(b.name))
                           .map((lane, id) => {
-                            const booking = booking_for_day.filter(
+                            const booking = booking_for_day.find(
                               (_booking) => _booking.lane_id === lane._id
                             );
 
@@ -152,28 +157,23 @@ export default function BookingsGrid({
                                   day.format("DD/MM/YYYY")
                                 }
                               >
-                                {booking.map((_booking) => {
-                                  return (
-                                    <Box
-                                      className={`p-2 h-full ${colors[id].bg} border cursor-pointer rounded-md`}
-                                      key={_booking._id}
-                                      onClick={() =>
-                                        setBookingDetails(_booking)
-                                      }
+                                {booking ? (
+                                  <Box
+                                    className={`p-2 h-full ${colors[id].bg} border cursor-pointer rounded-md`}
+                                    onClick={() => setBookingDetails(booking)}
+                                  >
+                                    <p
+                                      className={`text-sm ${colors[id].text} font-semibold`}
                                     >
-                                      <p
-                                        className={`text-sm ${colors[id].text} font-semibold`}
-                                      >
-                                        {_booking?.user.full_name}
-                                      </p>
-                                      <p
-                                        className={`text-xs ${colors[id].text} font-medium mt-1.5`}
-                                      >
-                                        {_booking?.lane.name}
-                                      </p>
-                                    </Box>
-                                  );
-                                })}
+                                      {booking?.user.full_name}
+                                    </p>
+                                    <p
+                                      className={`text-xs ${colors[id].text} font-medium mt-1.5`}
+                                    >
+                                      {booking?.lane.name}
+                                    </p>
+                                  </Box>
+                                ) : null}
                               </Box>
                             );
                           })}

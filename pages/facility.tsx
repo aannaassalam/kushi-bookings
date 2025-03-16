@@ -372,26 +372,28 @@ export default function Facility({
               </p>
             </div>
           </div>
-          <div className="w-full p-7 rounded-md flex flex-row justify-end max-md:px-0">
-            <CheckboxGroup
-              value={[cart?.box_booking_price || ""]}
-              onChange={() => onBoxBooking()}
-            >
-              <Checkbox
-                className="font-medium border-2 p-3 rounded-lg"
-                value={facility?.box_booking_price}
-                disabled={
-                  box_booking_not_available ||
-                  isPending ||
-                  isBookingsLoading ||
-                  isUserMembershipLoading
-                }
+          {sport === "cricket" && (
+            <div className="w-full p-7 pb-0 rounded-md flex flex-row justify-end max-md:px-0">
+              <CheckboxGroup
+                value={[cart?.box_booking_price || ""]}
+                onChange={() => onBoxBooking()}
               >
-                Box Booking
-              </Checkbox>
-            </CheckboxGroup>
-          </div>
-          <div className="grid grid-cols-3 gap-4 my-0 max-xl:grid-cols-2 max-md:grid-cols-1">
+                <Checkbox
+                  className="font-medium border-2 p-3 rounded-lg"
+                  value={facility?.box_booking_price}
+                  disabled={
+                    box_booking_not_available ||
+                    isPending ||
+                    isBookingsLoading ||
+                    isUserMembershipLoading
+                  }
+                >
+                  Box Booking
+                </Checkbox>
+              </CheckboxGroup>
+            </div>
+          )}
+          <div className="grid grid-cols-3 gap-4 my-0 max-xl:grid-cols-2 max-md:grid-cols-1 mt-7">
             {data?.map((_data) => (
               <LaneCard
                 lane={_data}

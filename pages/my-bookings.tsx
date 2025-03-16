@@ -67,9 +67,23 @@ export default function MyBookings({
     refetchInterval: 5000
   });
 
+  const {
+    data: lanes = [],
+    isPending: isLanesPending,
+    isFetching
+  } = useQuery({
+    queryKey: ["lanes", sport],
+    queryFn: () => getLanes(sport),
+    initialData: lanes_data
+  });
+
   return (
     <AppLayout>
-      <Modal isOpen={isPending} onClose={() => null} isCentered>
+      <Modal
+        isOpen={isPending || isLanesPending || isFetching}
+        onClose={() => null}
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent className="flex items-center justify-center !bg-[transparent] !shadow-none">
           {/* <Box className="h-full w-full "> */}
@@ -93,14 +107,8 @@ export default function MyBookings({
         </div>
         {/* <BookingsTable /> */}
         <BookingsFilter />
-        <BookingsGrid
-          bookings={data}
-          lanes={lanes_data.filter((_lane) => _lane.sport === "cricket")}
-        />
-        <MobileBookingsGrid
-          bookings={data}
-          lanes={lanes_data.filter((_lane) => _lane.sport === "cricket")}
-        />
+        <BookingsGrid bookings={data} lanes={lanes} />
+        <MobileBookingsGrid bookings={data} lanes={lanes} />
       </div>
     </AppLayout>
   );
