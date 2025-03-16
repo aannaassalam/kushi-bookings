@@ -54,8 +54,14 @@ export default function Sponsored() {
   };
 
   return (
-    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex justify-center">
-      <VStack align="start" maxW="6xl" mx="auto" spacing={4} marginX={0}>
+    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex max-lg:py-12 ">
+      <VStack
+        align="start"
+        mx="auto"
+        spacing={4}
+        marginX={0}
+        className="w-1/2 max-lg:w-full"
+      >
         <Text className="text-primaryText" fontWeight="bold">
           SPONSORED
         </Text>
@@ -64,12 +70,17 @@ export default function Sponsored() {
           <br />
           EVERY TIME
         </Heading>
-        <Text fontSize="lg" color="gray.700" maxW="xl" my={4}>
+        <Text
+          fontSize="lg"
+          color="gray.700"
+          maxW={{ base: "100%", lg: "xl" }}
+          my={4}
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ornare
           sit amet lacus fermentum tincidunt. Vestibulum eu justo volutpat mi
           facilisis mattis in ullamcorper est.
         </Text>
-        <Text fontSize="lg" color="gray.700" maxW="xl">
+        <Text fontSize="lg" color="gray.700" maxW={{ base: "100%", lg: "xl" }}>
           Etiam arcu purus, feugiat quis orci eget, egestas ultricies nulla.
           Maecenas ut nisl lectus. Nulla a blandit turpis. Nulla mattis, elit a
           porta ullamcorper, dui justo mattis mi, tempor tempor lorem quam
@@ -100,7 +111,11 @@ export default function Sponsored() {
       </VStack>
 
       {/* Image Section */}
-      <Box position="relative" className="ml-20 max-xl:ml-12 w-[30%]" mt={12}>
+      <Box
+        position="relative"
+        className="ml-auto w-1/3 max-[1400px]:w-[40%] max-xl:w-[45%] max-lg:hidden"
+        mt={12}
+      >
         <Box className="relative">
           <Image
             src={assets.sponsor1}
@@ -110,7 +125,7 @@ export default function Sponsored() {
             objectFit="cover"
             width="250px"
           />
-          <Box position="absolute" bottom={0} left={-5}>
+          <Box position="absolute" bottom={0} left={-5} className="z-10">
             {/* triangle */}
             <div className="w-0 h-0 border-l-[20px] border-l-[#00000000] border-b-[20px] border-b-primary"></div>
 
@@ -135,7 +150,7 @@ export default function Sponsored() {
           shadow="lg"
           position="absolute"
           top={16}
-          right="3%"
+          right="20px"
           width="250px"
         />
       </Box>
