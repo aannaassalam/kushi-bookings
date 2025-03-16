@@ -250,7 +250,7 @@ export default function Facility({
   const week_end = moment().endOf("week").endOf("day").unix();
   const { cart, setCart } = useCartContext();
 
-  const { data } = useQuery({
+  const { data, isFetching: isLaneFetching } = useQuery({
     queryKey: ["lanes", sport],
     queryFn: () => getLanes(sport),
     initialData: lanes
@@ -372,7 +372,7 @@ export default function Facility({
               </p>
             </div>
           </div>
-          {sport === "cricket" && (
+          {sport === "cricket" && !isLaneFetching && (
             <div className="w-full p-7 pb-0 rounded-md flex flex-row justify-end max-md:px-0">
               <CheckboxGroup
                 value={[cart?.box_booking_price || ""]}
