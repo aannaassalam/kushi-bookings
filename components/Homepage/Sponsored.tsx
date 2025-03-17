@@ -54,7 +54,7 @@ export default function Sponsored() {
   };
 
   return (
-    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex max-lg:py-12 ">
+    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex max-lg:py-12 max-lg:flex-col">
       <VStack
         align="start"
         mx="auto"
@@ -113,7 +113,7 @@ export default function Sponsored() {
       {/* Image Section */}
       <Box
         position="relative"
-        className="ml-auto w-1/3 max-[1400px]:w-[40%] max-xl:w-[45%] max-lg:hidden"
+        className="ml-auto w-1/3 max-[1400px]:w-[40%] max-xl:w-[45%] max-lg:mx-auto max-lg:w-[500px] max-sm:w-[95%]"
         mt={12}
       >
         <Box className="relative">
@@ -152,6 +152,7 @@ export default function Sponsored() {
           top={16}
           right="20px"
           width="250px"
+          className="max-sm:!right-0"
         />
       </Box>
       <Modal isOpen={isOpen} onClose={onClose}>
