@@ -4,13 +4,13 @@ import FloatingMenu from "../FloatingMenu/FloatingMenu";
 
 function HeroSection() {
   return (
-    <div className="relative min-h-[92vh] pl-[100px] flex flex-col  justify-center max-lg:pl-[40px] max-md:min-h-[95vh] max-md:pl-[20px] max-md:pb-[20px]">
+    <div className="relative min-h-[55vh] pl-[100px] flex flex-col  justify-center max-lg:pl-[40px] max-md:min-h-[95vh] max-md:pl-[20px] max-md:pb-[20px]">
       <Image
         src={assets.heroImage}
         width={1600}
         height={700}
         alt="heroImage"
-        className="absolute top-0 left-0 z-[-1] h-full w-full object-cover"
+        className="absolute top-0 left-0 z-[-1] h-full w-full object-cover object-top"
       />
       <div className="absolute w-full h-full bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 top-0 left-0 z-0"></div>
       <div className="relative z-10 mb-4 max-lg:py-[40px]">

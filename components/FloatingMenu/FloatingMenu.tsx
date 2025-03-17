@@ -127,7 +127,9 @@ export default function FloatingMenu({
           onClick={() => setDateModal(true)}
         >
           <p className="font-semibold text-lg">Date</p>
-          <p className="text-base">{moment(date).format("MMMM D, YYYY")}</p>
+          <p className="text-base max-xs:text-[15px]">
+            {moment(date).format("MMMM D, YYYY")}
+          </p>
         </div>
         <div
           className="w-full p-6 cursor-pointer max-lg:col-start-1 max-lg:col-end-13 max-lg:border-r-0 max-lg:border-b max-lg:border-b-gray-300"
@@ -150,7 +152,7 @@ export default function FloatingMenu({
           </p>
         </div>
         {!noButton && (
-          <div className="w-full p-6 border-l border-l-gray-300  max-lg:col-start-1 max-lg:col-end-13 max-lg:px-0 max-lg:pt-2 max-lg:pb-0">
+          <div className="w-full p-6 border-l border-l-gray-300 max-lg:border-none max-md:m-0 max-lg:col-start-1 max-lg:col-end-13 max-lg:px-0 max-md:pt-0 max-lg:pt-2 max-lg:pb-0">
             <button
               className="primaryButton mr-3 font-semibold !py-4 w-full"
               onClick={() => {
