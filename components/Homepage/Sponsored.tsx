@@ -54,13 +54,13 @@ export default function Sponsored() {
   };
 
   return (
-    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex max-lg:py-12 max-lg:flex-col">
+    <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex max-lg:py-12 max-lg:flex-col relative">
       <VStack
         align="start"
         mx="auto"
         spacing={4}
         marginX={0}
-        className="w-1/2 max-lg:w-full"
+        className="w-1/2 max-lg:w-full "
       >
         <Text className="text-primaryText" fontWeight="bold">
           SPONSORED
@@ -155,6 +155,20 @@ export default function Sponsored() {
           className="max-sm:!right-0"
         />
       </Box>
+
+      {/* Add Banner overlay text */}
+      <Box className="absolute w-full h-full z-10 left-0 flex justify-center items-center ">
+        <Text
+          color="blackAlpha.500"
+          className="text-[90px] max-md:text-[60px] max-sm:w-[350px]"
+          textAlign="center"
+          ml={2}
+          fontWeight={700}
+        >
+          Advertise Your <br className="hidden max-md:flex" /> Business Here
+        </Text>
+      </Box>
+
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
