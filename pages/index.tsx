@@ -6,8 +6,13 @@ import Sponsored from "@/components/Homepage/Sponsored";
 // import SeasonPass from "@/components/Homepage/SeasonPass";
 import WhyUs from "@/components/Homepage/WhyUs";
 import AppLayout from "@/layouts/AppLayout";
+import { getTimezone } from "@/lib/functions/_helpers.lib";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect(() => {
+    alert(getTimezone());
+  }, []);
   return (
     <AppLayout>
       <HeroSection />

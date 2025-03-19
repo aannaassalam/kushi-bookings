@@ -5,6 +5,8 @@ import {
   BookingMetaData,
   SeasonPassMetaData
 } from "@/typescript/interface/payments.interface";
+import { getTimezone } from "@/lib/functions/_helpers.lib";
+import moment from "moment-timezone";
 
 export const createSubscription = async (body: {
   payment_method: string;
@@ -32,9 +34,16 @@ export const changeSubscription = async (body: {
 export const getPurchaseClientSecret = async (
   body: SeasonPassMetaData | BookingMetaData
 ) => {
+  const timezone = getTimezone();
   const res = await axiosInstance.post(
     endpoints.payments.generate_payment_intent,
-    body
+    {
+      ...body,
+      date:
+        body.type === "booking"
+          ? moment.tz(body.date, timezone).utc()
+          : undefined
+    }
   );
   return res.data;
 };

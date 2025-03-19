@@ -23,6 +23,10 @@ export function isApple() {
   return platformExpression.test(agent);
 }
 
+export function getTimezone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
 export function isAppleSafari() {
   if (typeof navigator === "undefined") {
     return false;
