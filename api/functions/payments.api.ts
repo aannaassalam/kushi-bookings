@@ -34,14 +34,13 @@ export const changeSubscription = async (body: {
 export const getPurchaseClientSecret = async (
   body: SeasonPassMetaData | BookingMetaData
 ) => {
-  const timezone = getTimezone();
   const res = await axiosInstance.post(
     endpoints.payments.generate_payment_intent,
     {
       ...body,
       date:
         body.type === "booking"
-          ? moment.tz(body.date, timezone).utc()
+          ? moment.utc(body.date).toISOString()
           : undefined
     }
   );
