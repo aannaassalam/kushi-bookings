@@ -16,7 +16,16 @@ export const getBookingsForFilter = async (body: {
     {
       params: {
         ...body,
-        date: moment.utc(body.date).toISOString()
+        date: moment
+          .utc({
+            year: moment(body.date).year(),
+            month: moment(body.date).month(),
+            day: moment(body.date).date(),
+            hour: 0,
+            minute: 0,
+            second: 0
+          })
+          .toISOString()
       }
     }
   );
@@ -45,8 +54,26 @@ export const getMyBookings = async ({
     params: {
       lane_id: lanes,
       sport,
-      start_date: moment.utc(start_date).toISOString(),
-      end_date: moment.utc(end_date).toISOString()
+      start_date: moment
+        .utc({
+          year: moment(start_date).year(),
+          month: moment(start_date).month(),
+          day: moment(start_date).date(),
+          hour: 0,
+          minute: 0,
+          second: 0
+        })
+        .toISOString(),
+      end_date: moment
+        .utc({
+          year: moment(end_date).year(),
+          month: moment(end_date).month(),
+          day: moment(end_date).date(),
+          hour: 0,
+          minute: 0,
+          second: 0
+        })
+        .toISOString()
     }
   });
 

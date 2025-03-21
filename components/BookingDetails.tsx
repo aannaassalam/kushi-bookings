@@ -206,7 +206,7 @@ export default function BookingDetails({
                 </p>
               </HStack>
             </Box>
-            {!booking?.season_pass_id && booking?.membership_id && (
+            {!booking?.season_pass_id && booking?.membership && (
               <Box className=" mt-4 w-full bg-gray-50 rounded-lg p-4 ">
                 <p className="p-4 text-lg rounded-md w-full bg-white mb-4">
                   Membership
@@ -214,7 +214,7 @@ export default function BookingDetails({
                 <Link href="/membership" className="text-sm">
                   <HStack className="w-full justify-between p-4 py-2 mb-0">
                     <Box className="">
-                      <p className="text-sm">{booking?.membership.name}</p>
+                      <p className="text-sm">{booking?.membership?.name}</p>
                     </Box>
                     <FaArrowUpRightFromSquare />
                   </HStack>

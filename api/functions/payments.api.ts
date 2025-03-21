@@ -40,7 +40,17 @@ export const getPurchaseClientSecret = async (
       ...body,
       date:
         body.type === "booking"
-          ? moment.utc(body.date).toISOString()
+          ? moment
+              // .startOf("day")
+              .utc({
+                year: moment(body.date).year(),
+                month: moment(body.date).month(),
+                day: moment(body.date).date(),
+                hour: 0,
+                minute: 0,
+                second: 0
+              })
+              .toISOString()
           : undefined
     }
   );
