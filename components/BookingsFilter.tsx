@@ -3,18 +3,20 @@ import { Box, HStack, IconButton } from "@chakra-ui/react";
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { BsCalendar3 } from "react-icons/bs";
 import { IoIosArrowBack, IoIosArrowForward, IoMdAdd } from "react-icons/io";
 import { BookingSelectDate } from "./Modals/BookingSelectDate";
 import { SelectLane } from "./Modals/SelectLane";
 import { SelectSport } from "./Modals/SelectSport";
+import { SelectTimeSlots } from "./Modals/SelectTimeSlots";
 
 function BookingsFilter() {
   const router = useRouter();
   const [sportModal, setSportModal] = useState(false);
   const [laneModal, setLaneModal] = useState(false);
   const [dateModal, setDateModal] = useState(false);
+  const [slotModal, setSlotModal] = useState(false);
   const searchParams = useSearchParams();
   const start_date =
     searchParams.get("start_date") ?? moment().startOf("week").toISOString();
@@ -22,6 +24,33 @@ function BookingsFilter() {
     searchParams.get("end_date") ?? moment().endOf("week").toISOString();
   const lanes = searchParams.getAll("lane");
   const sport = searchParams.get("sport") ?? "cricket";
+  const timeslots =
+    searchParams.getAll("time_slots").length > 0
+      ? searchParams.getAll("time_slots")
+      : ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+
+  const timings = useMemo(() => {
+    const number_of_hours = moment()
+      .add(1, "day")
+      .set({ hour: 0, minute: 0 })
+      .diff(moment().set({ hour: 0, minute: 0 }), "hours");
+    return Array.from({ length: number_of_hours }, (_, id) => {
+      return {
+        label: `${moment()
+          .set({ hour: 0, minute: 0 })
+          .add(id, "hours")
+          .format("hh:mm A")} - ${moment()
+          .set({ hour: 0, minute: 0 })
+          .add(id + 1, "hours")
+          .format("hh:mm A")}`,
+        available: true,
+        value: moment()
+          .set({ hour: 0, minute: 0 })
+          .add(id, "hours")
+          .format("HH:mm")
+      };
+    });
+  }, []);
 
   return (
     <div
@@ -29,7 +58,7 @@ function BookingsFilter() {
         "w-full bg-white grid grid-cols-5 rounded-lg shadow-custom mt-8 border border-gray-200 max-md:grid-cols-2"
       )}
     >
-      <HStack className="p-3 border-r border-r-gray-200 min-w-[200px] col-span-3 max-lg:col-span-5 max-lg:border-b max-lg:border-b-gray-300 max-md:!hidden">
+      <HStack className="p-3 border-r border-r-gray-200 min-w-[200px] col-span-2 max-lg:col-span-5 max-lg:border-b max-lg:border-b-gray-300 max-md:!hidden">
         <Box>
           <p className="text-gray-700 font-semibold">Date</p>
           <p className="text-gray-700">
@@ -111,6 +140,22 @@ function BookingsFilter() {
           <IoMdAdd color="#2C8EE3" size={20} />
         </Box>
       </HStack>
+      <HStack
+        className="p-3 border-r border-r-gray-200 min-w-[200px] cursor-pointer max-lg:ml-[40px] max-md:ml-0 max-md:min-w-[150px]"
+        onClick={() => setSlotModal(true)}
+      >
+        <Box>
+          <p className="text-gray-700 font-semibold">Timeslots</p>
+          <p className="text-gray-700">
+            {timeslots?.length
+              ? `${timeslots.length} selected`
+              : "Select Timeslots"}
+          </p>
+        </Box>
+        <Box className="flex p-1 rounded-md justify-center items-center bg-lightPrimary ml-auto">
+          <IoMdAdd color="#2C8EE3" size={20} />
+        </Box>
+      </HStack>
 
       {sportModal && (
         <SelectSport open={sportModal} onClose={() => setSportModal(false)} />
@@ -118,12 +163,13 @@ function BookingsFilter() {
       {laneModal && (
         <SelectLane open={laneModal} onClose={() => setLaneModal(false)} />
       )}
-      {/* {memberModal && (
-        <SelectMember
-          open={memberModal}
-          onClose={() => setMemberModal(false)}
+      {slotModal && (
+        <SelectTimeSlots
+          open={slotModal}
+          onClose={() => setSlotModal(false)}
+          slots={timings}
         />
-      )} */}
+      )}
       {dateModal && (
         <BookingSelectDate
           open={dateModal}

@@ -37,7 +37,10 @@ export const SelectTimeSlots = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const time_slots = searchParams.getAll("time_slots");
+  const time_slots =
+    searchParams.getAll("time_slots").length > 0
+      ? searchParams.getAll("time_slots")
+      : ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
   // const date = searchParams.getAll("date") ?? moment().toISOString();
   const { setCart } = useCartContext();
 
