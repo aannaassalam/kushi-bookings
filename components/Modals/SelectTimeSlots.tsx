@@ -24,13 +24,15 @@ interface Slot {
 export const SelectTimeSlots = ({
   open,
   onClose,
-  slots
+  slots,
+  isBookingFilter
 }: // bookings
 // lanes_length
 {
   open: boolean;
   onClose: () => void;
   slots: Slot[];
+  isBookingFilter?:boolean
   // bookings: BookingFilter;
   // lanes_length: number;
 }) => {
@@ -40,11 +42,11 @@ export const SelectTimeSlots = ({
   const time_slots =
     searchParams.getAll("time_slots").length > 0
       ? searchParams.getAll("time_slots")
-      : ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
+      : isBookingFilter?["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]:[];
   // const date = searchParams.getAll("date") ?? moment().toISOString();
   const { setCart } = useCartContext();
 
-  const [selectedTime, setSelectedTime] = useState<string[]>(time_slots || []);
+  const [selectedTime, setSelectedTime] = useState<string[]>(time_slots);
 
   return (
     <Modal isOpen={open} onClose={onClose}>

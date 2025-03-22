@@ -168,6 +168,7 @@ function BookingsFilter() {
           open={slotModal}
           onClose={() => setSlotModal(false)}
           slots={timings}
+          isBookingFilter
         />
       )}
       {dateModal && (
