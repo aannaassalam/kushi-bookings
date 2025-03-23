@@ -38,7 +38,7 @@ export default function BookingsGrid({
 
   const weekdays = useMemo(() => {
     return Array.from({ length: 7 }, (_, id) => {
-      return moment(start_date).startOf("week").add(id, "day");
+      return moment.utc(start_date).startOf("week").add(id, "day");
     });
   }, [start_date]);
 
@@ -146,7 +146,7 @@ export default function BookingsGrid({
                     {weekdays.map((day, colIndex) => {
                       const booking_for_day = bookings.filter(
                         (_booking) =>
-                          moment(_booking.date).format("DD/MM/YYYY") ===
+                          moment.utc(_booking.date).format("DD/MM/YYYY") ===
                             day.format("DD/MM/YYYY") &&
                           _booking.slots.includes(comparison_time)
                       );
@@ -173,11 +173,7 @@ export default function BookingsGrid({
                                     colIndex < 6 ? "1px solid" : "none"
                                   }
                                   borderColor="gray.300"
-                                  key={
-                                    lane._id +
-                                    comparison_time +
-                                    day.format("DD/MM/YYYY")
-                                  }
+                                  key={booking?._id}
                                 >
                                   {booking ? (
                                     <Box
