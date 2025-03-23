@@ -38,7 +38,7 @@ export default function BookingsGrid({
 
   const weekdays = useMemo(() => {
     return Array.from({ length: 7 }, (_, id) => {
-      return moment.utc(start_date).startOf("week").add(id, "day");
+      return moment(start_date).startOf("week").add(id, "day");
     });
   }, [start_date]);
 

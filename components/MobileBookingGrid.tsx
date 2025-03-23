@@ -49,7 +49,7 @@ export default function MobileBookingsGrid({
   }, []);
 
   const currentDay = useMemo(() => {
-    return moment.utc(start_date).startOf("day");
+    return moment(start_date).startOf("day");
   }, [start_date]);
 
   const colors = [
