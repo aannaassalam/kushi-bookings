@@ -49,7 +49,7 @@ export default function MobileBookingsGrid({
   }, []);
 
   const currentDay = useMemo(() => {
-    return moment(start_date).startOf("day");
+    return moment.utc(start_date).startOf("day");
   }, [start_date]);
 
   const colors = [
@@ -215,7 +215,7 @@ export default function MobileBookingsGrid({
                 const comparison_time = moment(time, "hh:mm A").format("HH:mm");
                 const booking_for_day = bookings.filter(
                   (_booking) =>
-                    moment(_booking.date).format("DD/MM/YYYY") ===
+                    moment.utc(_booking.date).format("DD/MM/YYYY") ===
                       currentDay.format("DD/MM/YYYY") &&
                     _booking.slots.includes(comparison_time)
                 );
