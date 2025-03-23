@@ -17,7 +17,10 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import { GetServerSideProps } from "next";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
+import { useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const cookies = parseCookies(context);
@@ -52,12 +55,15 @@ export default function MyBookings({
   lanes_data: Lane[];
 }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const _lanes = searchParams.getAll("lane");
   const sport = searchParams.get("sport") ?? "cricket";
   const start_date =
     searchParams.get("start_date") ?? moment().startOf("week").toISOString();
   const end_date =
     searchParams.get("end_date") ?? moment().endOf("week").toISOString();
+
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   const { data = [], isPending } = useQuery({
     queryKey: ["bookings", _lanes, sport, start_date, end_date],
@@ -66,6 +72,20 @@ export default function MyBookings({
     initialData: bookings_data,
     refetchInterval: 5000
   });
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (isTabletOrMobile) {
+      params.set("start_date", moment().startOf("day").toISOString());
+      params.set("end_date", moment().endOf("day").toISOString());
+    } else {
+      params.set("start_date", moment().startOf("week").toISOString());
+      params.set("end_date", moment().endOf("week").toISOString());
+    }
+    router.push({ search: params.toString() }, undefined, {
+      shallow: true
+    });
+  }, [isTabletOrMobile]);
 
   const {
     data: lanes = [],
