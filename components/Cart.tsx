@@ -1,3 +1,4 @@
+import { getFacility } from "@/api/functions/facility.api";
 import { removePendingBookings } from "@/api/functions/payments.api";
 import { getCurrentSeasonPass } from "@/api/functions/season-pass.api";
 import assets from "@/json/assets";
@@ -27,15 +28,14 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { parseCookies } from "nookies";
 import { useMemo, useState } from "react";
 import { IoIosRemoveCircleOutline, IoMdClose } from "react-icons/io";
 import { IoBagOutline, IoChevronDownOutline } from "react-icons/io5";
-import PaymentModal from "./PaymentForm/PaymentForm";
-import { parseCookies } from "nookies";
-import { useRouter } from "next/router";
-import { getFacility } from "@/api/functions/facility.api";
-import TermsAndConditions from "./Modals/TermsAndConditions";
 import { LuTrash2 } from "react-icons/lu";
+import TermsAndConditions from "./Modals/TermsAndConditions";
+import PaymentModal from "./PaymentForm/PaymentForm";
 
 const LaneCard = ({
   lane,
@@ -55,7 +55,7 @@ const LaneCard = ({
 
     const weekly_slot_guard =
       moment(cart?.date).unix() <= week_end
-        ? cart?.membership?.available_slots ?? 0
+        ? (cart?.membership?.available_slots ?? 0)
         : 0;
 
     let available_slots = cart?.season_pass
@@ -132,7 +132,7 @@ const LaneCard = ({
 
     const weekly_slot_guard =
       moment(cart?.date).unix() <= week_end
-        ? cart?.membership?.available_slots ?? 0
+        ? (cart?.membership?.available_slots ?? 0)
         : 0;
 
     let available_slots = cart?.season_pass
@@ -278,7 +278,7 @@ export default function Cart({
 
         const weekly_slots_guard =
           moment(cart.date).unix() <= week_end && !!cart?.membership
-            ? cart?.membership?.available_slots ?? 0
+            ? (cart?.membership?.available_slots ?? 0)
             : 0;
 
         if (weekly_slots_guard) {
@@ -360,178 +360,182 @@ export default function Cart({
   };
 
   return (
-    <Drawer
-      isOpen={open}
-      placement="right"
-      onClose={() => {
-        close();
-        setNotes("");
-      }}
-      size="lg"
-    >
-      <DrawerOverlay />
-      <DrawerContent className="rounded-tl-xl rounded-bl-xl">
-        {/* <DrawerCloseButton /> */}
-        <DrawerHeader className="!p-4">
-          <HStack alignItems="center">
-            <Box
-              onClick={() => {
-                close();
-              }}
-              className="bg-lightPrimary  p-3 mr-4 flex justify-center items-center rounded-xl h-full cursor-pointer"
-            >
-              <IoMdClose color="#2C8EE3" size={20} className="" />
-            </Box>
-            <Text fontSize="3xl" fontWeight="bold" color="blue.900" mb={0}>
-              Cart
-            </Text>
-          </HStack>
-        </DrawerHeader>
-        <Divider />
-        <DrawerBody className="!p-8 flex flex-col">
-          <HStack alignItems="center">
-            <IoBagOutline size={25} color="#2C8EE3" />
-            <p className="text-xl font-semibold text-primaryText ml-1">
-              Your Cart ({cart?.lanes.length ?? 0} items)
-            </p>
-            <IconButton
-              variant="ghost"
-              onClick={() => setCart(undefined)}
-              aria-label=""
-              className="ml-auto"
-            >
-              <IoIosRemoveCircleOutline className="" size={25} />
-            </IconButton>
-          </HStack>
-          <VStack gap={4} className="mt-6 mb-4 flex-1">
-            {cart?.lanes.map((_lane) => {
-              return (
-                <LaneCard
-                  lane={_lane}
-                  key={_lane.lane_id}
-                  date={cart.date}
-                  image={facility?.image}
-                />
-              );
-            })}
-            {!!cart?.box_booking_price && (
-              <div className="rounded-xl border border-gray-200 p-4 w-full flex items-center justify-between">
-                <h4 className="font-semibold">Box Booking Charge</h4>
-                <div className="flex justify-between items-center gap-2">
-                  <p className="text-base text-primary font-bold whitespace-nowrap">
-                    ${cart.box_booking_price} USD
-                  </p>
+    <div>
+      <Drawer
+        isOpen={open}
+        placement="right"
+        onClose={() => {
+          close();
+          setNotes("");
+        }}
+        size="lg"
+      >
+        <DrawerOverlay />
+        <DrawerContent className="rounded-tl-xl rounded-bl-xl">
+          {/* <DrawerCloseButton /> */}
+          <DrawerHeader className="!p-4">
+            <HStack alignItems="center">
+              <Box
+                onClick={() => {
+                  close();
+                }}
+                className="bg-lightPrimary  p-3 mr-4 flex justify-center items-center rounded-xl h-full cursor-pointer"
+              >
+                <IoMdClose color="#2C8EE3" size={20} className="" />
+              </Box>
+              <Text fontSize="3xl" fontWeight="bold" color="blue.900" mb={0}>
+                Cart
+              </Text>
+            </HStack>
+          </DrawerHeader>
+          <Divider />
+          <DrawerBody className="!p-8 flex flex-col">
+            <HStack alignItems="center">
+              <IoBagOutline size={25} color="#2C8EE3" />
+              <p className="text-xl font-semibold text-primaryText ml-1">
+                Your Cart ({cart?.lanes.length ?? 0} items)
+              </p>
+              <IconButton
+                variant="ghost"
+                onClick={() => setCart(undefined)}
+                aria-label=""
+                className="ml-auto"
+              >
+                <IoIosRemoveCircleOutline className="" size={25} />
+              </IconButton>
+            </HStack>
+            <VStack gap={4} className="mt-6 mb-4 flex-1">
+              {cart?.lanes.map((_lane) => {
+                return (
+                  <LaneCard
+                    lane={_lane}
+                    key={_lane.lane_id}
+                    date={cart.date}
+                    image={facility?.image}
+                  />
+                );
+              })}
+              {!!cart?.box_booking_price && (
+                <div className="rounded-xl border border-gray-200 p-4 w-full flex items-center justify-between">
+                  <h4 className="font-semibold">Box Booking Charge</h4>
+                  <div className="flex justify-between items-center gap-2">
+                    <p className="text-base text-primary font-bold whitespace-nowrap">
+                      ${cart.box_booking_price} USD
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-          </VStack>
-          {/* <p className="text-primaryText mt-4">
-            Taxes and promo codes applied at checkout
-          </p> */}
-        </DrawerBody>
-        <DrawerFooter className="!px-8 flex-col" alignItems="stretch">
-          <Textarea
-            className="mb-3 h-auto"
-            placeholder="Add notes..."
-            resize="none"
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-          />
-          <HStack className="mb-5">
-            <p className="uppercase text-3xl text-primaryText font-extralight max-md:text-xl">
-              Your total amount
-            </p>
-            <p className="text-primaryText font-bold text-3xl ml-4 max-md:text-xl">
-              ${price ?? 0} USD
-            </p>
-          </HStack>
-          <HStack gap={3}>
-            <Button
-              className="!bg-primary !text-white font-semibold !py-6 flex-1 !rounded-none"
-              onClick={() =>
-                cookies.token ? onTermsOpen() : router.push("/auth/login")
-              }
+              )}
+            </VStack>
+            {/* <p className="text-primaryText mt-4">
+              Taxes and promo codes applied at checkout
+            </p> */}
+            <TermsAndConditions
+              isOpen={isTermsOpen}
+              onClose={onTermsClose}
+              onProceed={() => {
+                onOpen();
+                onTermsClose();
+              }}
+            />
+          </DrawerBody>
+          <DrawerFooter className="!px-8 flex-col" alignItems="stretch">
+            <Textarea
+              className="mb-3 h-auto"
+              placeholder="Add notes..."
+              resize="none"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+            />
+            <HStack className="mb-5">
+              <p className="uppercase text-3xl text-primaryText font-extralight max-md:text-xl">
+                Your total amount
+              </p>
+              <p className="text-primaryText font-bold text-3xl ml-4 max-md:text-xl">
+                ${price ?? 0} USD
+              </p>
+            </HStack>
+            <HStack gap={3}>
+              <Button
+                className="!bg-primary !text-white font-semibold !py-6 flex-1 !rounded-none"
+                onClick={() =>
+                  cookies.token ? onTermsOpen() : router.push("/auth/login")
+                }
+                disabled={!Boolean(cart)}
+              >
+                Purchase
+              </Button>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  className="!h-auto !py-4 !px-4"
+                  rightIcon={<IoChevronDownOutline />}
+                  isDisabled={!Boolean(cart) || data.length === 0}
+                >
+                  Season Pass {Boolean(cart?.season_pass) && " (1)"}
+                </MenuButton>
+                <MenuList minWidth="240px">
+                  {data.map((_pass) => {
+                    return (
+                      <MenuItemOption
+                        key={_pass._id}
+                        isChecked={cart?.season_pass?._id === _pass._id}
+                        onClick={() => {
+                          onSelectedSeasonPassChange(_pass);
+                        }}
+                      >
+                        <VStack alignItems="flex-start" gap={1}>
+                          <p className="font-medium">
+                            {_pass.season_pass.name}
+                          </p>
+                          <p className=" text-gray-600">
+                            Available slots: {_pass.available_slots}
+                          </p>
+                        </VStack>
+                      </MenuItemOption>
+                    );
+                  })}
+                </MenuList>
+              </Menu>
+            </HStack>
+            {/* <Button
+              className="!text-primaryText !bg-white font-semibold !py-6 px-5 border !rounded-none border-black  flex-1"
               disabled={!Boolean(cart)}
             >
-              Purchase
-            </Button>
-            <Menu>
-              <MenuButton
-                as={Button}
-                className="!h-auto !py-4 !px-4"
-                rightIcon={<IoChevronDownOutline />}
-                isDisabled={!Boolean(cart) || data.length === 0}
-              >
-                Season Pass {Boolean(cart?.season_pass) && " (1)"}
-              </MenuButton>
-              <MenuList minWidth="240px">
-                {data.map((_pass) => {
-                  return (
-                    <MenuItemOption
-                      key={_pass._id}
-                      isChecked={cart?.season_pass?._id === _pass._id}
-                      onClick={() => {
-                        onSelectedSeasonPassChange(_pass);
-                      }}
-                    >
-                      <VStack alignItems="flex-start" gap={1}>
-                        <p className="font-medium">{_pass.season_pass.name}</p>
-                        <p className=" text-gray-600">
-                          Available slots: {_pass.available_slots}
-                        </p>
-                      </VStack>
-                    </MenuItemOption>
-                  );
-                })}
-              </MenuList>
-            </Menu>
-          </HStack>
-          {/* <Button
-            className="!text-primaryText !bg-white font-semibold !py-6 px-5 border !rounded-none border-black  flex-1"
-            disabled={!Boolean(cart)}
-          >
-            Continue
-          </Button> */}
-        </DrawerFooter>
-      </DrawerContent>
-      <TermsAndConditions
-        isOpen={isTermsOpen}
-        onClose={onTermsClose}
-        onProceed={() => {
-          onOpen();
-          onTermsClose();
-        }}
-      />
-      {!!cart ? (
-        <PaymentModal
-          isOpen={isOpen}
-          onClose={(success?: boolean) => {
-            if (success) {
-              setCart(undefined);
-              close();
-            } else {
-              mutate();
+              Continue
+            </Button> */}
+          </DrawerFooter>
+        </DrawerContent>
+        {!!cart ? (
+          <PaymentModal
+            isOpen={isOpen}
+            onClose={(success?: boolean) => {
+              if (success) {
+                setCart(undefined);
+                close();
+              } else {
+                mutate();
+              }
+              onClose();
+            }}
+            type="booking"
+            date={cart!.date}
+            lanes={
+              cart?.lanes.map((_lane) => ({
+                lane_id: _lane.lane_id!,
+                price: _lane.price!,
+                slots: _lane.slots!,
+                free_slots_used: _lane.free_slots_used
+              })) ?? []
             }
-            onClose();
-          }}
-          type="booking"
-          date={cart!.date}
-          lanes={
-            cart?.lanes.map((_lane) => ({
-              lane_id: _lane.lane_id!,
-              price: _lane.price!,
-              slots: _lane.slots!,
-              free_slots_used: _lane.free_slots_used
-            })) ?? []
-          }
-          box_booking_price={cart?.box_booking_price}
-          membership_id={cart.membership?.membership_id}
-          season_pass_id={cart.season_pass?.season_pass_id}
-          price={price || 0}
-          sport={cart!.sport}
-          note={notes}
-        />
-      ) : null}
-    </Drawer>
+            box_booking_price={cart?.box_booking_price}
+            membership_id={cart.membership?.membership_id}
+            season_pass_id={cart.season_pass?.season_pass_id}
+            price={price || 0}
+            sport={cart!.sport}
+            note={notes}
+          />
+        ) : null}
+      </Drawer>
+    </div>
   );
 }

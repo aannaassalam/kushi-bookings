@@ -35,7 +35,13 @@ export default function TermsAndConditions({
   onProceed: () => void;
 }) {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside" size="lg">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      scrollBehavior="inside"
+      size="lg"
+      closeOnOverlayClick
+    >
       <ModalOverlay />
       <ModalCloseButton />
       <ModalContent>
