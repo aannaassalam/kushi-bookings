@@ -30,11 +30,7 @@ function BookingsFilter() {
       : ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"];
 
   const timings = useMemo(() => {
-    const number_of_hours = moment()
-      .add(1, "day")
-      .set({ hour: 0, minute: 0 })
-      .diff(moment().set({ hour: 0, minute: 0 }), "hours");
-    return Array.from({ length: number_of_hours }, (_, id) => {
+    return Array.from({ length: 24 }, (_, id) => {
       return {
         label: `${moment()
           .set({ hour: 0, minute: 0 })
