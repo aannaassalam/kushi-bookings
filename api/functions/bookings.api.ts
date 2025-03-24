@@ -1,4 +1,4 @@
-import moment from "moment-timezone";
+import moment, { Moment } from "moment-timezone";
 import axiosInstance from "../axiosInstance";
 import { endpoints } from "../endpoints";
 
@@ -8,14 +8,24 @@ export type BookingFilter = {
 
 export const getBookingsForFilter = async (body: {
   date: string;
-  sport: string;
-  slots: string[];
-}) => {
+  sport: string | null;
+  number_of_slots?: string;
+  start_time?: Moment;
+  slots?: string[];
+}): Promise<BookingFilter> => {
+  let local_slots;
+  if (body.number_of_slots && body.start_time) {
+    const moment_time = moment(body.start_time);
+    local_slots = Array.from(
+      { length: parseInt(body.number_of_slots) },
+      (_, index) => moment_time.clone().add(index, "hour").format("HH:mm")
+    );
+  }
   const res = await axiosInstance.get(
     endpoints.bookings.get_bookings_for_filter,
     {
       params: {
-        ...body,
+        sport: body.sport,
         date: moment
           .utc({
             year: moment(body.date).year(),
@@ -25,7 +35,8 @@ export const getBookingsForFilter = async (body: {
             minute: 0,
             second: 0
           })
-          .toISOString()
+          .toISOString(),
+        slots: local_slots ?? body.slots
       }
     }
   );

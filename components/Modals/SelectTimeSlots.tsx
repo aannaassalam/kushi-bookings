@@ -8,7 +8,8 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay
+  ModalOverlay,
+  Spinner
 } from "@chakra-ui/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
@@ -25,16 +26,14 @@ export const SelectTimeSlots = ({
   open,
   onClose,
   slots,
-  isBookingFilter
-}: // bookings
-// lanes_length
-{
+  isBookingFilter,
+  isLoading
+}: {
   open: boolean;
   onClose: () => void;
   slots: Slot[];
-  isBookingFilter?:boolean
-  // bookings: BookingFilter;
-  // lanes_length: number;
+  isBookingFilter?: boolean;
+  isLoading?: boolean;
 }) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -42,7 +41,9 @@ export const SelectTimeSlots = ({
   const time_slots =
     searchParams.getAll("time_slots").length > 0
       ? searchParams.getAll("time_slots")
-      : isBookingFilter?["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]:[];
+      : isBookingFilter
+        ? ["17:00", "18:00", "19:00", "20:00", "21:00", "22:00"]
+        : [];
   // const date = searchParams.getAll("date") ?? moment().toISOString();
   const { setCart } = useCartContext();
 
@@ -65,35 +66,41 @@ export const SelectTimeSlots = ({
           </Box>
         </ModalHeader>
         <ModalBody pb="4">
-          <Box className="grid grid-cols-3 gap-3 max-md:grid-cols-2 max-sm:grid-cols-1">
-            {slots.map((slot: Slot) => {
-              return (
-                <Box
-                  key={slot.label}
-                  onClick={() =>
-                    slot.available
-                      ? setSelectedTime((_slots) =>
-                          _slots.includes(slot.value)
-                            ? _slots.filter((_slot) => _slot !== slot.value)
-                            : [..._slots, slot.value]
-                        )
-                      : null
-                  }
-                  className={cx(
-                    "w-full p-4 py-3 capitalize bg-gray-100 font-light flex justify-center rounded-full cursor-pointer",
-                    {
-                      "bg-primary": selectedTime.includes(slot.value),
-                      "text-white": selectedTime.includes(slot.value),
-                      "bg-gray-300 !text-gray-800 cursor-not-allowed":
-                        !slot.available
+          {isLoading ? (
+            <Box className="flex items-center justify-center h-32">
+              <Spinner />
+            </Box>
+          ) : (
+            <Box className="grid grid-cols-3 gap-3 max-md:grid-cols-2 max-sm:grid-cols-1">
+              {slots.map((slot: Slot) => {
+                return (
+                  <Box
+                    key={slot.label}
+                    onClick={() =>
+                      slot.available
+                        ? setSelectedTime((_slots) =>
+                            _slots.includes(slot.value)
+                              ? _slots.filter((_slot) => _slot !== slot.value)
+                              : [..._slots, slot.value]
+                          )
+                        : null
                     }
-                  )}
-                >
-                  {slot.label}
-                </Box>
-              );
-            })}
-          </Box>
+                    className={cx(
+                      "w-full p-4 py-3 capitalize bg-gray-100 font-light flex justify-center rounded-full cursor-pointer",
+                      {
+                        "bg-primary": selectedTime.includes(slot.value),
+                        "text-white": selectedTime.includes(slot.value),
+                        "bg-gray-300 !text-gray-800 cursor-not-allowed":
+                          !slot.available
+                      }
+                    )}
+                  >
+                    {slot.label}
+                  </Box>
+                );
+              })}
+            </Box>
+          )}
         </ModalBody>
         <ModalFooter gap={3}>
           <Button

@@ -9,6 +9,8 @@ import { toast } from "sonner";
 import { SelectDate } from "../Modals/SelectDate";
 import { SelectSport } from "../Modals/SelectSport";
 import { SelectTimeSlots } from "../Modals/SelectTimeSlots";
+import { getLanes } from "@/api/functions/lane.api";
+import { getBookingsForFilter } from "@/api/functions/bookings.api";
 
 export default function FloatingMenu({
   noButton
@@ -24,9 +26,11 @@ export default function FloatingMenu({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const date = searchParams.get("date") ?? moment().toISOString();
+  // const date = searchParams.get("date") ?? moment().toISOString();
   const time_slots = searchParams.getAll("time_slots");
-  const sport = searchParams.get("sport");
+  // const sport = searchParams.get("sport") ?? "cricket";
+  const fallback_date = useMemo(() => moment().toISOString(), []);
+  const { date = fallback_date, sport = "cricket" } = router.query;
 
   const { data } = useQuery({
     queryKey: ["facility"],
@@ -53,48 +57,76 @@ export default function FloatingMenu({
     }
   }, [moment().format("HH")]);
 
-  const slots = useMemo(() => {
+  const { start_time: parsed_start_time, number_of_slots } = useMemo(() => {
     const _start_time = moment(start_time, "HH:mm");
     const _end_time = moment(end_time, "HH:mm");
     if (_end_time.isBefore(_start_time)) {
       _end_time.add(1, "day");
     }
     const number_of_slots = _end_time.diff(_start_time, "hours").toFixed();
+    return { start_time: _start_time, number_of_slots };
+  }, [start_time, end_time]);
 
-    const slots = Array.from({ length: parseInt(number_of_slots) }, (_, id) => {
-      const availability_checker_time_string = _start_time
-        .clone()
-        .add(id, "hours")
-        .format("HH:mm");
-      const slot_start_time = _start_time
-        .clone()
-        .add(id, "hours")
-        .format("hh:mm A");
-      const slot_end_time = _start_time
-        .clone()
-        .add(id + 1, "hours")
-        .format("hh:mm A");
+  const { data: bookings, isFetching } = useQuery({
+    queryKey: [
+      "bookings-filter",
+      parsed_start_time,
+      number_of_slots,
+      date,
+      sport
+    ],
+    queryFn: () =>
+      getBookingsForFilter({
+        date: date.toString(),
+        sport: sport.toString(),
+        start_time: parsed_start_time,
+        number_of_slots
+      })
+  });
 
-      return {
-        label: `${slot_start_time} - ${slot_end_time}`,
-        available:
-          moment().unix() <
-          moment(date)
-            .set({ hour: parseInt(_start_time.format("HH")) })
-            .add(id, "hours")
-            .set({
-              minute: 0,
-              second: 0,
-              millisecond: 0
-            })
-            .unix()
-            ? true
-            : false,
-        value: availability_checker_time_string
-      };
-    });
+  const { data: lanes, isFetching: isLanesFetching } = useQuery({
+    queryKey: ["lanes", sport],
+    queryFn: () => getLanes(sport.toString())
+  });
+
+  const slots = useMemo(() => {
+    let slots: { label: string; available: boolean; value: string }[] = [];
+    if (bookings && lanes) {
+      slots = Array.from({ length: parseInt(number_of_slots) }, (_, id) => {
+        const availability_checker_time_string = parsed_start_time
+          .clone()
+          .add(id, "hours")
+          .format("HH:mm");
+        const slot_start_time = parsed_start_time
+          .clone()
+          .add(id, "hours")
+          .format("hh:mm A");
+        const slot_end_time = parsed_start_time
+          .clone()
+          .add(id + 1, "hours")
+          .format("hh:mm A");
+
+        return {
+          label: `${slot_start_time} - ${slot_end_time}`,
+          available:
+            bookings[availability_checker_time_string].length >= lanes.length
+              ? false
+              : moment().unix() <
+                moment(date)
+                  .set({ hour: parseInt(parsed_start_time.format("HH")) })
+                  .add(id, "hours")
+                  .set({
+                    minute: 0,
+                    second: 0,
+                    millisecond: 0
+                  })
+                  .unix(),
+          value: availability_checker_time_string
+        };
+      });
+    }
     return slots;
-  }, [start_time, end_time, date]);
+  }, [parsed_start_time, end_time, date, bookings, lanes]);
 
   return (
     <div
@@ -163,8 +195,8 @@ export default function FloatingMenu({
                   newParams.delete("sport");
                   newParams.delete("date");
                   newParams.delete("time_slots");
-                  newParams.set("sport", sport || "cricket");
-                  newParams.set("date", date);
+                  newParams.set("sport", sport.toString() || "cricket");
+                  newParams.set("date", date.toString());
                   time_slots.forEach((_slot) => {
                     newParams.append("time_slots", _slot);
                   });
@@ -188,8 +220,7 @@ export default function FloatingMenu({
           slots={slots}
           open={timeModal}
           onClose={() => setTimeModal(false)}
-          // bookings={bookings}
-          // lanes_length={data.l}
+          isLoading={isFetching || isLanesFetching}
         />
       )}
       {dateModal && (
