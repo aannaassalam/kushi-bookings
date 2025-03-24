@@ -76,17 +76,19 @@ export default function Sponsored() {
           maxW={{ base: "100%", lg: "xl" }}
           my={4}
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ornare
-          sit amet lacus fermentum tincidunt. Vestibulum eu justo volutpat mi
-          facilisis mattis in ullamcorper est.
+          Cricket advertisements are a powerful marketing tool that leverage the
+          sport’s massive global following, particularly in countries like
+          India, Australia, and England. These ads often feature top cricketers
+          endorsing brands, from sports equipment to soft drinks and financial
+          services.
         </Text>
         <Text fontSize="lg" color="gray.700" maxW={{ base: "100%", lg: "xl" }}>
-          Etiam arcu purus, feugiat quis orci eget, egestas ultricies nulla.
-          Maecenas ut nisl lectus. Nulla a blandit turpis. Nulla mattis, elit a
-          porta ullamcorper, dui justo mattis mi, tempor tempor lorem quam
-          imperdiet eros. Mauris a faucibus ipsum. Cras mattis euismod nulla
-          eget consequat. Mauris at arcu nec diam laoreet sollicitudin ut non
-          ex.
+          Modern cricket advertisements also extend beyond traditional media to
+          digital platforms, where social media, influencer marketing, and
+          interactive content play a crucial role. Brands engage fans through
+          innovative campaigns like behind-the-scenes footage, player
+          challenges, and fantasy leagues to maintain excitement even off the
+          field.
         </Text>
         <HStack spacing={6} mt={4}>
           <Button
