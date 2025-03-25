@@ -63,7 +63,7 @@ export default function BookingDetails({
                 alt="user"
                 width={36}
                 height={36}
-                src={booking?.user.profile_photo ?? assets.default_user}
+                src={booking?.user.profile_photo || assets.default_user}
                 className="!w-[45px] !h-[45px] rounded-md"
               />
               <Box>

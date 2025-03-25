@@ -123,7 +123,7 @@ export default function Header() {
                 alt="user"
                 width={36}
                 height={36}
-                src={user.profile_photo ?? assets.default_user}
+                src={user.profile_photo || assets.default_user}
                 className="!w-[36px] !h-[36px] rounded-full"
               />
             </Link>

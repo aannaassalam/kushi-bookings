@@ -74,8 +74,6 @@ export default function PaymentModal(
     }
   }, [isOpen]);
 
-  console.log(payment_details);
-
   const renderer = ({ minutes, seconds, completed }: CountdownRenderProps) => {
     if (completed) {
       onClose();
@@ -194,7 +192,7 @@ const PaymentForm = ({
       const { error: submitError } = await elements.submit();
       if (submitError) {
         console.log(submitError);
-        toast(submitError.message);
+        toast.error(submitError.message);
         setIsLoading(false);
         return;
       }
@@ -234,6 +232,7 @@ const PaymentForm = ({
       }
       queryClient.invalidateQueries({ queryKey: ["current_membership"] });
       onClose();
+      toast.success("Subscription purchase was successful");
     } catch (error) {
       console.log(error);
     } finally {
