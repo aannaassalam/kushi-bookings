@@ -159,7 +159,7 @@ export default function Sponsored() {
       </Box>
 
       {/* Add Banner overlay text */}
-      <Box className="absolute w-full h-full z-10 left-0 flex justify-center items-center ">
+      <Box className="absolute w-full h-full left-0 flex justify-center items-center ">
         <Text
           color="blackAlpha.500"
           className="text-[90px] max-md:text-[60px] max-sm:w-[350px]"
