@@ -54,8 +54,8 @@ const ActiveMembership = ({
   current_membership: CurrentMembership;
 }) => {
   return (
-    <div className="bg-[#F5F7F2] p-4 rounded-md flex mt-6">
-      <Box className="p-6 flex flex-col  bg-[#EEF0EC] rounded-md w-1/4 mr-2">
+    <div className="bg-[#F5F7F2] p-4 rounded-md flex mt-6 max-md:flex-col">
+      <Box className="p-6 flex flex-col  bg-[#EEF0EC] rounded-md w-1/4 mr-2 max-md:w-full">
         <p className="text-black py-2 px-4 w-max text-xs rounded-3xl mb-2 bg-white">
           Membership
         </p>
@@ -73,7 +73,7 @@ const ActiveMembership = ({
           </span>
         </div>
       </Box>
-      <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 flex-1 mb-auto">
+      <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 flex-1 mb-auto max-sm:grid-cols-1">
         {current_membership.membership.about.split("_").map((_key_point) => {
           return (
             <p
@@ -89,7 +89,7 @@ const ActiveMembership = ({
 
       <button
         className={cx(
-          "text-primary py-3 w-1/6 h-max mt-6 ml-2  font-semibold bg-lightPrimary rounded-md cursor-pointer"
+          "text-primary py-3 w-1/6 h-max mt-6 ml-2  font-semibold bg-lightPrimary rounded-md cursor-pointer max-md:w-full"
         )}
       >
         Active Plan
@@ -104,8 +104,8 @@ const ActiveSeasonPass = ({
   current_season_pass: CurrentSeasonPass;
 }) => {
   return (
-    <div className="bg-[#F5F7F2] p-4 rounded-md flex mt-6">
-      <Box className="p-6 flex flex-col  bg-[#EEF0EC] rounded-md w-1/4 mr-2">
+    <div className="bg-[#F5F7F2] p-4 rounded-md flex mt-6 max-md:flex-col">
+      <Box className="p-6 flex flex-col  bg-[#EEF0EC] rounded-md w-1/4 mr-2 max-md:w-full">
         <p className="text-black py-2 px-4 w-max text-xs rounded-3xl mb-2 bg-white">
           Season Pass
         </p>
@@ -121,7 +121,7 @@ const ActiveSeasonPass = ({
           {/* <span className="text-base text-gray-600 self-start">Yearly</span> */}
         </div>
       </Box>
-      <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 flex-1 mb-auto">
+      <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 flex-1 mb-auto max-sm:grid-cols-1">
         {current_season_pass.season_pass.about.split("_").map((_key_point) => {
           return (
             <p
@@ -137,7 +137,7 @@ const ActiveSeasonPass = ({
 
       <button
         className={cx(
-          "text-primary py-3 w-1/6 h-max mt-6 ml-2  font-semibold bg-lightPrimary rounded-md cursor-pointer"
+          "text-primary py-3 w-1/6 h-max mt-6 ml-2  font-semibold bg-lightPrimary rounded-md cursor-pointer max-md:w-full"
         )}
       >
         Expires on:{" "}
@@ -197,26 +197,26 @@ function Profile({ profile }: { profile: PublicUserProfile }) {
         </ModalContent>
       </Modal>
       <div>
-        <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center items-center">
+        <div className=" relative w-full h-[200px] bg-gradient-to-r from-[#1C1744] to-[#1C1744]/70 flex justify-center items-center max-md:h-[150px]">
           <h1 className="text-white font-bold text-[36px]  uppercase">
             Profile
           </h1>
         </div>
-        <div className="px-[100px] mt-[100px] flex">
-          <Box className="w-3/4 mx-auto">
-            <Box className="rounded-md bg-[#F5F7F2] w-full flex flex-col p-10 items-center">
+        <div className="px-[100px] mt-[100px] flex max-lg:px-[40px] max-md:px-[20px] max-md:mt-[30px]">
+          <Box className="w-3/4 mx-auto max-xl:w-full">
+            <Box className="rounded-md bg-[#F5F7F2] w-full flex flex-col p-10 items-center max-md:p-4 max-md:py-6">
               <p className="text-2xl font-bold">Profile Information</p>
-              <HStack className="w-full mt-8 !items-start !gap-10">
-                <VStack className="group w-[240px] h-[240px] !rounded-2xl overflow-hidden cursor-pointer relative">
+              <HStack className="w-full mt-8 !items-start !gap-10 max-md:!flex-col max-md:!items-center">
+                <VStack className="group w-[240px] h-[240px] !rounded-2xl max-md:w-[300px] max-md:h-[100px] overflow-hidden cursor-pointer relative">
                   <Image
                     src={data.profile_photo || assets.default_user}
                     alt="profile pic"
                     width={240}
                     height={240}
-                    className="object-cover"
+                    className="object-contain w-full h-full"
                   />
                 </VStack>
-                <Box className="flex-1">
+                <Box className="flex-1 max-md:w-full">
                   <div className="bg-white rounded-lg px-4 py-2 mb-4">
                     <label
                       className="block text-sm font-medium text-gray-700"
@@ -268,7 +268,7 @@ function Profile({ profile }: { profile: PublicUserProfile }) {
                 </Box>
               </HStack>
             </Box>
-            <div className="flex flex-row justify-between items-center mt-4">
+            <div className="flex flex-row justify-between items-center mt-4 max-md:flex-col max-md:items-start">
               <div>
                 <h1 className="text-primaryText text-xl font-semibold uppercase">
                   Memberships & Pass
@@ -277,16 +277,16 @@ function Profile({ profile }: { profile: PublicUserProfile }) {
                   {data.membership && data.season_passes.length
                     ? `1 active membership and ${data.season_passes.length} active season pass`
                     : data.membership
-                    ? "1 active membership"
-                    : data.season_passes.length
-                    ? `${data.season_passes.length} active season pass`
-                    : null}
+                      ? "1 active membership"
+                      : data.season_passes.length
+                        ? `${data.season_passes.length} active season pass`
+                        : null}
                 </p>
               </div>
-              <div className="bg-primary p-2 rounded-md flex flex-row">
+              <div className="bg-primary p-2 rounded-md flex flex-row max-md:mt-4 max-md:w-full">
                 <p
                   className={cx(
-                    "py-2 px-5 rounded-md cursor-pointer pointer text-white",
+                    "py-2 px-5 rounded-md cursor-pointer pointer text-white max-md:w-[50%] max-md:text-center",
                     {
                       "bg-white text-black": sport === "cricket"
                     }
@@ -297,7 +297,7 @@ function Profile({ profile }: { profile: PublicUserProfile }) {
                 </p>
                 <p
                   className={cx(
-                    "py-2 px-5 rounded-md cursor-pointer pointer text-white",
+                    "py-2 px-5 rounded-md cursor-pointer pointer text-white max-md:w-[50%] max-md:text-center",
                     {
                       "bg-white text-black": sport === "badminton"
                     }
