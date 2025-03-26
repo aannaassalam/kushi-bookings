@@ -16,8 +16,8 @@ phases:
   post_build:
     commands:
       - echo "Zipping deployment package for Elastic Beanstalk..."
-      - zip -r nextjs-deploy.zip . -x "node_modules/*" ".git/*" "buildspec.yml"
+      - zip -r next-deploy.zip . -x "node_modules/*" ".git/*" "buildspec.yml"
 
 artifacts:
   files:
-    - nextjs-deploy.zip
+    - next-deploy.zip
