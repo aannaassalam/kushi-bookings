@@ -1,7 +1,16 @@
 version: 0.2
-
-artifacts:
-  type: zip
-
-  files:
-    - "**/*"
+phases:
+  install:
+    commands:
+      - echo Installing dependencies…
+      - npm install
+  pre_build:
+    commands:
+      - echo Preparing for build…
+  build:
+    commands:
+      - echo Building Next.js application…
+      - npm run build
+  post_build:
+    commands:
+      - echo Build completed successfully!
