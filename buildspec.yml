@@ -3,22 +3,23 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18
+      nodejs: 18 # Adjust Node.js version as needed
     commands:
       - echo "Installing dependencies..."
-      - npm ci # Ensures a clean install based on package-lock.json
+      - npm install
 
   build:
     commands:
-      - echo "Building Next.js application..."
+      - echo "Building Next.js app..."
       - npm run build
 
-  # post_build:
-  #   commands:
-  #     - echo "Zipping deployment package for Elastic Beanstalk..."
-  #     - zip -r next-deploy.zip . -x "node_modules/*" ".git/*" "buildspec.yml"
+  post_build:
+    commands:
+      - echo "Preparing deployment for Elastic Beanstalk..."
+      - mkdir -p /tmp/deployment
+      - rsync -av --progress .next public next.config.js package.json Procfile /tmp/deployment/
 
 artifacts:
   files:
     - "**/*"
-    - "**/.*"
+  base-directory: "/tmp/deployment"
