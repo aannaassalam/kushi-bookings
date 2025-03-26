@@ -13,11 +13,11 @@ phases:
       - echo "Building Next.js application..."
       - npm run build
 
-  post_build:
-    commands:
-      - echo "Zipping deployment package for Elastic Beanstalk..."
-      - zip -r next-deploy.zip * -x "node_modules/*" ".git/*" "buildspec.yml"
+  # post_build:
+  #   commands:
+  #     - echo "Zipping deployment package for Elastic Beanstalk..."
+  #     - zip -r next-deploy.zip . -x "node_modules/*" ".git/*" "buildspec.yml"
 
 artifacts:
   files:
-    - next-deploy.zip
+    - "**/*"
