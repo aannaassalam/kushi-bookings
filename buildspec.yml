@@ -6,7 +6,7 @@ phases:
       nodejs: 18
     commands:
       - echo "Installing dependencies..."
-      - npm install
+      - npm ci # Ensures a clean install based on package-lock.json
 
   build:
     commands:
@@ -15,11 +15,11 @@ phases:
 
   post_build:
     commands:
-      - echo "Build completed. Preparing artifacts..."
-      # - mkdir -p build_output
-      # - cp -r .next static public package.json next.config.js build_output/
+      - echo "Preparing deployment package..."
+      - mkdir -p build_output
+      - cp -r .next node_modules public package.json next.config.js build_output/
+      - zip -r nextjs-deploy.zip build_output/*
 
 artifacts:
   files:
-    - "**/*"
-  name: nextjs-build-output
+    - nextjs-deploy.zip
