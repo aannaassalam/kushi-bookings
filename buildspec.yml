@@ -15,10 +15,8 @@ phases:
 
   post_build:
     commands:
-      - echo "Preparing deployment package..."
-      - mkdir -p build_output
-      - cp -r .next node_modules public package.json next.config.js build_output/
-      - zip -r nextjs-deploy.zip build_output/*
+      - echo "Zipping deployment package for Elastic Beanstalk..."
+      - zip -r nextjs-deploy.zip . -x "node_modules/*" ".git/*" "buildspec.yml"
 
 artifacts:
   files:
