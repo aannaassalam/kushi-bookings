@@ -3,23 +3,30 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18 # Adjust Node.js version as needed
+      nodejs: 20
     commands:
-      - echo "Installing dependencies..."
-      - npm install
+      - echo "Current Node.js version:"
+      - node -v
+      - echo "Current npm version:"
+      - npm -v
+
+  pre_build:
+    commands:
+      - echo "Pre-build started on $(date)"
+      - echo "Installing source NPM dependencies..."
+      - npm ci
 
   build:
     commands:
-      - echo "Building Next.js app..."
+      - echo "Build started on $(date)"
+      - echo "Compiling the Node.js code"
       - npm run build
 
   post_build:
     commands:
-      - echo "Preparing deployment for Elastic Beanstalk..."
-      - mkdir -p /tmp/deployment
-      - rsync -av --progress .next public next.config.js package.json Procfile /tmp/deployment/
+      - echo "Build completed on $(date)"
+      - rm -rf node_modules
 
 artifacts:
   files:
     - "**/*"
-  base-directory: "/tmp/deployment"
