@@ -189,6 +189,9 @@ export default function SignUp() {
             height={936}
             objectFit="cover"
             className="rounded-lg h-[700px]"
+            style={{
+              border: "8px solid #fff"
+            }}
           />
         </div>
       </div>

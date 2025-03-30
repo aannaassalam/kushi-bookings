@@ -6,7 +6,7 @@ export default {
   greenBackground: "/assets/images/greenBackground.png",
   lane: "/assets/images/lane.png",
   packageGraphic: "/assets/graphics/packageGraphic.png",
-  loginImage: "/assets/images/loginImage.png",
+  loginImage: "/assets/images/loginImage.jpeg",
   default_user: "/assets/images/default-user.png",
   cricketBadger: "/assets/images/cricketBadger.JPG",
   fcc: "/assets/images/fcc.PNG",

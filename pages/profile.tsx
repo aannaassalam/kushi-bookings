@@ -78,6 +78,9 @@ const ActiveMembership = ({
             {current_membership.membership.recurring_type + "ly"}
           </span>
         </div>
+        <div className="whitespace-nowrap flex items-center mt-5 font-medium text-gray-600">
+          Renews on - {moment(current_membership.renewal_date).format("LL")}
+        </div>
         {current_membership.type === "free_slots_based" && (
           <div className="whitespace-nowrap flex items-center mt-5 font-medium text-gray-600">
             Available Slots - {current_membership.available_slots}
@@ -401,10 +404,10 @@ function Profile({
                   {active_membership && active_season_passes.length
                     ? `1 active membership and ${active_season_passes.length} active season pass`
                     : active_membership
-                    ? "1 active membership"
-                    : active_season_passes.length
-                    ? `${active_season_passes.length} active season pass`
-                    : null}
+                      ? "1 active membership"
+                      : active_season_passes.length
+                        ? `${active_season_passes.length} active season pass`
+                        : null}
                 </p>
               </div>
               <div className="bg-primary p-2 rounded-md flex flex-row max-md:mt-4 max-md:w-full">

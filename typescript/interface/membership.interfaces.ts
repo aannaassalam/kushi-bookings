@@ -32,6 +32,7 @@ export interface CurrentMembership {
   active: number;
   subscription_id: string;
   membership: Membership;
+  renewal_date: string;
   createdAt: string;
   updatedAt: string;
 }

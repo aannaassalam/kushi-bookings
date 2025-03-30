@@ -57,7 +57,7 @@ export default function Login() {
 
           const weekly_slots_guard =
             moment(cart?.date).unix() <= week_end && !!membership
-              ? membership?.available_slots ?? 0
+              ? (membership?.available_slots ?? 0)
               : 0;
 
           if (weekly_slots_guard) {
@@ -200,6 +200,9 @@ export default function Login() {
             height={936}
             objectFit="cover"
             className="rounded-lg h-[700px]"
+            style={{
+              border: "8px solid #fff"
+            }}
           />
         </div>
       </div>
