@@ -160,7 +160,7 @@ export default function FloatingMenu({
         >
           <p className="font-semibold text-lg">Date</p>
           <p className="text-base max-xs:text-[15px]">
-            {moment(date).format("MMMM D, YYYY")}
+            {moment(date).format("MMMM DD, YYYY")}
           </p>
         </div>
         <div

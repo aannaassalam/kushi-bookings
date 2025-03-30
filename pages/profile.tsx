@@ -79,7 +79,8 @@ const ActiveMembership = ({
           </span>
         </div>
         <div className="whitespace-nowrap flex items-center mt-5 font-medium text-gray-600">
-          Renews on - {moment(current_membership.renewal_date).format("LL")}
+          Renews on -{" "}
+          {moment(current_membership.renewal_date).format("MM/DD/YYYY")}
         </div>
         {current_membership.type === "free_slots_based" && (
           <div className="whitespace-nowrap flex items-center mt-5 font-medium text-gray-600">
@@ -158,7 +159,7 @@ const ActiveSeasonPass = ({
         )}
       >
         Expires on:{" "}
-        {moment(current_season_pass.expiration_date).format("DD/MM/YYYY")}
+        {moment(current_season_pass.expiration_date).format("MM/DD/YYYY")}
       </button>
     </div>
   );

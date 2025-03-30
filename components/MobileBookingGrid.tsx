@@ -158,7 +158,7 @@ export default function MobileBookingsGrid({
                 <Box className="" onClick={() => setDateModal(true)}>
                   <Text textAlign="center">{currentDay.format("ddd")}</Text>
                   <Text className="text-xs mt-1">
-                    {currentDay.format("DD-MM-YYYY")}
+                    {currentDay.format("MM-DD-YYYY")}
                   </Text>
                 </Box>
                 <IconButton

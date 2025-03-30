@@ -117,7 +117,7 @@ export default function BookingsGrid({
                 >
                   <Text>{day.format("ddd")}</Text>
                   <Text className="text-xs mt-1">
-                    {day.format("DD-MM-YYYY")}
+                    {day.format("MM-DD-YYYY")}
                   </Text>
                 </Box>
               );

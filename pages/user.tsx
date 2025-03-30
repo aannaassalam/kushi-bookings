@@ -141,7 +141,7 @@ const ActiveSeasonPass = ({
         )}
       >
         Expires on:{" "}
-        {moment(current_season_pass.expiration_date).format("DD/MM/YYYY")}
+        {moment(current_season_pass.expiration_date).format("MM/DD/YYYY")}
       </button>
     </div>
   );

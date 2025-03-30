@@ -58,8 +58,8 @@ function BookingsFilter() {
         <Box>
           <p className="text-gray-700 font-semibold">Date</p>
           <p className="text-gray-700">
-            {moment(start_date).format("MMMM D, YYYY")} -{" "}
-            {moment(end_date).format("MMMM D, YYYY")}
+            {moment(start_date).format("MMMM DD, YYYY")} -{" "}
+            {moment(end_date).format("MMMM DD, YYYY")}
           </p>
         </Box>
         <IconButton
