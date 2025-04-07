@@ -148,7 +148,7 @@ export default function BookingDetails({
                 </Box>
                 <Box className="bg-[#2B85D3] p-3">
                   <p className="text-lg">
-                    {moment(booking?.date).format("dddd MMM DD")}
+                    {moment.utc(booking?.date).format("dddd MMM DD")}
                   </p>
                 </Box>
               </Box>
