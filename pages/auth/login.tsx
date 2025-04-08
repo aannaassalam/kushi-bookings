@@ -1,20 +1,19 @@
+import { getCurrentMembership } from "@/api/functions/membership.api";
+import { login } from "@/api/functions/user.api";
+import CustomInput from "@/components/CustomInput";
 import assets from "@/json/assets";
+import validationText from "@/json/messages/validationText";
+import { setCookieClient } from "@/lib/functions/storage.lib";
 import { Button } from "@chakra-ui/react";
-import Image from "next/image";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "@tanstack/react-query";
-import { login } from "@/api/functions/user.api";
-import { setCookieClient } from "@/lib/functions/storage.lib";
-import { useRouter } from "next/router";
-import { useCartContext } from "../_app";
 import moment from "moment";
-import { getCurrentMembership } from "@/api/functions/membership.api";
-import validationText from "@/json/messages/validationText";
-import CustomInput from "@/components/CustomInput";
-import Marquee from "react-fast-marquee";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { useCartContext } from "../_app";
 
 const schema = yup.object().shape({
   email: yup.string().required(validationText.error.enter_email),
