@@ -9,7 +9,10 @@ import FloatingMenu from "@/components/FloatingMenu/FloatingMenu";
 import assets from "@/json/assets";
 import AppLayout from "@/layouts/AppLayout";
 import { cx } from "@/lib/utils";
-import { DaysInterface } from "@/typescript/interface/facility.interfaces";
+import {
+  DaysInterface,
+  SportsInterface
+} from "@/typescript/interface/facility.interfaces";
 import { Lane } from "@/typescript/interface/lane.interfaces";
 import { CurrentMembership } from "@/typescript/interface/membership.interfaces";
 import { Checkbox, CheckboxGroup, Skeleton } from "@chakra-ui/react";
@@ -290,7 +293,11 @@ export default function Facility({
         moment(date).format("dddd") as DaysInterface
       ];
     }
-    return facility?.price[moment(date).format("dddd") as DaysInterface] ?? 55;
+    return (
+      facility?.price[sport as SportsInterface][
+        moment(date).format("dddd") as DaysInterface
+      ] ?? 55
+    );
   }, [user_membership, date, facility?.price]);
 
   const onBoxBooking = () => {
@@ -399,7 +406,7 @@ export default function Facility({
                 lane={_data}
                 key={_data._id}
                 price={
-                  facility?.price[
+                  facility?.price[sport as SportsInterface][
                     moment(date).format("dddd") as DaysInterface
                   ] ?? 55
                 }

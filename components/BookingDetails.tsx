@@ -2,7 +2,10 @@ import { getFacility } from "@/api/functions/facility.api";
 import assets from "@/json/assets";
 import { cx } from "@/lib/utils";
 import { Booking } from "@/typescript/interface/bookings.interface";
-import { DaysInterface } from "@/typescript/interface/facility.interfaces";
+import {
+  DaysInterface,
+  SportsInterface
+} from "@/typescript/interface/facility.interfaces";
 import {
   Box,
   Divider,
@@ -35,8 +38,9 @@ export default function BookingDetails({
   const { data } = useQuery({ queryKey: ["facility"], queryFn: getFacility });
 
   const actual_price =
-    (data?.price?.[moment(booking?.date).format("dddd") as DaysInterface] ??
-      0) * (booking?.slots?.length ?? 1);
+    (data?.price?.[booking?.sport as SportsInterface][
+      moment(booking?.date).format("dddd") as DaysInterface
+    ] ?? 0) * (booking?.slots?.length ?? 1);
 
   return (
     <Drawer

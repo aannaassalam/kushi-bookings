@@ -9,6 +9,8 @@ export type DaysInterface =
   | "Friday"
   | "Saturday";
 
+export type SportsInterface = "cricket" | "badminton";
+
 export interface FacilityDay {
   _id: string;
   day: string;
@@ -33,7 +35,9 @@ export interface Facility {
   days: FacilityDay[];
   lanes: Lane[];
   price: {
-    [key in DaysInterface]: number;
+    [key in SportsInterface]: {
+      [key in DaysInterface]: number;
+    };
   };
   box_booking_price: number;
   reschedule_charge: number;
