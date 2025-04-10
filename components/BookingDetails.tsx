@@ -38,7 +38,7 @@ export default function BookingDetails({
   const { data } = useQuery({ queryKey: ["facility"], queryFn: getFacility });
 
   const actual_price =
-    (data?.price?.[booking?.sport as SportsInterface][
+    (data?.price?.[booking?.sport as SportsInterface]?.[
       moment(booking?.date).format("dddd") as DaysInterface
     ] ?? 0) * (booking?.slots?.length ?? 1);
 
