@@ -169,10 +169,8 @@ const schema = yup.object().shape({
   full_name: yup.string().required(validationText.error.fullName),
   phone: yup
     .number()
-    .test(
-      "len",
-      "Phone number must be exactly 10 digits",
-      (val) => val?.toString().length === 10
+    .test("len", "Phone number must be exactly 10 digits", (val) =>
+      val ? val?.toString().length === 10 : false
     )
     .required(validationText.error.phoneNumberIsValid),
   email: yup.string().required(validationText.error.enter_email)
