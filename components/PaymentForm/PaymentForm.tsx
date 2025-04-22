@@ -2,7 +2,8 @@
 
 import {
   createSubscription,
-  getPurchaseClientSecret
+  getPurchaseClientSecret,
+  removePendingBookings
 } from "@/api/functions/payments.api";
 import { queryClient } from "@/pages/_app";
 import { MetadataType } from "@/typescript/interface/payments.interface";
@@ -166,7 +167,8 @@ const PaymentForm = ({
       });
       if (error) {
         console.log(error);
-        toast.error("Something went wrong");
+        removePendingBookings();
+        toast.error(error.message ?? "Something went wrong");
         return;
       }
       toast.success("Payment successful, Confirmation email sent");
@@ -177,6 +179,7 @@ const PaymentForm = ({
       }, 800);
       onClose(true);
     } catch (error) {
+      removePendingBookings();
       console.log(error);
     } finally {
       setIsLoading(false);
