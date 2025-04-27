@@ -436,6 +436,7 @@ export default function Cart({
                 onOpen();
                 onTermsClose();
               }}
+              isPayment
             />
           </DrawerBody>
           <DrawerFooter className="!px-8 flex-col" alignItems="stretch">

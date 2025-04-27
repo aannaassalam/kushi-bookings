@@ -9,8 +9,10 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  OrderedList
+  OrderedList,
+  Stack
 } from "@chakra-ui/react";
+import { useState } from "react";
 
 const conditions = [
   "Safety is our top priority. Please follow all posted rules and guidelines while using our facilities.",
@@ -28,12 +30,16 @@ const conditions = [
 export default function TermsAndConditions({
   isOpen,
   onClose,
-  onProceed
+  onProceed,
+  isPayment
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onProceed: () => void;
+  onProceed?: () => void;
+  isPayment?: boolean;
 }) {
+  const [accepted, setAccepted] = useState(false);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -61,13 +67,39 @@ export default function TermsAndConditions({
           </OrderedList>
         </ModalBody>
         <Divider />
-        <ModalFooter className="gap-2">
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="solid" colorScheme="blue" onClick={onProceed}>
-            Proceed
-          </Button>
+        <ModalFooter flexDirection="column" alignItems="flex-start">
+          {isPayment && (
+            <label htmlFor="accept" className="mb-4 flex items-center">
+              <input
+                type="checkbox"
+                checked={accepted}
+                onChange={(e) => setAccepted(e.target.checked)}
+                id="accept"
+                className="mr-2 w-4 h-4"
+              />
+              I have read and understood the terms and conditions
+            </label>
+          )}
+          <Stack
+            className="w-full"
+            direction="row"
+            gap={2}
+            justifyContent="flex-end"
+          >
+            <Button variant="ghost" onClick={onClose}>
+              {isPayment ? "Cancel" : "Close"}
+            </Button>
+            {isPayment && (
+              <Button
+                variant="solid"
+                colorScheme="blue"
+                onClick={onProceed}
+                disabled={!accepted}
+              >
+                Proceed
+              </Button>
+            )}
+          </Stack>
         </ModalFooter>
       </ModalContent>
     </Modal>

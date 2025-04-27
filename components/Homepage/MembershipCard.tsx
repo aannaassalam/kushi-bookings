@@ -63,7 +63,7 @@ export default function MembershipCard({
         {about.split("_").map((key_point: string) => {
           return (
             <p
-              className="text-primaryText flex flex-row items-center text-xs mb-4"
+              className="text-primaryText flex flex-row items-center text-sm mb-4"
               key={key_point}
             >
               <FaCheck className="mr-4" size={20} />

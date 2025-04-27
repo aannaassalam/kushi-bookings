@@ -1,4 +1,6 @@
+import TermsAndConditions from "@/components/Modals/TermsAndConditions";
 import assets from "@/json/assets";
+import { useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,6 +12,7 @@ import { SlMap } from "react-icons/sl";
 
 export default function Footer() {
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <div className="" id="footer">
@@ -63,6 +66,9 @@ export default function Footer() {
           >
             Season Pass
           </Link>
+          <p className="ml-6 cursor-pointer" onClick={onOpen}>
+            Terms & conditions
+          </p>
         </div>
         <div className="ml-6 max-xl:ml-0 max-xl:mt-4">
           <p className="text-2xl text-black font-semibold">Contact Us</p>
@@ -112,6 +118,7 @@ export default function Footer() {
           </Link>
         </div>
       </div>
+      <TermsAndConditions isOpen={isOpen} onClose={onClose} />
     </div>
   );
 }
