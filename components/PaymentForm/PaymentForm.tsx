@@ -92,7 +92,7 @@ export default function PaymentModal(
   if (!isOpen) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={!loading ? onClose : () => {}}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader className="flex items-center justify-between gap-5">
@@ -259,7 +259,7 @@ const PaymentForm = ({
           //   colorScheme="blue"
           //   isLoading={isLoading}
           //   type="submit"
-          onClick={() => onClose()}
+          onClick={() => (isLoading ? onClose() : null)}
         >
           Close
         </Button>
