@@ -1,4 +1,5 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Stack } from "@chakra-ui/react";
+import { useState } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 function CustomInput({
@@ -18,6 +19,8 @@ function CustomInput({
   error: string;
   isRequired?: boolean;
 }) {
+  const [show_password, setShowPassword] = useState(false);
+
   return (
     <Box className="mb-4">
       <div className="bg-[#fafafa] rounded-lg mb-1 px-4 py-2">
@@ -25,13 +28,27 @@ function CustomInput({
           {text}
           {isRequired && <p className="text-red-600">*</p>}
         </label>
-        <input
-          type={type}
-          id={id}
-          className="w-full mt-1  focus:outline-none outline-none bg-[#fafafa]"
-          placeholder={placeholder}
-          {...validationProps}
-        />
+        <Stack direction="row">
+          <input
+            type={
+              type !== "password" ? type : show_password ? "text" : "password"
+            }
+            id={id}
+            className="w-full mt-1 flex-1 focus:outline-none outline-none bg-[#fafafa]"
+            placeholder={placeholder}
+            {...validationProps}
+          />
+          {type === "password" && (
+            <Button
+              onClick={() => setShowPassword((prev) => !prev)}
+              variant="ghost"
+              size="sm"
+              className="!text-xs"
+            >
+              {show_password ? "Hide" : "Show"}
+            </Button>
+          )}
+        </Stack>
       </div>
       {error && <p className="text-red-500 text-sm ml-2">{error}</p>}
     </Box>

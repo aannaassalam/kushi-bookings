@@ -84,7 +84,7 @@ export default function SignUp() {
         {/* Login Form */}
         <div className="bg-white  rounded-lg w-full max-w-md p-6 m-auto">
           <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2 mt-9">
-            Sign Up For The Platform
+            Sign Up For Kushi
           </h2>
           <p className="text-center text-gray-600 mb-6">
             Enter your details to continue

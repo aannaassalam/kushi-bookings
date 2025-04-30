@@ -28,14 +28,15 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
 import { useMemo, useState } from "react";
 import { IoIosRemoveCircleOutline, IoMdClose } from "react-icons/io";
 import { IoBagOutline, IoChevronDownOutline } from "react-icons/io5";
 import { LuTrash2 } from "react-icons/lu";
-import TermsAndConditions from "./Modals/TermsAndConditions";
 import PaymentModal from "./PaymentForm/PaymentForm";
+import Reminder from "./Modals/Reminder";
 
 const LaneCard = ({
   lane,
@@ -246,6 +247,7 @@ export default function Cart({
   const cookies = parseCookies();
   const router = useRouter();
   const [notes, setNotes] = useState("");
+  const [accepted, setAccepted] = useState(false);
 
   const price = useMemo(() => {
     const _price = cart?.lanes.reduce(
@@ -429,17 +431,34 @@ export default function Cart({
             {/* <p className="text-primaryText mt-4">
               Taxes and promo codes applied at checkout
             </p> */}
-            <TermsAndConditions
+            <Reminder
               isOpen={isTermsOpen}
               onClose={onTermsClose}
               onProceed={() => {
                 onOpen();
                 onTermsClose();
               }}
-              isPayment
             />
           </DrawerBody>
           <DrawerFooter className="!px-8 flex-col" alignItems="stretch">
+            <label htmlFor="accept" className="mb-4 flex items-center">
+              <input
+                type="checkbox"
+                checked={accepted}
+                onChange={(e) => setAccepted(e.target.checked)}
+                id="accept"
+                className="mr-2 w-4 h-4"
+                disabled={!Boolean(cart)}
+              />
+              I have read and understood the
+              <Link
+                href="/terms-and-conditions"
+                target="_blank"
+                className="underline ml-1"
+              >
+                Terms & Conditions
+              </Link>
+            </label>
             <Textarea
               className="mb-3 h-auto"
               placeholder="Add notes..."
@@ -461,7 +480,7 @@ export default function Cart({
                 onClick={() =>
                   cookies.token ? onTermsOpen() : router.push("/auth/login")
                 }
-                disabled={!Boolean(cart)}
+                disabled={!Boolean(cart) || !accepted}
               >
                 Purchase
               </Button>

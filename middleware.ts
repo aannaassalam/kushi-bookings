@@ -9,7 +9,8 @@ const public_routes = [
   "/facility",
   "/membership",
   "/season-pass",
-  "/user"
+  "/user",
+  "/terms-and-conditions"
 ];
 
 export function middleware(req: NextRequest) {

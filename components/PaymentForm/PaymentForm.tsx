@@ -259,7 +259,7 @@ const PaymentForm = ({
           //   colorScheme="blue"
           //   isLoading={isLoading}
           //   type="submit"
-          onClick={() => (isLoading ? onClose() : null)}
+          onClick={() => (!isLoading ? onClose() : null)}
         >
           Close
         </Button>

@@ -124,7 +124,7 @@ export default function Login() {
         {/* Login Form */}
         <div className="bg-white  rounded-lg w-full max-w-md p-6 m-auto">
           <h2 className="text-2xl font-semibold text-center text-gray-800 mb-2">
-            Sign in to the platform
+            Sign in to Kushi
           </h2>
           <p className="text-center text-gray-600 mb-6">
             Enter your credentials to continue
