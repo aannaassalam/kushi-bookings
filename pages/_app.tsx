@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type { AppContext, AppProps } from "next/app";
 import App from "next/app";
 import { Montserrat } from "next/font/google";
+import Head from "next/head";
 import React, { createContext, useContext, useState } from "react";
 import { Toaster } from "sonner";
 /**
@@ -65,6 +66,9 @@ export default function CustomApp({ Component, pageProps }: AppProps) {
 
   return (
     <main className={montserrat.className}>
+      <Head>
+        <title>Kushi Bookings</title>
+      </Head>
       {/* <SessionProvider session={pageProps.session}> */}
       <QueryClientProvider client={queryClient}>
         <EventListeners />

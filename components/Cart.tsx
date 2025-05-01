@@ -441,23 +441,25 @@ export default function Cart({
             />
           </DrawerBody>
           <DrawerFooter className="!px-8 flex-col" alignItems="stretch">
-            <label htmlFor="accept" className="mb-4 flex items-center">
+            <label htmlFor="accept" className="mb-4 flex items-start">
               <input
                 type="checkbox"
                 checked={accepted}
                 onChange={(e) => setAccepted(e.target.checked)}
                 id="accept"
-                className="mr-2 w-4 h-4"
+                className="mr-2 w-4 h-4 mt-1"
                 disabled={!Boolean(cart)}
               />
-              I have read and understood the
-              <Link
-                href="/terms-and-conditions"
-                target="_blank"
-                className="underline ml-1"
-              >
-                Terms & Conditions
-              </Link>
+              <span>
+                I have read and understood the
+                <Link
+                  href="/terms-and-conditions"
+                  target="_blank"
+                  className="underline ml-1"
+                >
+                  Terms & Conditions
+                </Link>
+              </span>
             </label>
             <Textarea
               className="mb-3 h-auto"

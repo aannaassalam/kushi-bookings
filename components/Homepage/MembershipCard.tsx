@@ -1,13 +1,10 @@
+import { changeSubscription } from "@/api/functions/payments.api";
+import { cx } from "@/lib/utils";
+import { queryClient } from "@/pages/_app";
 import {
   CurrentMembership,
   Membership
 } from "@/typescript/interface/membership.interfaces";
-import { useState } from "react";
-import { FaCheck } from "react-icons/fa6";
-import PaymentModal from "../PaymentForm/PaymentForm";
-import { parseCookies } from "nookies";
-import { useRouter } from "next/router";
-import { cx } from "@/lib/utils";
 import {
   Button,
   Modal,
@@ -16,11 +13,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Skeleton,
   useDisclosure
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import { changeSubscription } from "@/api/functions/payments.api";
-import { queryClient } from "@/pages/_app";
+import { useRouter } from "next/router";
+import { parseCookies } from "nookies";
+import { useState } from "react";
+import { FaCheck } from "react-icons/fa6";
+import PaymentModal from "../PaymentForm/PaymentForm";
 
 export default function MembershipCard({
   _id,
@@ -34,11 +35,13 @@ export default function MembershipCard({
   recurring_type,
   isCurrentPlan,
   isUpdatePlan,
-  active_plan
+  active_plan,
+  isLoading
 }: Membership & {
   isCurrentPlan: boolean;
   isUpdatePlan: boolean;
-  active_plan: CurrentMembership | null;
+  active_plan?: CurrentMembership | null;
+  isLoading?: boolean;
 }) {
   const router = useRouter();
   const cookies = parseCookies();
@@ -63,11 +66,13 @@ export default function MembershipCard({
         {about.split("_").map((key_point: string) => {
           return (
             <p
-              className="text-primaryText flex flex-row items-center text-sm mb-4"
+              className="text-primaryText flex flex-row items-center mb-4"
               key={key_point}
             >
               <FaCheck className="mr-4" size={20} />
-              <span className="flex-1">{key_point}</span>
+              <span className="flex-1 text-base max-md:text-sm">
+                {key_point}
+              </span>
             </p>
           );
         })}
@@ -92,29 +97,31 @@ export default function MembershipCard({
           {recurring_type}
         </span>
       </div>
-      <button
-        className={cx(
-          "text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md",
-          {
-            "!bg-primary !text-white !cursor-not-allowed": isCurrentPlan
-          }
-        )}
-        onClick={() => {
-          if (!user) {
-            router.push("/auth/login");
-          }
-          if (isCurrentPlan) {
-            return null;
-          }
-          if (isUpdatePlan) {
-            onOpen();
-          } else {
-            setModal(true);
-          }
-        }}
-      >
-        {isCurrentPlan ? "Current Plan" : "Choose"}
-      </button>
+      <Skeleton isLoaded={!isLoading} borderRadius={5}>
+        <button
+          className={cx(
+            "text-primary py-3 w-full font-semibold bg-lightPrimary rounded-md",
+            {
+              "!bg-primary !text-white !cursor-not-allowed": isCurrentPlan
+            }
+          )}
+          onClick={() => {
+            if (!user) {
+              router.push("/auth/login");
+            }
+            if (isCurrentPlan) {
+              return null;
+            }
+            if (isUpdatePlan) {
+              onOpen();
+            } else {
+              setModal(true);
+            }
+          }}
+        >
+          {isCurrentPlan ? "Current Plan" : "Choose"}
+        </button>
+      </Skeleton>
       <PaymentModal
         type="subscription"
         price_id={stripe_price_id}

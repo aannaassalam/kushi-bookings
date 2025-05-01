@@ -3,21 +3,18 @@ import {
   getMemberships
 } from "@/api/functions/membership.api";
 import { cx } from "@/lib/utils";
-import {
-  CurrentMembership,
-  Membership
-} from "@/typescript/interface/membership.interfaces";
+import { Membership } from "@/typescript/interface/membership.interfaces";
 import { useQuery } from "@tanstack/react-query";
+import { parseCookies } from "nookies";
 import { useState } from "react";
 import MembershipCard from "./MembershipCard";
-import { parseCookies } from "nookies";
 
 export default function PackageDetails({
-  memberships,
-  current_membership
+  memberships
+  // current_membership
 }: {
   memberships: Membership[];
-  current_membership: CurrentMembership | null;
+  // current_membership: CurrentMembership | null;
 }) {
   const [sport, setSport] = useState("cricket");
   const cookies = parseCookies();
@@ -28,10 +25,10 @@ export default function PackageDetails({
     initialData: memberships
   });
 
-  const { data: active_plan } = useQuery({
+  const { data: active_plan, isLoading } = useQuery({
     queryKey: ["current_membership", sport],
     queryFn: () => getCurrentMembership(sport),
-    initialData: current_membership,
+    // initialData: current_membership,
     enabled: !!cookies.token
   });
 
@@ -79,6 +76,7 @@ export default function PackageDetails({
             isCurrentPlan={_membership._id === active_plan?.membership_id}
             isUpdatePlan={Boolean(active_plan)}
             active_plan={active_plan}
+            isLoading={isLoading}
           />
         ))}
 

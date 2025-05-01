@@ -48,7 +48,7 @@ export default function Reminder({
           <OrderedList>
             {conditions.map((condition) => {
               return (
-                <ListItem key={condition} className="mb-2 text-xl">
+                <ListItem key={condition} className="mb-2 text-xl font-medium">
                   {condition}
                 </ListItem>
               );
