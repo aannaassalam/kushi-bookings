@@ -2,8 +2,7 @@
 
 import {
   createSubscription,
-  getPurchaseClientSecret,
-  removePendingBookings
+  getPurchaseClientSecret
 } from "@/api/functions/payments.api";
 import { queryClient } from "@/pages/_app";
 import { MetadataType } from "@/typescript/interface/payments.interface";
@@ -42,6 +41,7 @@ export default function PaymentModal(
   const [payment_details, setPaymentDetails] = useState<{
     client_secret: string;
   }>();
+  const [payment_loading, setPaymentLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -92,7 +92,7 @@ export default function PaymentModal(
   if (!isOpen) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={!loading ? onClose : () => {}}>
+    <Modal isOpen={isOpen} onClose={!payment_loading ? onClose : () => null}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader className="flex items-center justify-between gap-5">
@@ -127,7 +127,11 @@ export default function PaymentModal(
                     }
               }
             >
-              <PaymentForm metadata={metadata} onClose={onClose} />
+              <PaymentForm
+                metadata={metadata}
+                onClose={onClose}
+                setPaymentLoading={setPaymentLoading}
+              />
             </Elements>
           )}
           {/* ) : null} */}
@@ -139,10 +143,12 @@ export default function PaymentModal(
 
 const PaymentForm = ({
   metadata,
-  onClose
+  onClose,
+  setPaymentLoading
 }: {
   metadata: MetadataType;
   onClose: (success?: boolean) => void;
+  setPaymentLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -156,6 +162,7 @@ const PaymentForm = ({
     }
 
     setIsLoading(true);
+    setPaymentLoading(true);
 
     try {
       const { error } = await stripe.confirmPayment({
@@ -167,7 +174,6 @@ const PaymentForm = ({
       });
       if (error) {
         console.log(error);
-        removePendingBookings();
         toast.error(error.message ?? "Something went wrong");
         return;
       }
@@ -179,10 +185,10 @@ const PaymentForm = ({
       }, 800);
       onClose(true);
     } catch (error) {
-      removePendingBookings();
       console.log(error);
     } finally {
       setIsLoading(false);
+      setPaymentLoading(false);
     }
   };
 
@@ -192,11 +198,13 @@ const PaymentForm = ({
     try {
       if (!stripe || !elements) return null;
       setIsLoading(true);
+      setPaymentLoading(true);
       const { error: submitError } = await elements.submit();
       if (submitError) {
         console.log(submitError);
         toast.error(submitError.message);
         setIsLoading(false);
+        setPaymentLoading(false);
         return;
       }
 
@@ -240,6 +248,7 @@ const PaymentForm = ({
       console.log(error);
     } finally {
       setIsLoading(false);
+      setPaymentLoading(false);
     }
   };
 
@@ -259,7 +268,8 @@ const PaymentForm = ({
           //   colorScheme="blue"
           //   isLoading={isLoading}
           //   type="submit"
-          onClick={() => (!isLoading ? onClose() : null)}
+          disabled={isLoading}
+          onClick={() => onClose()}
         >
           Close
         </Button>
