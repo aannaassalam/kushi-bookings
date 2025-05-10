@@ -12,6 +12,6 @@ export default {
   fcc: "/assets/images/fcc.PNG",
   sponsor1: "/assets/images/sponsor1.jpg",
   sponsor2: "/assets/images/sponsor2.jpeg",
-
+  ad: "/assets/images/kushi-ad.jpeg",
   logo2: "/assets/images/logo2.png"
 };

@@ -1,61 +1,46 @@
 import assets from "@/json/assets";
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Image,
-  Modal,
-  useDisclosure,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
-} from "@chakra-ui/react";
-import Link from "next/link";
-import CustomInput from "../CustomInput";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useMutation } from "@tanstack/react-query";
-import { submitAdvertiseForm } from "@/api/functions/user.api";
+import { Box, Image } from "@chakra-ui/react";
 
-const schema = yup.object().shape({
-  full_name: yup.string().required(),
-  email: yup.string().email().required(),
-  nature_of_business: yup.string().required()
-});
+// const schema = yup.object().shape({
+//   full_name: yup.string().required(),
+//   email: yup.string().email().required(),
+//   nature_of_business: yup.string().required()
+// });
 
 export default function Sponsored() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const {
-    register,
-    reset,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: yupResolver(schema)
-  });
+  // const {
+  //   register,
+  //   reset,
+  //   handleSubmit,
+  //   formState: { errors }
+  // } = useForm({
+  //   resolver: yupResolver(schema)
+  // });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: submitAdvertiseForm,
-    onSuccess: () => {
-      onClose();
-      reset();
-    }
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: submitAdvertiseForm,
+  //   onSuccess: () => {
+  //     onClose();
+  //     reset();
+  //   }
+  // });
 
-  const onSubmit = (body: yup.InferType<typeof schema>) => {
-    mutate(body);
-  };
+  // const onSubmit = (body: yup.InferType<typeof schema>) => {
+  //   mutate(body);
+  // };
 
   return (
     <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex max-lg:py-12 max-lg:flex-col relative">
-      <VStack
+      <Image
+        src={assets.ad}
+        alt="Advertisement"
+        width={7680}
+        height={4020}
+        className="!w-full !h-auto object-contain"
+      />
+      {/* <VStack
         align="start"
         mx="auto"
         spacing={4}
@@ -112,7 +97,7 @@ export default function Sponsored() {
         </HStack>
       </VStack>
 
-      {/* Image Section */}
+      {/* Image Section
       <Box
         position="relative"
         className="ml-auto w-1/3 max-[1400px]:w-[40%] max-xl:w-[45%] max-lg:mx-auto max-lg:w-[500px] max-sm:w-[95%]"
@@ -128,7 +113,7 @@ export default function Sponsored() {
             width="250px"
           />
           <Box position="absolute" bottom={0} left={-5} className="z-10">
-            {/* triangle */}
+            {/* triangle
             <div className="w-0 h-0 border-l-[20px] border-l-[#00000000] border-b-[20px] border-b-primary"></div>
 
             <Box
@@ -158,7 +143,7 @@ export default function Sponsored() {
         />
       </Box>
 
-      {/* Add Banner overlay text */}
+      {/* Add Banner overlay text
       <Box className="absolute w-full h-full left-0 flex justify-center items-center ">
         <Text
           color="blackAlpha.500"
@@ -226,7 +211,7 @@ export default function Sponsored() {
             </Button>
           </ModalFooter>
         </ModalContent>
-      </Modal>
+      </Modal> */}
     </Box>
   );
 }
