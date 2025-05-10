@@ -34,7 +34,7 @@ export default function Sponsored() {
   return (
     <Box className="bg-lightPrimary/5 px-[100px] w-full mb-[50px] max-lg:px-[40px] max-md:px-[20px] pt-14 pb-24 flex max-lg:py-12 max-lg:flex-col relative">
       <Image
-        src={assets.ad}
+        src={assets?.ad}
         alt="Advertisement"
         width={7680}
         height={4020}
