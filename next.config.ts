@@ -34,6 +34,15 @@ const nextConfig: NextConfig = {
     removeConsole: false
     // removeConsole: process.env.NODE_ENV === "production"
   },
+  async redirects(){
+    return [
+      {
+        source: '/:path*',
+        destination: '/',
+        permanent:true
+      }
+    ]
+  },
   env: {
     NEXT_APP_BASE_URL: process.env.NEXT_APP_BASE_URL,
     NEXT_APP_ENCRYPTION_KEY: process.env.NEXT_APP_ENCRYPTION_KEY,

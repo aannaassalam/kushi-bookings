@@ -8,13 +8,14 @@ import WhyUs from "@/components/Homepage/WhyUs";
 import AppLayout from "@/layouts/AppLayout";
 
 export default function Home() {
-  return (
-    <AppLayout>
-      <HeroSection />
-      <Sponsored />
-      <Benefits />
-      <About />
-      <WhyUs />
-    </AppLayout>
-  );
+  return <></>;
+  // (
+    // <AppLayout>
+    //   <HeroSection />
+    //   <Sponsored />
+    //   <Benefits />
+    //   <About />
+    //   <WhyUs />
+    // </AppLayout>
+  // );
 }
